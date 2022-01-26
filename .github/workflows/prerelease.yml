@@ -36,18 +36,19 @@ jobs:
           echo "NL=\n" >> $GITHUB_ENV
 
       - name: "Updating Release Notes Template Local File"
-        shell: bash
+        shell: shell
         run: |
-          sed 's#\$#\\#'.github/release_notes_tagged.md | tr -d '\n'
-          sed 's#\$#n#'.github/release_notes_tagged.md | tr -d '\n'
-          sed 's#\$#\\n#'.github/release_notes_tagged.md | tr -d '\n'
-          sed 's#\$#\\\n#'.github/release_notes_tagged.md | tr -d '\n'
+          sed 's/$/\\/'.github/release_notes_tagged.md
+          sed 's/$/A/'.github/release_notes_tagged.md
+          sed 's/$/${{ env.PRERELEASE_VERSION }}/'.github/release_notes_tagged.md
+          sed 's/$/\\n/'.github/release_notes_tagged.md
 
-          echo "RELEASE_NOTES=$(sed 's#$#\n#'.github/release_notes_tagged.md | tr -d '\n')"
+          perl -p -e 's/\n/\\n/' .github/release_notes_tagged.md
+          awk 1 ORS='\\n' .github/release_notes_tagged.md
 
           curl --location --request PATCH https://api.github.com/repos/${{ github.repository }}/releases/${{ env.RELEASE_GIT_ID }} \
           --header 'Accept: application/vnd.github.v3+json' \
           --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
           --header 'Content-Type: application/json' \
-          --data-raw "{\"tag_name\" : \"${{ env.PRERELEASE_VERSION }}\",\"body\": \"$(sed 's#$#\n#'.github/release_notes_tagged.md | tr -d '\n')\"}"
+          --data-raw "{\"tag_name\" : \"${{ env.PRERELEASE_VERSION }}\",\"body\": \"$(cat .github/release_notes_tagged.md)\"}"
 

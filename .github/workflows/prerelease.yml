@@ -25,22 +25,23 @@ jobs:
           prerelease: true
           title: ${{ env.PRERELEASE_VERSION }}
       
-      - name: "Update Release Notes Template"
+      - name: "Fetching Release ID and Updating template with new tag"
         run: |
           curl -o .github/release_tag.json --location --request GET https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.PRERELEASE_VERSION }} \
           --header 'Accept: application/vnd.github.v3+json' \
           --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
 
-          grep --max-count=1 '"id":.*' .github/release_tag.json | sed -n 's/[^0-9]*//gp'
-          sed 's/$/\\n/' .github/release_notes_template.md | tr -d '\n'
-          
           echo "RELEASE_GIT_ID=$(grep --max-count=1 '"id":.*' .github/release_tag.json | sed -n 's/[^0-9]*//gp')" >> $GITHUB_ENV
           sed -i -n 's/{RELEASE_TAG}/'"${{ env.PRERELEASE_VERSION }}"'/' .github/release_notes_template.md
           echo "NOTES_TEMPLATE=$(sed 's/$/\\n/' .github/release_notes_template.md | tr -d '\n')" >> $GITHUB_ENV
           
-          curl --location --request PATCH https://api.github.com/repos/${{ github.repository }}/releases/$RELEASE_GIT_ID \
+          sed 's/$/\\n/' .github/release_notes_template.md | tr -d '\n'
+      
+      - name: "Updating Release Notes Template"
+        run: |
+          curl --location --request PATCH https://api.github.com/repos/${{ github.repository }}/releases/${{ env.RELEASE_GIT_ID }} \
           --header 'Accept: application/vnd.github.v3+json' \
           --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
           --header 'Content-Type: application/json' \
-          --data-raw "{\"tag_name\" : \"${{ env.PRERELEASE_VERSION }}\",\"body\": \"$NOTES_TEMPLATE\"}"
+          --data-raw "{\"tag_name\" : \"${{ env.PRERELEASE_VERSION }}\",\"body\": \"${{ env.NOTES_TEMPLATE }}\"}"
 

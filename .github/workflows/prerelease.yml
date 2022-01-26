@@ -37,7 +37,7 @@ jobs:
       - name: "Updating Release Notes Template Local File"
         shell: sh
         run: |
-          sed 's/$/\\n/'.github/release_notes_tagged.md | tr -d '\n'
+          sed 's/\$/\\n/'.github/release_notes_tagged.md | tr -d '\n'
           echo "RELEASE_NOTES=$(sed 's/$/\\n/'.github/release_notes_tagged.md | tr -d '\n')"
 
           curl --location --request PATCH https://api.github.com/repos/${{ github.repository }}/releases/${{ env.RELEASE_GIT_ID }} \

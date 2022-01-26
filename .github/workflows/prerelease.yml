@@ -36,7 +36,7 @@ jobs:
           echo "NL=\n" >> $GITHUB_ENV
 
       - name: "Updating Release Notes Template Local File"
-        shell: shell
+        shell: bash
         run: |
           sed 's/$/\\/'.github/release_notes_tagged.md
           sed 's/$/A/'.github/release_notes_tagged.md

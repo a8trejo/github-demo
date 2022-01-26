@@ -36,9 +36,10 @@ jobs:
           echo "NL=\n" >> $GITHUB_ENV
 
       - name: "Updating Release Notes Template Local File"
-        shell: bash
         run: |
+          echo "perl"
           perl -p -e 's/\n/\\n/' .github/release_notes_tagged.md
+          echo "awk"
           awk 1 ORS='\\n' .github/release_notes_tagged.md
 
           curl --location --request PATCH https://api.github.com/repos/${{ github.repository }}/releases/${{ env.RELEASE_GIT_ID }} \

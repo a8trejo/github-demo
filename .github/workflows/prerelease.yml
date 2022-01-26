@@ -27,7 +27,7 @@ jobs:
       
       - name: "Update Release Notes Template"
         run: |
-          curl -o .github/release_tag.json --location --request GET https://api.github.com/repos/a8trejo/${{ github.repository }}/releases/tags/${{ env.PRERELEASE_VERSION }} \
+          curl -o .github/release_tag.json --location --request GET https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.PRERELEASE_VERSION }} \
           --header 'Accept: application/vnd.github.v3+json' \
           --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
 
@@ -35,7 +35,7 @@ jobs:
           sed -i -n 's/{RELEASE_TAG}/'"${{ env.PRERELEASE_VERSION }}"'/' .github/release_notes_template.md
           echo "NOTES_TEMPLATE=$(sed 's/$/\\n/' .github/release_notes_template.md | tr -d '\n')" >> $GITHUB_ENV
           
-          curl --location --request PATCH https://api.github.com/repos/a8trejo/${{ github.repository }}/releases/${{ env.RELEASE_GIT_ID }} \
+          curl --location --request PATCH https://api.github.com/repos/${{ github.repository }}/releases/${{ env.RELEASE_GIT_ID }} \
           --header 'Accept: application/vnd.github.v3+json' \
           --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
           --header 'Content-Type: application/json' \

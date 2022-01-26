@@ -1,4 +1,4 @@
-## {RELEASE_TAG}
+## Changelog - {RELEASE_DATE}
 #### New Features ✅
 * List new features or remove
 

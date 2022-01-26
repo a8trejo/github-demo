@@ -30,9 +30,7 @@ jobs:
           --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
 
           echo "RELEASE_GIT_ID=$(grep --max-count=1 '"id":.*' .github/release_tag.json | sed -n 's/[^0-9]*//gp')" >> $GITHUB_ENV
-          sed 's/{RELEASE_DATE}/${{ env.RELEASE_DATE }}/' .github/release_notes_template.md > .github/release_notes_template.md
-          sed 's/{GIT_REPO}/${{ github.repository }}/g' .github/release_notes_template.md > .github/release_notes_template.md
-          sed 's/{RELEASE_TAG}/${{ env.PRERELEASE_VERSION }}/g' .github/release_notes_template.md > .github/release_notes_template.md
+          sed 's/{RELEASE_DATE}/${{ env.RELEASE_DATE }}/' .github/release_notes_template.md >> .github/release_notes_tagged.md
 
       - name: "Updating Release Notes Template Local File"
         run: |

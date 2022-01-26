@@ -33,9 +33,10 @@ jobs:
 
           echo "RELEASE_GIT_ID=$(grep --max-count=1 '"id":.*' .github/release_tag.json | sed -n 's/[^0-9]*//gp')" >> $GITHUB_ENV
           sed 's/{RELEASE_TAG}/${{ env.PRERELEASE_VERSION }}/' .github/release_notes_template.md >> .github/release_notes_tagged.md
+          echo "NL=\n" >> $GITHUB_ENV
 
       - name: "Updating Release Notes Template Local File"
-        shell: sh
+        shell: bash
         run: |
           sed 's#\$#\\#'.github/release_notes_tagged.md | tr -d '\n'
           sed 's#\$#n#'.github/release_notes_tagged.md | tr -d '\n'

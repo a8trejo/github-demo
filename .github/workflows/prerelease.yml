@@ -31,7 +31,9 @@ jobs:
           --header 'Accept: application/vnd.github.v3+json' \
           --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
 
-          echo "RELEASE_GIT_ID=$(grep -pO -m 1 '"id":.*' .github/release_tag.json | sed -n 's/[^0-9]*//gp')" >> $GITHUB_ENV
+          cat .github/release_tag.json
+
+          echo "RELEASE_GIT_ID=$(grep --max-count=1 '"id":.*' .github/release_tag.json | sed -n 's/[^0-9]*//gp')" >> $GITHUB_ENV
           sed -i -n 's/{RELEASE_TAG}/'"${{ env.PRERELEASE_VERSION }}"'/' .github/release_notes_template.md
           echo "NOTES_TEMPLATE=$(sed 's/$/\\n/' .github/release_notes_template.md | tr -d '\n')" >> $GITHUB_ENV
           

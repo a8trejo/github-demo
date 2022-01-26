@@ -33,13 +33,14 @@ jobs:
 
           echo "RELEASE_GIT_ID=$(grep --max-count=1 '"id":.*' .github/release_tag.json | sed -n 's/[^0-9]*//gp')" >> $GITHUB_ENV
           sed 's/{RELEASE_TAG}/${{ env.PRERELEASE_VERSION }}/' .github/release_notes_template.md >> .github/release_notes_tagged.md
-          cat .github/release_notes_tagged.md
 
       - name: "Updating Release Notes Template Local File"
         run: |
+          echo "RELEASE_NOTES=$(sed 's/$/\\n/'.github/release_notes_tagged.md | tr -d '\n')"
+
           curl --location --request PATCH https://api.github.com/repos/${{ github.repository }}/releases/${{ env.RELEASE_GIT_ID }} \
           --header 'Accept: application/vnd.github.v3+json' \
           --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
           --header 'Content-Type: application/json' \
-          --data-raw "{\"tag_name\" : \"${{ env.PRERELEASE_VERSION }}\",\"body\": \"$(sed 's/$/\\n/'.github/release_notes_tagged.md | tr -d '\n')\"}"
+          --data-raw "{\"tag_name\" : \"${{ env.PRERELEASE_VERSION }}\",\"body\": \"$RELEASE_NOTES\"}"
 

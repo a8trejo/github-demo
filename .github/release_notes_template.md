@@ -17,4 +17,4 @@
 #### Dependencies 📎
 * List dependencies or remove
 
-**Full Changelog**: https://github.com/a8trejo/github-demo/commits/latest
+**Full Changelog**: https://github.com/{GIT_REPO}/commits/{RELEASE_TAG}

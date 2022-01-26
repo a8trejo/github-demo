@@ -30,7 +30,9 @@ jobs:
           --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
 
           echo "RELEASE_GIT_ID=$(grep --max-count=1 '"id":.*' .github/release_tag.json | sed -n 's/[^0-9]*//gp')" >> $GITHUB_ENV
-          sed 's/{RELEASE_DATE}/${{ env.RELEASE_DATE }}/' .github/release_notes_template.md >> .github/release_notes_tagged.md
+          sed -i 's/{RELEASE_DATE}/${{ env.RELEASE_DATE }}/' .github/release_notes_template.md
+          sed -i 's/{GIT_REPO}/${{ github.repository }}/' .github/release_notes_template.md
+          sed -i 's/{RELEASE_TAG}/${{ env.PRERELEASE_VERSION }}/' .github/release_notes_template.md
 
       - name: "Updating Release Notes Template Local File"
         run: |
@@ -40,5 +42,5 @@ jobs:
           --header 'Accept: application/vnd.github.v3+json' \
           --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
           --header 'Content-Type: application/json' \
-          --data-raw "{\"tag_name\" : \"${{ env.PRERELEASE_VERSION }}\",\"body\": \"$(perl -p -e 's/\n/\\n/' .github/release_notes_tagged.md)\"}"
+          --data-raw "{\"tag_name\" : \"${{ env.PRERELEASE_VERSION }}\",\"body\": \"$(perl -p -e 's/\n/\\n/' .github/release_notes.md)\"}"
 

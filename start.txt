@@ -1,1 +1,17 @@
 Test Git Quick Start demo
+
+curl -o .github/release_tag.json --location --request GET https://api.github.com/repos/a8trejo/github-demo/releases/tags/$tag \
+--header 'Accept: application/vnd.github.v3+json' \
+--header 'Authorization: token [PAT_TOKEN]'
+
+RELEASE_GIT_ID=$(grep -pO -m 1 '"id":.*' .github/release_tag.json | sed -n 's/[^0-9]*//gp')
+
+sed -i -n 's/{RELEASE_TAG}/'"$RELEASE_TAG"'/' .github/release_notes_template.md
+
+NOTES_TEMPLATE=$(sed 's/$/\\n/' .github/release_notes_template.md | tr -d '\n')
+
+curl --location --request PATCH https://api.github.com/repos/a8trejo/github-demo/releases/$RELEASE_GIT_ID \
+--header 'Accept: application/vnd.github.v3+json' \
+--header 'Authorization: token [PAT_TOKEN]' \
+--header 'Content-Type: application/json' \
+--data-raw "{\"tag_name\" : \"latest\",\"body\": \"$NOTES_TEMPLATE\"}"

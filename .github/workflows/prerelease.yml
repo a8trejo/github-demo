@@ -24,6 +24,7 @@ jobs:
           title: ${{ env.PRERELEASE_VERSION }}
       
       - name: "Fetching Release ID and Updating template with new tag"
+        continue-on-error: true
         run: |
           curl -o .github/release_tag.json --location --request GET https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.PRERELEASE_VERSION }} \
           --header 'Accept: application/vnd.github.v3+json' \

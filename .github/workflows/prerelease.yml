@@ -32,22 +32,14 @@ jobs:
           --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
 
           echo "RELEASE_GIT_ID=$(grep --max-count=1 '"id":.*' .github/release_tag.json | sed -n 's/[^0-9]*//gp')" >> $GITHUB_ENV
-          cat .github/release_notes_template.md
-          echo "RELEASE_NOTES_TAGGED=$(sed 's/{RELEASE_TAG}/${{ env.PRERELEASE_VERSION }}/' .github/release_notes_template.md)" >> $GITHUB_ENV
-          cat .github/release_notes_template.md
-      - name: "Updating Release Notes Template Local File"
-        run: |
-          echo "RELEASE_NOTES=$(echo ${{ env.RELEASE_NOTES_TAGGED }} sed 's/$/\\n/' | tr -d '\n')" >> $GITHUB_ENV
-          echo "NOTES_TEMPLATE Content:"
-          echo $RELEASE_NOTES
+          sed 's/{RELEASE_TAG}/${{ env.PRERELEASE_VERSION }}/' .github/release_notes_template.md >> .github/release_notes_tagged.md
+          cat .github/release_notes_tagged.md
 
       - name: "Updating Release Notes Template Local File"
         run: |
-          echo ${{ env.RELEASE_NOTES }}
-
           curl --location --request PATCH https://api.github.com/repos/${{ github.repository }}/releases/${{ env.RELEASE_GIT_ID }} \
           --header 'Accept: application/vnd.github.v3+json' \
           --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
           --header 'Content-Type: application/json' \
-          --data-raw "{\"tag_name\" : \"${{ env.PRERELEASE_VERSION }}\",\"body\": \"${{ env.RELEASE_NOTES }}\"}"
+          --data-raw "{\"tag_name\" : \"${{ env.PRERELEASE_VERSION }}\",\"body\": \"$(sed 's/$/\\n/'.github/release_notes_tagged.md | tr -d '\n')\"}"
 

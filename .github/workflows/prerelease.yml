@@ -38,11 +38,6 @@ jobs:
       - name: "Updating Release Notes Template Local File"
         shell: bash
         run: |
-          sed 's/$/\\/'.github/release_notes_tagged.md
-          sed 's/$/A/'.github/release_notes_tagged.md
-          sed 's/$/${{ env.PRERELEASE_VERSION }}/'.github/release_notes_tagged.md
-          sed 's/$/\\n/'.github/release_notes_tagged.md
-
           perl -p -e 's/\n/\\n/' .github/release_notes_tagged.md
           awk 1 ORS='\\n' .github/release_notes_tagged.md
 

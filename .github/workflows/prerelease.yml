@@ -37,10 +37,9 @@ jobs:
       - name: "Updating Release Notes Template Local File"
         shell: sh
         run: |
-          sed -E ':a;N;$!ba;s/\n/\\n/g'.github/release_notes_tagged.md
-          sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g'.github/release_notes_tagged.md
-          sed 's/$/\\n/g'.github/release_notes_tagged.md
-          sed 's/$/\n/g'.github/release_notes_tagged.md
+          sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g'.github/release_notes_tagged.md | tr -d '\n')"
+          sed 's/$/\\n/g'.github/release_notes_tagged.md | tr -d '\n')"
+          sed 's/$/\n/g'.github/release_notes_tagged.md | tr -d '\n')"
 
           echo "RELEASE_NOTES=$(sed 's/$/\\n/'.github/release_notes_tagged.md | tr -d '\n')"
 

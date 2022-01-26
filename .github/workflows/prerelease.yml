@@ -14,7 +14,7 @@ jobs:
       - name: Set version env
         run: |
           echo "PRERELEASE_VERSION=$(echo v`date +%Y.%m.%d`.`git rev-parse --short HEAD`.rc)" >> $GITHUB_ENV
-          echo "RELEASE_DATE=$(echo Release Date: `date +%Y.%m.%d`.`git rev-parse --short HEAD`)" >> $GITHUB_ENV
+          echo "RELEASE_DATE=$(echo `date +%Y.%m.%d`)" >> $GITHUB_ENV
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:

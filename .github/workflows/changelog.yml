@@ -1,4 +1,4 @@
-name: Generate changelog
+name: Generate Changelog MD file
 on:
   release:
     types: [created, edited]
@@ -7,22 +7,20 @@ jobs:
   generate-changelog:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-
-    - uses: BobAnkh/auto-generate-changelog@master
-      with:
-        REPO_NAME: ''
-        ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        PATH: '.github/CHANGELOG.md'
-        COMMIT_MESSAGE: 'docs(CHANGELOG): Updating changelog content'
-        TYPE: 'feat:Feature,fix:Bug Fixes,docs:Documentation,refactor:Refactor,perf:Performance Improvements'
-        BRANCH: ''
-        PULL_REQUEST: ''
-    
-    - name: "Fast echo"
-        continue-on-error: true
+      - uses: BobAnkh/auto-generate-changelog@master
+        with:
+          REPO_NAME: ''
+          ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          PATH: '.github/CHANGELOG.md'
+          COMMIT_MESSAGE: 'docs(CHANGELOG): Updating changelog content'
+          TYPE: 'feat:Feature,fix:Bug Fixes,docs:Documentation,refactor:Refactor,perf:Performance Improvements'
+          BRANCH: ''
+          PULL_REQUEST: ''
+      
+      - name: "Fast echo"
         run: |
           cat CHANGELOG.md

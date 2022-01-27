@@ -14,7 +14,7 @@ jobs:
       - name: Set version env
         run: |
           echo "PRERELEASE_VERSION=$(echo v`date +%Y.%m.%d`.`git rev-parse --short HEAD`.rc)" >> $GITHUB_ENV
-          echo "RELEASE_DATE=$(echo `date +%Y.%m.%d`)" >> $GITHUB_ENV
+          echo "RELEASE_DATE=$(echo `date +%Y\.%m\.%d`)" >> $GITHUB_ENV
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -30,7 +30,7 @@ jobs:
           --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
 
           echo "RELEASE_GIT_ID=$(grep --max-count=1 '"id":.*' .github/release_tag.json | sed -n 's/[^0-9]*//gp')" >> $GITHUB_ENV
-          sed -e 's/{RELEASE_DATE}/${{ env.RELEASE_DATE }}/' -e 's/{GIT_REPO}/${{ github.repository }}/' -e 's/{RELEASE_TAG}/${{ env.PRERELEASE_VERSION }}/' .github/release_notes_template.md >> .github/release_notes_template.md
+          perl -pi -e 's/{RELEASE_DATE}/${{ env.RELEASE_DATE }}/g' -e 's/{GIT_REPO}/${{ github.repository }}/g' -e 's/{RELEASE_TAG}/${{ env.PRERELEASE_VERSION }}/g' .github/release_notes_template.md
 
       - name: "Updating Release Notes Template Local File"
         run: |

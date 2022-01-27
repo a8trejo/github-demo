@@ -15,7 +15,6 @@ jobs:
         run: |
           echo "PRERELEASE_VERSION=$(echo v`date +%Y.%m.%d`.`git rev-parse --short HEAD`.rc)" >> $GITHUB_ENV
           echo "RELEASE_DATE=$(echo `date +%Y\.%m\.%d`)" >> $GITHUB_ENV
-          echo "ESCAPED_TAG=$(echo v`date +%Y\.%m\.%d`\.`git rev-parse --short HEAD`\.rc)" >> $GITHUB_ENV
           echo "ESCAPED_REPO=$(echo ${{ github.repository }} | sed 's|\/|\\\/|g')" >> $GITHUB_ENV
 
       - uses: "marvinpinto/action-automatic-releases@latest"
@@ -25,17 +24,17 @@ jobs:
           prerelease: true
           title: ${{ env.PRERELEASE_VERSION }}
       
-      - name: "Fetching Release ID and Updating template with new tag"
+      - name: "Fetching Release GitHub ID and Updating Local Release Notes"
         run: |
-          curl -o .github/release_tag.json --location --request GET https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.PRERELEASE_VERSION }} \
+          curl -o .github/current_release.json --location --request GET https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.PRERELEASE_VERSION }} \
           --header 'Accept: application/vnd.github.v3+json' \
           --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
 
-          echo "RELEASE_GIT_ID=$(grep --max-count=1 '"id":.*' .github/release_tag.json | sed -n 's/[^0-9]*//gp')" >> $GITHUB_ENV
+          echo "RELEASE_GIT_ID=$(grep --max-count=1 '"id":.*' .github/current_release.json | sed -n 's/[^0-9]*//gp')" >> $GITHUB_ENV
           perl -pi -w -e 's/{RELEASE_DATE}/${{ env.RELEASE_DATE }}/g;' -e 's/{RELEASE_TAG}/${{ env.PRERELEASE_VERSION }}/g;' \
           -e 's/{GIT_REPO}/${{ env.ESCAPED_REPO }}/g;' .github/release_notes_template.md
 
-      - name: "Updating Release Notes Template Local File"
+      - name: "Updating Remote Release Notes"
         run: |
           curl --location --request PATCH https://api.github.com/repos/${{ github.repository }}/releases/${{ env.RELEASE_GIT_ID }} \
           --header 'Accept: application/vnd.github.v3+json' \

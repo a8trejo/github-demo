@@ -17,4 +17,4 @@
 #### Dependencies 📎
 * List dependencies or remove
 
-**Full Changelog**: https://github.com/{GIT_REPO}/commits/{RELEASE_TAG}
+**Full Commits Changelog**: https://github.com/{GIT_REPO}/commits/{RELEASE_TAG}

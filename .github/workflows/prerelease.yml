@@ -24,15 +24,13 @@ jobs:
           title: ${{ env.PRERELEASE_VERSION }}
       
       - name: "Fetching Release ID and Updating template with new tag"
-        continue-on-error: true
         run: |
           curl -o .github/release_tag.json --location --request GET https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.PRERELEASE_VERSION }} \
           --header 'Accept: application/vnd.github.v3+json' \
           --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
 
           echo "RELEASE_GIT_ID=$(grep --max-count=1 '"id":.*' .github/release_tag.json | sed -n 's/[^0-9]*//gp')" >> $GITHUB_ENV
-          sed 's/{RELEASE_DATE}/${{ env.RELEASE_DATE }}/' .github/release_notes_template.md | sed 's/{GIT_REPO}/${{ github.repository }}/g' \
-          >> .github/release_notes_template.md
+          sed -e 's/{RELEASE_DATE}/${{ env.RELEASE_DATE }}/' -e 's/{GIT_REPO}/${{ github.repository }}/' -e 's/{RELEASE_TAG}/${{ env.PRERELEASE_VERSION }}/' .github/release_notes_template.md >> .github/release_notes_template.md
 
       - name: "Updating Release Notes Template Local File"
         run: |

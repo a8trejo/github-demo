@@ -10,12 +10,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Set version env
+      - name: Set Env Variables
         run: |
           echo "PRERELEASE_VERSION=$(echo v`date +%Y.%m.%d`.`git rev-parse --short HEAD`.rc)" >> $GITHUB_ENV
           echo "RELEASE_DATE=$(echo `date +%Y\.%m\.%d`)" >> $GITHUB_ENV
           echo "ESCAPED_REPO=$(echo ${{ github.repository }} | sed 's|\/|\\\/|g')" >> $GITHUB_ENV
-  
+          git log ${{GITHUB_REF_NAME}}...master --pretty=oneline --format='* %C(auto) %h %s' >> .github/commits_msgs.txt
+
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -23,29 +24,13 @@ jobs:
           prerelease: true
           title: ${{ env.PRERELEASE_VERSION }}
       
-      - name: "Debugging"
+      - name: "Updating Release Notes MD File"
         continue-on-error: true
         run: |
-          git status
-          git pull
-      
-      - name: Release Changelog Builder
-        id: build_changelog
-        uses: mikepenz/release-changelog-builder-action@v2.5.0
-        with:
-          configuration: ".github/changelog_config.json"
-          commitMode: true
-          fromTag: "latest"
-          toTag: "poc"
-          failOnError: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: "Changelog MD File"
-        continue-on-error: true
-        run: |
-          echo "${{steps.build_changelog.outputs.changelog}}" >> .github/release_notes_tmp.md
-          cat .github/release_notes_tmp.md
+          sed -i '' '/#### New Features ✅/r .github/commits_msgs.txt' .github/release_notes_template.md
+
+          perl -pi -w -e 's/{RELEASE_DATE}/${{ env.RELEASE_DATE }}/g;' -e 's/{RELEASE_TAG}/${{ env.PRERELEASE_VERSION }}/g;' \
+          -e 's/{GIT_REPO}/${{ env.ESCAPED_REPO }}/g;' .github/release_notes_tmp.md
 
       - name: "Fetching Release GitHub ID and Updating Local Release Notes"
         continue-on-error: true
@@ -53,10 +38,8 @@ jobs:
           curl -o .github/current_release.json --location --request GET https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.PRERELEASE_VERSION }} \
           --header 'Accept: application/vnd.github.v3+json' \
           --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-
+          
           echo "RELEASE_GIT_ID=$(grep --max-count=1 '"id":.*' .github/current_release.json | sed -n 's/[^0-9]*//gp')" >> $GITHUB_ENV
-          perl -pi -w -e 's/{RELEASE_DATE}/${{ env.RELEASE_DATE }}/g;' -e 's/{RELEASE_TAG}/${{ env.PRERELEASE_VERSION }}/g;' \
-          -e 's/{GIT_REPO}/${{ env.ESCAPED_REPO }}/g;' .github/release_notes_tmp.md
 
       - name: "Updating Remote Release Notes"
         continue-on-error: true

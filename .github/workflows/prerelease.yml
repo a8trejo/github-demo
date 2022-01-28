@@ -26,7 +26,7 @@ jobs:
       - name: Release Changelog Builder
         uses: mikepenz/release-changelog-builder-action@v2.7.2
         with:
-          configuration: "/.github/changelog_config.json"
+          configuration: ".github/changelog_config.json"
           owner: ${{ env.RELEASE_DATE }}
           commitMode: true
           fromTag: "latest"

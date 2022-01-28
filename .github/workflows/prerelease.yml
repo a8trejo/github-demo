@@ -15,20 +15,7 @@ jobs:
           echo "PRERELEASE_VERSION=$(echo v`date +%Y.%m.%d`.`git rev-parse --short HEAD`.rc)" >> $GITHUB_ENV
           echo "RELEASE_DATE=$(echo `date +%Y\.%m\.%d`)" >> $GITHUB_ENV
           echo "ESCAPED_REPO=$(echo ${{ github.repository }} | sed 's|\/|\\\/|g')" >> $GITHUB_ENV
-          echo "Git status"
-          echo "-------------------------------------------------"
-          git fetch origin
-          git branch
-          echo "-------------------------------------------------"
           git log $(git branch --show-current)...origin/master --pretty=oneline --format='* %C(auto) %h %s' >> .github/commits_msgs.txt
-
-      - name: Checking files
-        run: |
-          echo "-------------------------------------------------"
-          cd .github
-          ls -al
-          cat commits_msgs.txt
-          echo "-------------------------------------------------"
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -44,7 +31,7 @@ jobs:
           sed -i '/#### New Features ✅/r .github/commits_msgs.txt' .github/release_notes_template.md
 
           perl -pi -w -e 's/{RELEASE_DATE}/${{ env.RELEASE_DATE }}/g;' -e 's/{RELEASE_TAG}/${{ env.PRERELEASE_VERSION }}/g;' \
-          -e 's/{GIT_REPO}/${{ env.ESCAPED_REPO }}/g;' .github/release_notes_tmp.md
+          -e 's/{GIT_REPO}/${{ env.ESCAPED_REPO }}/g;' .github/release_notes_template.md
 
       - name: "Fetching Release GitHub ID and Updating Local Release Notes"
         continue-on-error: true
@@ -62,5 +49,5 @@ jobs:
           --header 'Accept: application/vnd.github.v3+json' \
           --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
           --header 'Content-Type: application/json' \
-          --data-raw "{\"tag_name\" : \"${{ env.PRERELEASE_VERSION }}\",\"body\": \"$(perl -p -e 's/\n/\\n/' .github/release_notes_tmp.md)\"}"
+          --data-raw "{\"tag_name\" : \"${{ env.PRERELEASE_VERSION }}\",\"body\": \"$(perl -p -e 's/\n/\\n/' .github/release_notes_template.md)\"}"
 

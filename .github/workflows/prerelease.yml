@@ -23,6 +23,12 @@ jobs:
           prerelease: true
           title: ${{ env.PRERELEASE_VERSION }}
       
+      - name: "Debugging"
+        continue-on-error: true
+        run: |
+          git status
+          git pull
+      
       - name: Release Changelog Builder
         uses: mikepenz/release-changelog-builder-action@v2.7.2
         with:

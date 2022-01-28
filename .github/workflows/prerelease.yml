@@ -22,7 +22,6 @@ jobs:
           echo "-------------------------------------------------"
           git log $(git branch --show-current)...origin/master --pretty=oneline --format='* %C(auto) %h %s' >> .github/commits_msgs.txt
 
-      steps:
       - name: Checking files
         run: |
           echo "-------------------------------------------------"

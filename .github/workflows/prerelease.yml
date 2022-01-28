@@ -36,8 +36,6 @@ jobs:
           configuration: ".github/changelog_config.json"
           owner: "Random Name"
           commitMode: true
-          fromTag: "poc"
-          toTag: "latest"
           failOnError: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

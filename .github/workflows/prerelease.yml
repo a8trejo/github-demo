@@ -15,7 +15,7 @@ jobs:
           echo "PRERELEASE_VERSION=$(echo v`date +%Y.%m.%d`.`git rev-parse --short HEAD`.rc)" >> $GITHUB_ENV
           echo "RELEASE_DATE=$(echo `date +%Y\.%m\.%d`)" >> $GITHUB_ENV
           echo "ESCAPED_REPO=$(echo ${{ github.repository }} | sed 's|\/|\\\/|g')" >> $GITHUB_ENV
-
+  
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -23,9 +23,8 @@ jobs:
           prerelease: true
           title: ${{ env.PRERELEASE_VERSION }}
       
-      - name: "Build Changelog"
-        id: build_changelog
-        uses: mikepenz/release-changelog-builder-action@{latest-release}
+      - name: Release Changelog Builder
+        uses: mikepenz/release-changelog-builder-action@v2.7.2
         with:
           configuration: "/.github/changelog_config.json"
           owner: ${{ env.RELEASE_DATE }}
@@ -40,7 +39,7 @@ jobs:
         run: |
           echo ${{steps.build_changelog.outputs.changelog}} >> .github/release_notes_tmp.md
           cat .github/release_notes_tmp.md
-          
+
       - name: "Fetching Release GitHub ID and Updating Local Release Notes"
         continue-on-error: true
         run: |

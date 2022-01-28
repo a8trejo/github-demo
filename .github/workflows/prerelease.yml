@@ -37,7 +37,6 @@ jobs:
         uses: mikepenz/release-changelog-builder-action@v2.5.0
         with:
           configuration: ".github/changelog_config.json"
-          owner: "Random Name"
           commitMode: true
           failOnError: false
         env:

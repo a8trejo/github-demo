@@ -27,7 +27,7 @@ jobs:
           echo "-------------------------------------------------"
           cd .github
           ls -al
-          cat .github/commits_msgs.txt
+          cat commits_msgs.txt
           echo "-------------------------------------------------"
 
       - uses: "marvinpinto/action-automatic-releases@latest"
@@ -40,6 +40,7 @@ jobs:
       - name: "Updating Release Notes MD File"
         continue-on-error: false
         run: |
+          pwd
           sed -i '/#### New Features ✅/r .github/commits_msgs.txt' .github/release_notes_template.md
 
           perl -pi -w -e 's/{RELEASE_DATE}/${{ env.RELEASE_DATE }}/g;' -e 's/{RELEASE_TAG}/${{ env.PRERELEASE_VERSION }}/g;' \

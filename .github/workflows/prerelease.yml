@@ -22,6 +22,15 @@ jobs:
           echo "-------------------------------------------------"
           git log $(git branch --show-current)...origin/master --pretty=oneline --format='* %C(auto) %h %s' >> .github/commits_msgs.txt
 
+      steps:
+      - name: Checking files
+        working-directory: ./github
+        run: |
+          echo "-------------------------------------------------"
+          ls -al
+          cat .github/commits_msgs.txt
+          echo "-------------------------------------------------"
+
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -30,9 +39,9 @@ jobs:
           title: ${{ env.PRERELEASE_VERSION }}
       
       - name: "Updating Release Notes MD File"
-        continue-on-error: true
+        continue-on-error: false
         run: |
-          sed -i '' '/#### New Features ✅/r .github/commits_msgs.txt' .github/release_notes_template.md
+          sed -i '/#### New Features ✅/r .github/commits_msgs.txt' .github/release_notes_template.md
 
           perl -pi -w -e 's/{RELEASE_DATE}/${{ env.RELEASE_DATE }}/g;' -e 's/{RELEASE_TAG}/${{ env.PRERELEASE_VERSION }}/g;' \
           -e 's/{GIT_REPO}/${{ env.ESCAPED_REPO }}/g;' .github/release_notes_tmp.md

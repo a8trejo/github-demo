@@ -44,7 +44,7 @@ jobs:
       - name: "Changelog MD File"
         continue-on-error: true
         run: |
-          echo ${{steps.build_changelog.outputs.changelog}} >> .github/release_notes_tmp.md
+          echo "${{steps.build_changelog.outputs.changelog}}" >> .github/release_notes_tmp.md
           cat .github/release_notes_tmp.md
 
       - name: "Fetching Release GitHub ID and Updating Local Release Notes"

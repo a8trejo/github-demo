@@ -1,4 +1,4 @@
-name: Template Release Notes
+name: Auto Release Notes
 
 on:
   workflow_dispatch:
@@ -24,9 +24,9 @@ jobs:
 
       steps:
       - name: Checking files
-        working-directory: ./github
         run: |
           echo "-------------------------------------------------"
+          cd .github
           ls -al
           cat .github/commits_msgs.txt
           echo "-------------------------------------------------"

@@ -34,10 +34,8 @@ jobs:
         uses: mikepenz/release-changelog-builder-action@v2.7.2
         with:
           configuration: ".github/changelog_config.json"
-          owner: ${{ env.RELEASE_DATE }}
+          owner: "Random Name"
           commitMode: true
-          fromTag: "v2022.01.26.f091165.rc"
-          toTag: "v2022.01.28.4896c41.rc"
           ignorePreReleases: false
           failOnError: false
         env:

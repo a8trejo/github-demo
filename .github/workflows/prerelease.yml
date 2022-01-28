@@ -29,6 +29,8 @@ jobs:
           configuration: ".github/changelog_config.json"
           owner: ${{ env.RELEASE_DATE }}
           commitMode: true
+          fromTag: "latest"
+          toTag: ${{ env.PRERELEASE_VERSION }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       

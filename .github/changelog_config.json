@@ -29,7 +29,7 @@
       "ignore"
     ],
     "sort": "ASC",
-    "template": "${{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n${{UNCATEGORIZED}}\n</details>",
+    "template": "## Changelog - {RELEASE_DATE}\n\n${{CHANGELOG}}\n\n<**Full Commits Changelog**: https://github.com/{GIT_REPO}/commits/{RELEASE_TAG}\n\ndetails>\n<summary>Uncategorized</summary>\n\n${{UNCATEGORIZED}}\n</details>",
     "empty_template": "- no changes",
     "label_extractor": [
       {

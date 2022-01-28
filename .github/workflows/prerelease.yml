@@ -2,9 +2,6 @@ name: Template Release Notes
 
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - 'latest'
 
 jobs:
   pre-release:
@@ -38,6 +35,8 @@ jobs:
         with:
           configuration: ".github/changelog_config.json"
           commitMode: true
+          fromTag: "poc"
+          toTag: "latest"
           failOnError: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

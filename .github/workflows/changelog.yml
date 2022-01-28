@@ -19,10 +19,10 @@ jobs:
           ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
           PATH: '.github/CHANGELOG.md'
           COMMIT_MESSAGE: 'docs(CHANGELOG): Updating changelog content'
-          TYPE: 'feat:Feature,fix:Bug Fixes,docs:Documentation,refactor:Refactor,perf:Performance Improvements'
+          TYPE: 'feat:Feature,fix:Bug Fixes'
           BRANCH: ''
           PULL_REQUEST: ''
       
       - name: "Fast echo"
         run: |
-          cat CHANGELOG.md
+          cat .github/CHANGELOG.md

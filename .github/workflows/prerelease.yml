@@ -6,7 +6,7 @@ on:
 jobs:
   pre-release:
     name: "Pre Release"
-    runs-on: "ubuntu-18.04"
+    runs-on: "ubuntu-latest"
 
     steps:
       - uses: actions/checkout@v2
@@ -36,7 +36,8 @@ jobs:
           configuration: ".github/changelog_config.json"
           owner: "Random Name"
           commitMode: true
-          ignorePreReleases: false
+          fromTag: "poc"
+          toTag: "latest"
           failOnError: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

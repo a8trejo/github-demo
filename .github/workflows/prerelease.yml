@@ -17,12 +17,10 @@ jobs:
           echo "ESCAPED_REPO=$(echo ${{ github.repository }} | sed 's|\/|\\\/|g')" >> $GITHUB_ENV
           echo "Git status"
           echo "-------------------------------------------------"
-          git branch
-          git fetch --all
-          git status
+          git fetch origin
           git branch
           echo "-------------------------------------------------"
-          git log $(git branch --show-current)...master --pretty=oneline --format='* %C(auto) %h %s' >> .github/commits_msgs.txt
+          git log $(git branch --show-current)...origin/master --pretty=oneline --format='* %C(auto) %h %s' >> .github/commits_msgs.txt
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:

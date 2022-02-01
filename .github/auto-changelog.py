@@ -18,7 +18,7 @@ configFile.close()
 branchType = GIT_BRANCH.split("/")[0].lower()
 featBranches = configJSON["branch_prefixes"]["features"]
 fixBranches = configJSON["branch_prefixes"]["fixes"]
-commitsMsgs = subprocess.getoutput("git log origin/" + GIT_BRANCH + "...origin/master --pretty=oneline --format='* %C(auto) %h %s'")
+commitsMsgs = subprocess.getoutput("git log origin/master...origin/" + GIT_BRANCH + " --pretty=oneline --format='* %C(auto) %h %s'")
 commitsLines = commitsMsgs.splitlines()
 commitsLines[-1] = commitsLines[-1] + "\n"
 fileContent = []

@@ -1,0 +1,9 @@
+.github/commits_msgs.txt
+
+#Reference
+.github/github_jira_script.py
+
+#Debugging
+.github/release_notes.md
+.github/backUp.py
+.github/workflows/prerelease_branch_names.yml

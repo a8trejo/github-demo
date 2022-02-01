@@ -1,0 +1,9 @@
+{
+    "sort": "ASC",
+    "template": "## Changelog - {RELEASE_DATE}\n\n${{CHANGELOG}}\n\n**Full Commits Changelog**: https://github.com/{GIT_REPO}/commits/{RELEASE_TAG}\n\n\n<summary>Commits MSGs</summary>\n\n${{UNCATEGORIZED}}\n</details>",
+    "pr_template": "",
+    "empty_template": "- no changes",
+    "max_tags_to_fetch": 15,
+    "max_back_track_time_days": 90,
+    "base_branches": ["master"]
+}

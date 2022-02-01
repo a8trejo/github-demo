@@ -1,4 +1,4 @@
-name: Auto Release Notes
+name: Python - Auto Release Notes
 
 on:
   workflow_dispatch:
@@ -16,7 +16,6 @@ jobs:
           echo "RELEASE_DATE=$(echo `date +%Y\.%m\.%d`)" >> $GITHUB_ENV
           echo "ESCAPED_REPO=$(echo ${{ github.repository }} | sed 's|\/|\\\/|g')" >> $GITHUB_ENV
           git fetch origin
-          git pull
           echo "ESCAPED_REPO=$(echo ${{ github.repository }} | sed 's|\/|\\\/|g')" >> $GITHUB_ENV
 
       - uses: "marvinpinto/action-automatic-releases@latest"

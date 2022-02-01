@@ -1,9 +1,43 @@
 {
-    "sort": "ASC",
-    "template": "## Changelog - {RELEASE_DATE}\n\n${{CHANGELOG}}\n\n**Full Commits Changelog**: https://github.com/{GIT_REPO}/commits/{RELEASE_TAG}\n\n\n<summary>Commits MSGs</summary>\n\n${{UNCATEGORIZED}}\n</details>",
-    "pr_template": "",
-    "empty_template": "- no changes",
-    "max_tags_to_fetch": 15,
-    "max_back_track_time_days": 90,
-    "base_branches": ["master"]
+    "branch_prefixes": {
+        "features": ["feature", "feat"],
+        "fixes": ["fix", "bug", "hot"]
+    },
+    "file_title": "## Changelog - {RELEASE_DATE}",
+    "sections": [
+        {
+            "header": "#### New Features ✅",
+            "type": "features",
+            "default": "* List new features or remove"
+        },
+        {
+            "header": "#### Bugfixes 🎉",
+            "type": "fixes",
+            "default": "* List bugfixes or remove"
+        },
+        {
+            "header": "#### Improved 💜",
+            "type": "other",
+            "default": "* List new improvements or remove"
+        },
+        {
+            "header": "#### Breaking Changes 🛠",
+            "type": "other",
+            "default": "* List breaking changes or remove"
+        },
+        {
+            "header": "#### Other changes ➕",
+            "type": "misc",
+            "default": "* List other changes or remove"
+        },
+        {
+            "header": "#### Dependencies 📎",
+            "type": "other",
+            "default": "* List dependencies or remove"
+        }
+    ],
+    "footer_rows": [
+        "**Full Commits Changelog**: https://github.com/{GIT_REPO}/commits/{RELEASE_TAG}"
+    ],
+    "env_variables": ["{RELEASE_DATE}", "{GIT_REPO}", "{RELEASE_TAG}"]
 }

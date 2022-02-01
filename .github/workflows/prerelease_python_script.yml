@@ -1,0 +1,46 @@
+name: Python - Auto Release Notes
+
+on:
+  workflow_dispatch:
+
+jobs:
+  pre-release:
+    name: "Pre Release"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set Env Variables
+        run: |
+          echo "PRERELEASE_VERSION=$(echo v`date +%Y.%m.%d`.`git rev-parse --short HEAD`.rc)" >> $GITHUB_ENV
+          echo "RELEASE_DATE=$(echo `date +%Y\.%m\.%d`)" >> $GITHUB_ENV
+          echo "ESCAPED_REPO=$(echo ${{ github.repository }} | sed 's|\/|\\\/|g')" >> $GITHUB_ENV
+          git fetch origin
+          echo "ESCAPED_REPO=$(echo ${{ github.repository }} | sed 's|\/|\\\/|g')" >> $GITHUB_ENV
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: ${{ env.PRERELEASE_VERSION }}
+          prerelease: true
+          title: ${{ env.PRERELEASE_VERSION }}
+      
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install Dependencies
+        run: |
+          pip install requests
+
+      - name: Changelog Generation
+        run: |
+          python .github/auto-changelog.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_BRANCH: ${{ github.ref_name }}
+          GITHUB_URL: ${{ github.api_url }}
+          GITHUB_REPO_PATH: ${{ github.repository }}
+          PRERELEASE_VERSION: ${{ env.PRERELEASE_VERSION }}
+          RELEASE_DATE: ${{ env.RELEASE_DATE }}

@@ -12,7 +12,7 @@ jobs:
       - name: Set Env Variables
         uses: actions/checkout@v2
         with:
-        fetch-depth: 0
+          fetch-depth: 0
         run: |
           echo "PRERELEASE_VERSION=$(echo v`date +%Y.%m.%d`.`git rev-parse --short HEAD`.rc)" >> $GITHUB_ENV
           echo "RELEASE_DATE=$(echo `date +%Y\.%m\.%d`)" >> $GITHUB_ENV

@@ -3,6 +3,7 @@ import requests
 import json
 import subprocess
 
+#Reading env variables from GitHub Workflow step
 GITHUB_URL = os.environ['GITHUB_URL']
 GITHUB_TOKEN = os.environ['GITHUB_TOKEN']
 GIT_BRANCH = os.environ['GITHUB_BRANCH']

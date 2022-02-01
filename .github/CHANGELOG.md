@@ -112,7 +112,44 @@
 
 ## [v2022.01.28.fb25c0b.rc](https://github.com/a8trejo/github-demo/releases/tag/v2022.01.28.fb25c0b.rc) - 2022-01-28 21:31:31
 
-*No description*
+## Changelog - 2022.01.28
+
+#### New Features ✅
+
+*  8b40802 Adding git fetch to update container refs
+*  bd52400 Correcting file name
+*  7b3ae32 Fixing path error
+*  0557490 Fixing second syntax err
+*  afb465d Fixing typo
+*  6b8ffc5 Adding debugging commands
+*  fb25c0b Updating git log command to origin master
+*  d251a63 Adding git commands for debugging
+*  19ee150 Updating branch name in git log command
+*  44e477c Auto populating notes with commit msgs
+
+#### Bugfixes 🎉
+
+* List bugfixes or remove
+
+#### Improved 💜
+
+* List new improvements or remove
+
+#### Breaking Changes 🛠
+
+* List breaking changes or remove
+
+#### Other changes ➕
+
+* List other changes or remove
+
+#### Dependencies 📎
+
+* List dependencies or remove
+
+**Full Commits Changelog**: https://github.com/a8trejo/github-demo/commits/v2022.01.28.fb25c0b.rc
+
+
 
 ## [v2022.01.28.05844e1.rc](https://github.com/a8trejo/github-demo/releases/tag/v2022.01.28.05844e1.rc) - 2022-01-28 17:59:26
 

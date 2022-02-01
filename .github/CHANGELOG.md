@@ -1,5 +1,43 @@
 # CHANGELOG
 
+## [v2022.02.01.54fdf7e.rc](https://github.com/a8trejo/github-demo/releases/tag/v2022.02.01.54fdf7e.rc) - 2022-02-01 18:41:12
+
+## Changelog - 2022.02.01
+
+#### New Features ✅
+
+*  54fdf7e Separating uses and run steps
+*  bda1763 Fixing typo
+*  78e8434 Adding fetch depth in checkout action
+*  e08d258 Inverting branches in git log command
+*  71e1bff Adding origin to git log command
+*  a7799b0 Updating workflow name
+*  28e868c Adding descriptive comment
+
+#### Bugfixes 🎉
+
+* List bugfixes or remove
+
+#### Improved 💜
+
+* List new improvements or remove
+
+#### Breaking Changes 🛠
+
+* List breaking changes or remove
+
+#### Other changes ➕
+
+* List other changes or remove
+
+#### Dependencies 📎
+
+* List dependencies or remove
+
+**Full Commits Changelog**: https://github.com/a8trejo/github-demo/commits/v2022.02.01.54fdf7e.rc
+
+
+
 ## [v2022.02.01.e8e1f21.rc](https://github.com/a8trejo/github-demo/releases/tag/v2022.02.01.e8e1f21.rc) - 2022-02-01 02:32:36
 
 ## Changelog - 2022.02.01
@@ -112,47 +150,6 @@
 * List dependencies or remove
 
 **Full Commits Changelog**: https://github.com/a8trejo/github-demo/commits/v2022.02.01.e8e1f21.rc
-
-
-
-## [v2022.01.28.fb25c0b.rc](https://github.com/a8trejo/github-demo/releases/tag/v2022.01.28.fb25c0b.rc) - 2022-01-28 21:31:31
-
-## Changelog - 2022.01.28
-
-#### New Features ✅
-
-*  8b40802 Adding git fetch to update container refs
-*  bd52400 Correcting file name
-*  7b3ae32 Fixing path error
-*  0557490 Fixing second syntax err
-*  afb465d Fixing typo
-*  6b8ffc5 Adding debugging commands
-*  fb25c0b Updating git log command to origin master
-*  d251a63 Adding git commands for debugging
-*  19ee150 Updating branch name in git log command
-*  44e477c Auto populating notes with commit msgs
-
-#### Bugfixes 🎉
-
-* List bugfixes or remove
-
-#### Improved 💜
-
-* List new improvements or remove
-
-#### Breaking Changes 🛠
-
-* List breaking changes or remove
-
-#### Other changes ➕
-
-* List other changes or remove
-
-#### Dependencies 📎
-
-* List dependencies or remove
-
-**Full Commits Changelog**: https://github.com/a8trejo/github-demo/commits/v2022.01.28.fb25c0b.rc
 
 
 

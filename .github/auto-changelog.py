@@ -17,12 +17,13 @@ configFile.close()
 branchType = GIT_BRANCH.split("/")[0].lower()
 featBranches = configJSON["branch_prefixes"]["features"]
 fixBranches = configJSON["branch_prefixes"]["fixes"]
-commitsMsgs = subprocess.getoutput("git log $(git branch --show-current)...origin/master --pretty=oneline --format='* %C(auto) %h %s'")
-print("Git Log...\n" + commitsMsgs)
+commitsMsgs = subprocess.getoutput("git log " + GIT_BRANCH + "...origin/master --pretty=oneline --format='* %C(auto) %h %s'")
 commitsLines = commitsMsgs.splitlines()
 commitsLines[-1] = commitsLines[-1] + "\n"
 fileContent = []
 fileVars = []
+
+print("Git Log Diff between " + GIT_BRANCH + " and origin/master...\n" + commitsMsgs)
 
 if branchType in featBranches:
     branchType = "features"

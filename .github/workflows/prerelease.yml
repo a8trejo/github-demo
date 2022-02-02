@@ -9,7 +9,11 @@ jobs:
     runs-on: "ubuntu-latest"
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Repo Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      
       - name: Set Env Variables
         run: |
           echo "PRERELEASE_VERSION=$(echo v`date +%Y.%m.%d`.`git rev-parse --short HEAD`.rc)" >> $GITHUB_ENV

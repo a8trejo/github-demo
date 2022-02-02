@@ -66,7 +66,7 @@ print("---------------------------------------------------------")
 print(releaseNotes)
 print("---------------------------------------------------------")
 
-print("Fiding Github Release with generated Tag....")
+print("Finding Github Release with generated Tag....")
 getReleaseURL = GITHUB_URL + "/repos/" + GITHUB_REPO_PATH + "/releases/tags/" + PRERELEASE_VERSION
 getReleaseHeaders = {
   'Accept': 'application/vnd.github.v3+json',
@@ -91,7 +91,10 @@ patchReleaseHeaders = {
 }
 
 pathReleaseResp = requests.request("PATCH", patchReleaseURL, headers=patchReleaseHeaders, data=patchReleasePayload)
-print("Path Request Status Code: " + str(pathReleaseResp.status_code))
+print("Patch Request Status Code: " + str(pathReleaseResp.status_code))
 if (pathReleaseResp.status_code == 200):
     print("GitHub Release Notes updated!!!")
+else:
+    print("Patch Release Notes failed!!!... manually open the release and edit its contents:\n")
 
+print("Release URL: https://github.com/" + GITHUB_REPO_PATH + "/releases/tag/" + PRERELEASE_VERSION)

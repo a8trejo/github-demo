@@ -4,19 +4,12 @@ import json
 import subprocess
 
 #Reading env variables from GitHub Workflow step
-# GITHUB_URL = os.environ['GITHUB_URL']
-# GITHUB_TOKEN = os.environ['GITHUB_TOKEN']
-# GIT_BRANCH = os.environ['GITHUB_BRANCH']
-# GITHUB_REPO_PATH = os.environ['GITHUB_REPO_PATH']
-# PRERELEASE_VERSION = os.environ['PRERELEASE_VERSION']
-# RELEASE_DATE = os.environ['RELEASE_DATE']
-
-GITHUB_URL = "https://api.github.com"
-GITHUB_TOKEN = "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"
-GIT_BRANCH = "feature/auto-notes"
-GITHUB_REPO_PATH = "a8trejo/github-demo"
+GITHUB_URL = os.environ['GITHUB_URL']
+GITHUB_TOKEN = os.environ['GITHUB_TOKEN']
+GIT_BRANCH = os.environ['GITHUB_BRANCH']
+GITHUB_REPO_PATH = os.environ['GITHUB_REPO_PATH']
 PRERELEASE_VERSION = os.environ['PRERELEASE_VERSION']
-RELEASE_DATE = "2022.02.04"
+RELEASE_DATE = os.environ['RELEASE_DATE']
 
 GITHUB_AUTH = 'Bearer ' + GITHUB_TOKEN
 GITHUB_GET_HEADER = {
@@ -51,20 +44,19 @@ print("---------------------------------------------------------")
 commitsMsgs = subprocess.getoutput("git log '" + latest_release_tag + "'...'" + PRERELEASE_VERSION + "' --pretty=oneline --format='* %C(auto) %h %s by (%an)'")
 commitsLines = commitsMsgs.splitlines()
 commitsLines[-1] = commitsLines[-1] + "\n"
-print("Git Log Diff between " + GIT_BRANCH + " and origin/master...\n" + commitsMsgs)
+print("Git Log Diff between " + latest_release_tag + " and " + PRERELEASE_VERSION + "...\n" + commitsMsgs)
 
 for commit in commitsLines:
-    commit_sha = commit.split(" ")[1]
-    print(commit_sha)
+    commit_sha = commit.split(" ")[2]
     commit_branches = subprocess.getoutput(
-        "git branch -r --contains " + commit_sha + " --sort=-committerdate"
+        "git branch -a --contains " + commit_sha + " --sort=-committerdate --format='%(refname:lstrip=-2)'"
     )
     commit_first_branch = commit_branches.splitlines()[0]
-    print(commit_first_branch)
     source_branches.append(commit_first_branch)
+    print("Commit " + commit_sha + "comes from branch: " + commit_first_branch)
 
 for branch in source_branches:
-    branch_type = branch.split("/")[1].lower()
+    branch_type = branch.split("/")[0].lower()
     if branch_type in featBranches:
         branch_type = "features"
     elif branch_type in fixBranches:
@@ -108,26 +100,26 @@ print("---------------------------------------------------------")
 print(releaseNotes)
 print("---------------------------------------------------------")
 
-# print("Finding Github Release with generated Tag....")
-# getReleaseURL = GITHUB_URL + "/repos/" + GITHUB_REPO_PATH + "/releases/tags/" + PRERELEASE_VERSION
-# getReleaseResp = requests.request("GET", getReleaseURL, headers=GITHUB_GET_HEADER)
-# print("Get Release Status Code: " + str(getReleaseResp.status_code))
-# releaseId = getReleaseResp.json().get("id")
-# print("GitHub Release ID: " + str(releaseId))
-# print("---------------------------------------------------------")
+print("Finding Github Release with generated Tag....")
+getReleaseURL = GITHUB_URL + "/repos/" + GITHUB_REPO_PATH + "/releases/tags/" + PRERELEASE_VERSION
+getReleaseResp = requests.request("GET", getReleaseURL, headers=GITHUB_GET_HEADER)
+print("Get Release Status Code: " + str(getReleaseResp.status_code))
+releaseId = getReleaseResp.json().get("id")
+print("GitHub Release ID: " + str(releaseId))
+print("---------------------------------------------------------")
 
-# print("Patching GitHub Release with Release Notes content")
-# patchReleaseURL = GITHUB_URL + "/repos/" + GITHUB_REPO_PATH + "/releases/" + str(releaseId)
-# patchReleasePayload = json.dumps({
-#   "tag_name": PRERELEASE_VERSION,
-#   "body": releaseNotes
-# })
+print("Patching GitHub Release with Release Notes content")
+patchReleaseURL = GITHUB_URL + "/repos/" + GITHUB_REPO_PATH + "/releases/" + str(releaseId)
+patchReleasePayload = json.dumps({
+  "tag_name": PRERELEASE_VERSION,
+  "body": releaseNotes
+})
 
-# pathReleaseResp = requests.request("PATCH", patchReleaseURL, headers=GITHUB_PAYLOAD_HEADER, data=patchReleasePayload)
-# print("Patch Request Status Code: " + str(pathReleaseResp.status_code))
-# if (pathReleaseResp.status_code == 200):
-#     print("GitHub Release Notes updated!!!")
-# else:
-#     print("Patch Release Notes failed!!!... manually open the release and edit its contents:\n")
+pathReleaseResp = requests.request("PATCH", patchReleaseURL, headers=GITHUB_PAYLOAD_HEADER, data=patchReleasePayload)
+print("Patch Request Status Code: " + str(pathReleaseResp.status_code))
+if (pathReleaseResp.status_code == 200):
+    print("GitHub Release Notes updated!!!")
+else:
+    print("Patch Release Notes failed!!!... manually open the release and edit its contents:\n")
 
-# print("Release URL: https://github.com/" + GITHUB_REPO_PATH + "/releases/tag/" + PRERELEASE_VERSION)
+print("Release URL: https://github.com/" + GITHUB_REPO_PATH + "/releases/tag/" + PRERELEASE_VERSION)

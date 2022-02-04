@@ -1,7 +1,7 @@
 {
     "branch_prefixes": {
-        "features": ["feature", "feat"],
-        "fixes": ["fix", "bug", "hot"]
+        "features": ["feature", "feat", "features"],
+        "fixes": ["fix", "bug", "hot", "bugfix", "hotfix"]
     },
     "file_title": "## Changelog - {RELEASE_DATE}",
     "sections": [

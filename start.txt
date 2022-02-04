@@ -15,3 +15,5 @@ curl --location --request PATCH https://api.github.com/repos/a8trejo/github-demo
 --header 'Authorization: token [PAT_TOKEN]' \
 --header 'Content-Type: application/json' \
 --data-raw "{\"tag_name\" : \"latest\",\"body\": \"$NOTES_TEMPLATE\"}"
+
+Fixing bug yeii!!!

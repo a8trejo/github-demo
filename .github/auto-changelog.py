@@ -40,7 +40,6 @@ print("Get Latest Release Status Code: " + str(get_latest_release_resp.status_co
 latest_release_tag = get_latest_release_resp.json().get("tag_name")
 print("GitHub Latest Release Tag: " + str(latest_release_tag))
 print("---------------------------------------------------------")
-
 commitsMsgs = subprocess.getoutput("git log '" + latest_release_tag + "'...'" + PRERELEASE_VERSION + "' --pretty=oneline --format='* %C(auto) %h %s by (%an)'")
 commitsLines = commitsMsgs.splitlines()
 commitsLines[-1] = commitsLines[-1] + "\n"

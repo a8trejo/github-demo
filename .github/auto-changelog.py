@@ -48,7 +48,7 @@ print("Git Log Diff between " + latest_release_tag + " and " + PRERELEASE_VERSIO
 for commit in commitsLines:
     commit_sha = commit.split(" ")[2]
     commit_branches = subprocess.getoutput(
-        "git branch -a --contains " + commit_sha + " --sort=-committerdate --format='%(refname:lstrip=-2)'"
+        "git branch -r --contains " + commit_sha + " --sort=committerdate --format='%(refname:lstrip=-2)'"
     )
     commit_first_branch = commit_branches.splitlines()[0]
     source_branches.append(commit_first_branch)

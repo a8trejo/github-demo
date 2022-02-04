@@ -8,32 +8,32 @@
         {
             "header": "#### New Features ✅",
             "type": "features",
-            "default": "* List new features or remove"
+            "default": "* N/A"
         },
         {
             "header": "#### Bugfixes 🎉",
             "type": "fixes",
-            "default": "* List bugfixes or remove"
+            "default": "* N/A"
         },
         {
             "header": "#### Improved 💜",
             "type": "other",
-            "default": "* List new improvements or remove"
+            "default": "* N/A"
         },
         {
             "header": "#### Breaking Changes 🛠",
             "type": "other",
-            "default": "* List breaking changes or remove"
+            "default": "* N/A"
         },
         {
             "header": "#### Other changes ➕",
             "type": "misc",
-            "default": "* List other changes or remove"
+            "default": "* N/A"
         },
         {
             "header": "#### Dependencies 📎",
             "type": "other",
-            "default": "* List dependencies or remove"
+            "default": "* N/A"
         }
     ],
     "footer_rows": [

@@ -1,4 +1,4 @@
-name: Auto Release Notes
+name: Auto Release Notes - Bash
 
 on:
   workflow_dispatch:

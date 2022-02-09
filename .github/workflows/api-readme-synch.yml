@@ -12,14 +12,14 @@ jobs:
 
     steps:   
       - name: Repo Checkout
-        uses: actions/checkout@v2.1.2
+        uses: actions/checkout@v2
       
       - name: Fetching OpenAPI spec
         run: |
           curl -o .github/swagger.json --location --request GET ${{ secrets.PARTNER_API_V2 }}
 
       - name: Update readme API Reference
-        uses: readmeio/github-readme-sync@v2
+        uses: readmeio/github-readme-sync@v2.1.2
         with:
           readme-oas-key: '${{ secrets.README_API_KEY }}:${{ secrets.README_API_SPEC_ID }}'
           oas-file-path: '.github/swagger.json' 

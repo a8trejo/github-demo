@@ -1,0 +1,2073 @@
+{
+  "components": {
+    "schema": {
+      "ApiSubscriberOrigin": {
+        "description": "Allowed values for api-provided subscriber origin.", 
+        "enum": [
+          "website", 
+          "social", 
+          "other"
+        ], 
+        "title": "ApiSubscriberOrigin", 
+        "type": "string"
+      }, 
+      "CreateMessageRequestSerializer": {
+        "description": "Message Request Serializer", 
+        "properties": {
+          "body": {
+            "description": "Message text. Before delivery, the shop name will be prepended, and links will be shortened.", 
+            "minLength": 1, 
+            "title": "example: \"Hello, World!\"", 
+            "type": "string"
+          }, 
+          "category": {
+            "allOf": [
+              {
+                "$ref": "#/components/schema/MessageCategory"
+              }
+            ], 
+            "default": "conversational", 
+            "description": "Intended subscription category of the Message Request.", 
+            "title": "example: \"promotional\""
+          }, 
+          "country": {
+            "default": "US", 
+            "description": "ISO Alpha-2 country code, used to parse `phone` more accurately.", 
+            "maxLength": 2, 
+            "minLength": 2, 
+            "title": "example: \"NZ\" for New Zealand", 
+            "type": "string"
+          }, 
+          "phone": {
+            "description": "Phone number of the recipient (Subscriber).", 
+            "title": "example: \"+15552223333\"", 
+            "type": "string"
+          }, 
+          "scheduled_at": {
+            "description": "ISO 8601 datetime to schedule delivery in the future. Default: `null` (deliver ASAP)", 
+            "format": "date-time", 
+            "title": "example: \"2023-01-01T09:30:00-0800\"", 
+            "type": "string"
+          }, 
+          "subscriber_id": {
+            "description": "ID of the recipient (Subscriber).", 
+            "title": "example: \"s_abc123xyz0q95\"", 
+            "type": "string"
+          }
+        }, 
+        "required": [
+          "body"
+        ], 
+        "title": "CreateMessageRequestSerializer", 
+        "type": "object"
+      }, 
+      "CreateSingleSubscriber": {
+        "description": "Create a single Subscriber.", 
+        "properties": {
+          "email": {
+            "title": "Email", 
+            "type": "string"
+          }, 
+          "keyword": {
+            "title": "Keyword", 
+            "type": "string"
+          }, 
+          "keyword_id": {
+            "title": "Keyword Id", 
+            "type": "string"
+          }, 
+          "origin": {
+            "$ref": "#/components/schema/ApiSubscriberOrigin"
+          }, 
+          "phone_number": {
+            "title": "Phone Number", 
+            "type": "string"
+          }, 
+          "properties": {
+            "format": "json-string", 
+            "title": "Properties", 
+            "type": "string"
+          }, 
+          "shopify_customer_id": {
+            "title": "Shopify Customer Id", 
+            "type": "integer"
+          }, 
+          "single_opt_in": {
+            "default": false, 
+            "title": "Single Opt In", 
+            "type": "boolean"
+          }, 
+          "tags": {
+            "items": {
+              "type": "string"
+            }, 
+            "title": "Tags", 
+            "type": "array"
+          }
+        }, 
+        "required": [
+          "phone_number", 
+          "origin"
+        ], 
+        "title": "CreateSingleSubscriber", 
+        "type": "object"
+      }, 
+      "CreateWebhookSubscriptionPayload": {
+        "description": "POST payload.", 
+        "properties": {
+          "callback_url": {
+            "description": "Destination URL for webhook deliveries (HTTPS only).", 
+            "format": "uri", 
+            "maxLength": 65536, 
+            "minLength": 1, 
+            "title": "example: \"https://www.example.com/webhook\"", 
+            "type": "string"
+          }, 
+          "event": {
+            "allOf": [
+              {
+                "$ref": "#/components/schema/EventType"
+              }
+            ], 
+            "description": "Webhook subscription `event` type.", 
+            "title": "example: \"shop.incoming_message\""
+          }, 
+          "headers": {
+            "additionalProperties": {
+              "type": "string"
+            }, 
+            "default": {}, 
+            "description": "Custom key:value pairs to be sent as headers in every callback.", 
+            "title": "example: {\"custom\": \"abc123\"}", 
+            "type": "object"
+          }
+        }, 
+        "required": [
+          "callback_url", 
+          "event"
+        ], 
+        "title": "CreateWebhookSubscriptionPayload", 
+        "type": "object"
+      }, 
+      "CustomSubscriberEventsRequestSerializer": {
+        "additionalProperties": false, 
+        "description": "The JSON schema relating to a custom subscriber event:\nhttps://www.notion.so/postscriptio/Custom-Subscriber-Events-b179fe150a2147d898366a1304d8d98f.", 
+        "properties": {
+          "occurred_at": {
+            "description": "The time when the event occurredAt defaults to the time it was received if not provided.", 
+            "example": "2021-03-30 14:38:29.0000", 
+            "format": "date-time", 
+            "title": "occurred_at", 
+            "type": "string"
+          }, 
+          "properties": {
+            "description": "The set of custom subscriber event attributes and values.", 
+            "examples": 
+              {
+                "test_event": true
+              }
+            , 
+            "title": "properties", 
+            "type": "object"
+          }, 
+          "subscriber_id": {
+            "description": "Deserialized ID of the recipient (Subscriber).", 
+            "example": 123, 
+            "title": "subscriber_id", 
+            "type": "integer"
+          }, 
+          "type": {
+            "description": "A case-sensitive field which creates a distinct \u201cnamespace\u201d of this Event. This can be a combination of alphanumeric characters, _ underscores, and : colons.", 
+            "example": "Product Ordered", 
+            "maxLength": 255, 
+            "minLength": 1, 
+            "pattern": "[a-zA-Z0-9_:]*$", 
+            "title": "type", 
+            "type": "string"
+          }
+        }, 
+        "required": [
+          "type", 
+          "subscriber_id"
+        ], 
+        "title": "CustomSubscriberEventsRequestSerializer", 
+        "type": "object"
+      }, 
+      "CustomSubscriberEventsResponse": {
+        "additionalProperties": false, 
+        "description": "The Custom Subscriber Event Response:\nhttps://www.notion.so/postscriptio/Custom-Subscriber-Events-b179fe150a2147d898366a1304d8d98f#eb6f7b0ad65f4f62bbe29963d313f168", 
+        "properties": {
+          "event_ids": {
+            "default": [], 
+            "description": "The Event Id which contains the UUID V1 of the event that is processing.", 
+            "example": "ecdc2d4e-9c5b-4d10-9b7a-e2fbb04422e4", 
+            "items": {
+              "type": "string"
+            }, 
+            "title": "event_ids", 
+            "type": "array"
+          }
+        }, 
+        "title": "CustomSubscriberEventsResponse", 
+        "type": "object"
+      }, 
+      "EmptyResponse": {
+        "properties": {}, 
+        "title": "EmptyResponse", 
+        "type": "object"
+      }, 
+      "EventType": {
+        "description": "An enumeration.", 
+        "enum": [
+          "shop.test", 
+          "shop.incoming_message"
+        ], 
+        "title": "EventType", 
+        "type": "string"
+      }, 
+      "GetCustomSubscriberEventResponse": {
+        "additionalProperties": false, 
+        "description": "The JSON schema relating to a custom subscriber event:\nhttps://www.notion.so/postscriptio/Custom-Subscriber-Events-b179fe150a2147d898366a1304d8d98f#e14189cf3aaf458c8b6f78b033ac9e34", 
+        "properties": {
+          "occurred_at": {
+            "description": "The time when the event occurredAt defaults to the time it was received if not provided.", 
+            "example": "2021-03-30 14:38:29.0000", 
+            "format": "date-time", 
+            "title": "occurred_at", 
+            "type": "string"
+          }, 
+          "properties": {
+            "description": "The set of custom subscriber event attributes and values.", 
+            "examples": 
+              {
+                "test_event": true
+              }
+            , 
+            "title": "properties", 
+            "type": "object"
+          }, 
+          "subscriber_id": {
+            "description": "External ID of the Subscriber.", 
+            "example": "s_abc123xyz0q95", 
+            "title": "Subscriber Id", 
+            "type": "string"
+          }, 
+          "type": {
+            "description": "A case-sensitive field which creates a distinct \u201cnamespace\u201d of this Event. This can be a combination of alphanumeric characters, _ underscores, and : colons.", 
+            "example": "Product Ordered", 
+            "maxLength": 255, 
+            "minLength": 1, 
+            "pattern": "[a-zA-Z0-9_:]*$", 
+            "title": "type", 
+            "type": "string"
+          }
+        }, 
+        "required": [
+          "type", 
+          "subscriber_id"
+        ], 
+        "title": "GetCustomSubscriberEventResponse", 
+        "type": "object"
+      }, 
+      "HealthCheckResponse": {
+        "description": "Health check response.", 
+        "properties": {
+          "cache": {
+            "title": "Cache", 
+            "type": "boolean"
+          }, 
+          "db": {
+            "title": "Db", 
+            "type": "boolean"
+          }, 
+          "env": {
+            "title": "Env", 
+            "type": "string"
+          }, 
+          "version": {
+            "title": "Version", 
+            "type": "string"
+          }
+        }, 
+        "required": [
+          "env", 
+          "version", 
+          "db", 
+          "cache"
+        ], 
+        "title": "HealthCheckResponse", 
+        "type": "object"
+      }, 
+      "KeywordSerializer": {
+        "description": "A Postscript Keyword.", 
+        "properties": {
+          "created_at": {
+            "format": "date-time", 
+            "title": "Created At", 
+            "type": "string"
+          }, 
+          "id": {
+            "title": "Id", 
+            "type": "string"
+          }, 
+          "keyword": {
+            "title": "Keyword", 
+            "type": "string"
+          }, 
+          "triggered_count": {
+            "title": "Triggered Count", 
+            "type": "integer"
+          }, 
+          "updated_at": {
+            "format": "date-time", 
+            "title": "Updated At", 
+            "type": "string"
+          }
+        }, 
+        "required": [
+          "id", 
+          "keyword", 
+          "triggered_count"
+        ], 
+        "title": "KeywordSerializer", 
+        "type": "object"
+      }, 
+      "KeywordsList": {
+        "description": "A list of Keywords.", 
+        "properties": {
+          "keywords": {
+            "items": {
+              "$ref": "#/components/schema/KeywordSerializer"
+            }, 
+            "title": "Keywords", 
+            "type": "array"
+          }
+        }, 
+        "required": [
+          "keywords"
+        ], 
+        "title": "KeywordsList", 
+        "type": "object"
+      }, 
+      "MeResponse": {
+        "description": "Information about the current authorization.", 
+        "properties": {
+          "resource_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              }, 
+              {
+                "type": "string"
+              }
+            ], 
+            "title": "Resource Id"
+          }, 
+          "resource_name": {
+            "title": "Resource Name", 
+            "type": "string"
+          }, 
+          "resource_type": {
+            "$ref": "#/components/schema/ResourceType"
+          }
+        }, 
+        "required": [
+          "resource_type", 
+          "resource_id", 
+          "resource_name"
+        ], 
+        "title": "MeResponse", 
+        "type": "object"
+      }, 
+      "MessageCategory": {
+        "description": "An enumeration.", 
+        "enum": [
+          "conversational", 
+          "transactional", 
+          "promotional"
+        ], 
+        "title": "MessageCategory", 
+        "type": "string"
+      }, 
+      "MessageRequestSerializer": {
+        "description": "Message Request Serializer", 
+        "properties": {
+          "body": {
+            "description": "Message text. Before delivery, the shop name will be prepended, and links will be shortened.", 
+            "title": "example: \"Hello, World!\"", 
+            "type": "string"
+          }, 
+          "category": {
+            "allOf": [
+              {
+                "$ref": "#/components/schema/MessageCategory"
+              }
+            ], 
+            "description": "Intended subscription category of the Message Request.", 
+            "title": "example: \"promotional\""
+          }, 
+          "created_at": {
+            "description": "ISO 8601 datetime (UTC) at which the Message Request was created.", 
+            "format": "date-time", 
+            "title": "example: \"2023-01-01T09:30:00-0800\"", 
+            "type": "string"
+          }, 
+          "id": {
+            "description": "ID of the Message Request.", 
+            "title": "example: \"amr_abc123xyz0q95\"", 
+            "type": "string"
+          }, 
+          "phone": {
+            "description": "phone number of the recipient (Subscriber).", 
+            "title": "example: \"+1 (555) 222-3333\"", 
+            "type": "string"
+          }, 
+          "scheduled_at": {
+            "description": "ISO 8601 datetime (UTC) at which Message Request is scheduled to deliver. `null` if ASAP.", 
+            "format": "date-time", 
+            "title": "example: \"2023-01-01T09:30:00-0800\"", 
+            "type": "string"
+          }, 
+          "sent_message": {
+            "allOf": [
+              {
+                "$ref": "#/components/schema/SentMessageSerializer"
+              }
+            ], 
+            "description": "nested Sent Message object. `null` until delivery is attempted.", 
+            "title": "Sent Message"
+          }, 
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schema/MessageStatus"
+              }
+            ], 
+            "default": "processing", 
+            "description": "Human-readable status summary for the Message Request.", 
+            "title": "example: \"delivered\""
+          }, 
+          "status_code": {
+            "allOf": [
+              {
+                "$ref": "#/components/schema/MessageStatusCodes"
+              }
+            ], 
+            "default": 1001, 
+            "description": "Postscript status code for the Message Request.", 
+            "title": "example: 3001"
+          }, 
+          "subscriber_id": {
+            "description": "ID of the recipient (Subscriber).", 
+            "title": "example: \"s_abc123xyz0q95\"", 
+            "type": "string"
+          }, 
+          "updated_at": {
+            "description": "ISO 8601 datetime (UTC) at which the Message Request was last updated.", 
+            "format": "date-time", 
+            "title": "example: \"2023-01-01T09:30:00-0800\"", 
+            "type": "string"
+          }
+        }, 
+        "title": "MessageRequestSerializer", 
+        "type": "object"
+      }, 
+      "MessageStatus": {
+        "description": "An enumeration.", 
+        "enum": [
+          "processing", 
+          "scheduled", 
+          "rescheduled: waking hours", 
+          "delayed: waking hours", 
+          "delivered", 
+          "failed", 
+          "failed: subscriber opt-out", 
+          "failed: insufficient credits", 
+          "failed: carrier issue"
+        ], 
+        "title": "MessageStatus", 
+        "type": "string"
+      }, 
+      "MessageStatusCodes": {
+        "description": "An enumeration.", 
+        "enum": [
+          1001, 
+          2001, 
+          2081, 
+          2008, 
+          3001, 
+          4001, 
+          4002, 
+          4003, 
+          4004, 
+          4051, 
+          4901, 
+          4902, 
+          4951, 
+          4907
+        ], 
+        "title": "MessageStatusCodes", 
+        "type": "integer"
+      }, 
+      "OkResponse": {
+        "properties": {
+          "message": {
+            "default": "OK", 
+            "enum": [
+              "OK"
+            ], 
+            "title": "Message", 
+            "type": "string"
+          }
+        }, 
+        "title": "OkResponse", 
+        "type": "object"
+      }, 
+      "PageInfo": {
+        "description": "Create page info for a specific query.\n\nNot included by default because of the performance implications on large sets.", 
+        "properties": {
+          "page": {
+            "title": "Page", 
+            "type": "integer"
+          }, 
+          "total_pages": {
+            "title": "Total Pages", 
+            "type": "integer"
+          }
+        }, 
+        "required": [
+          "page", 
+          "total_pages"
+        ], 
+        "title": "PageInfo", 
+        "type": "object"
+      }, 
+      "PendingSubscriberList": {
+        "description": "A list of Pending Subscribers.", 
+        "properties": {
+          "page_info": {
+            "$ref": "#/components/schema/PageInfo"
+          }, 
+          "pending_subscribers": {
+            "items": {
+              "$ref": "#/components/schema/PendingSubscriberSerializer"
+            }, 
+            "title": "Pending Subscribers", 
+            "type": "array"
+          }
+        }, 
+        "required": [
+          "pending_subscribers"
+        ], 
+        "title": "PendingSubscriberList", 
+        "type": "object"
+      }, 
+      "PendingSubscriberSearch": {
+        "properties": {
+          "created_at__eq": {
+            "format": "date-time", 
+            "required": false, 
+            "title": "Created At is Equal To", 
+            "type": "string"
+          }, 
+          "created_at__gt": {
+            "format": "date-time", 
+            "required": false, 
+            "title": "Created At is Greater Than", 
+            "type": "string"
+          }, 
+          "created_at__gte": {
+            "format": "date-time", 
+            "required": false, 
+            "title": "Created At is Greater Than or Equal To", 
+            "type": "string"
+          }, 
+          "created_at__lt": {
+            "format": "date-time", 
+            "required": false, 
+            "title": "Created At is Less Than", 
+            "type": "string"
+          }, 
+          "created_at__lte": {
+            "format": "date-time", 
+            "required": false, 
+            "title": "Created At is Less Than or Equal To", 
+            "type": "string"
+          }, 
+          "page": {
+            "default": 1, 
+            "title": "Page", 
+            "type": "integer"
+          }, 
+          "phone_number__eq": {
+            "required": false, 
+            "title": "Phone Number is Equal To", 
+            "type": "integer"
+          }, 
+          "phone_number__gt": {
+            "required": false, 
+            "title": "Phone Number is Greater Than", 
+            "type": "integer"
+          }, 
+          "phone_number__gte": {
+            "required": false, 
+            "title": "Phone Number is Greater Than or Equal To", 
+            "type": "integer"
+          }, 
+          "phone_number__in": {
+            "items": {}, 
+            "required": false, 
+            "title": "Phone Number is In", 
+            "type": "array"
+          }, 
+          "phone_number__lt": {
+            "required": false, 
+            "title": "Phone Number is Less Than", 
+            "type": "integer"
+          }, 
+          "phone_number__lte": {
+            "required": false, 
+            "title": "Phone Number is Less Than or Equal To", 
+            "type": "integer"
+          }, 
+          "shopify_customer_id__contains": {
+            "required": false, 
+            "title": "Shopify Customer Id Contains", 
+            "type": "string"
+          }, 
+          "shopify_customer_id__eq": {
+            "required": false, 
+            "title": "Shopify Customer Id is Equal To", 
+            "type": "string"
+          }, 
+          "shopify_customer_id__in": {
+            "items": {}, 
+            "required": false, 
+            "title": "Shopify Customer Id is In", 
+            "type": "array"
+          }, 
+          "sort": {
+            "description": "In `{field}__asc` or `{field}__desc` format. Valid fields:\n\n`created_at`, `updated_at`, `phone_number`, `shopify_customer_id`", 
+            "title": "Sorting Order", 
+            "type": "string"
+          }, 
+          "updated_at__eq": {
+            "format": "date-time", 
+            "required": false, 
+            "title": "Updated At is Equal To", 
+            "type": "string"
+          }, 
+          "updated_at__gt": {
+            "format": "date-time", 
+            "required": false, 
+            "title": "Updated At is Greater Than", 
+            "type": "string"
+          }, 
+          "updated_at__gte": {
+            "format": "date-time", 
+            "required": false, 
+            "title": "Updated At is Greater Than or Equal To", 
+            "type": "string"
+          }, 
+          "updated_at__lt": {
+            "format": "date-time", 
+            "required": false, 
+            "title": "Updated At is Less Than", 
+            "type": "string"
+          }, 
+          "updated_at__lte": {
+            "format": "date-time", 
+            "required": false, 
+            "title": "Updated At is Less Than or Equal To", 
+            "type": "string"
+          }
+        }, 
+        "title": "PendingSubscriberSearch", 
+        "type": "object"
+      }, 
+      "PendingSubscriberSerializer": {
+        "description": "A Postscript Subscriber.", 
+        "properties": {
+          "created_at": {
+            "format": "date-time", 
+            "title": "Created At", 
+            "type": "string"
+          }, 
+          "id": {
+            "title": "Id", 
+            "type": "string"
+          }, 
+          "phone_number": {
+            "title": "Phone Number", 
+            "type": "string"
+          }, 
+          "shopify_customer_id": {
+            "title": "Shopify Customer Id", 
+            "type": "integer"
+          }
+        }, 
+        "required": [
+          "id", 
+          "phone_number"
+        ], 
+        "title": "PendingSubscriberSerializer", 
+        "type": "object"
+      }, 
+      "ResourceType": {
+        "description": "An enumeration.", 
+        "enum": [
+          "shop", 
+          "partner"
+        ], 
+        "title": "ResourceType", 
+        "type": "string"
+      }, 
+      "SentMessageSerializer": {
+        "description": "Sent Message Serializer", 
+        "properties": {
+          "body": {
+            "description": "Sent Message text as delivered.", 
+            "title": "example: \"Postscript: Hello, World!\"", 
+            "type": "string"
+          }, 
+          "created_at": {
+            "description": "ISO 8601 datetime (UTC) at which delivery was attempted.", 
+            "format": "date-time", 
+            "title": "example: \"2023-01-01T09:30:00-0800\"", 
+            "type": "string"
+          }, 
+          "credits_used": {
+            "description": "Credits used.", 
+            "title": "example: 1", 
+            "type": "integer"
+          }, 
+          "id": {
+            "description": "ID of the Sent Message.", 
+            "title": "example: \"sm_abc123xyz0q95\"", 
+            "type": "string"
+          }, 
+          "phone": {
+            "description": "Phone number of the recipient (Subscriber).", 
+            "title": "example: \"+15552223333\"", 
+            "type": "string"
+          }, 
+          "shop_id": {
+            "description": "ID of the Shop.", 
+            "title": "example: \"shop_abc123xyz0q95\"", 
+            "type": "string"
+          }, 
+          "subscriber_id": {
+            "description": "ID of the recipient (Subscriber).", 
+            "title": "example: \"s_abc123xyz0q95\"", 
+            "type": "string"
+          }
+        }, 
+        "title": "SentMessageSerializer", 
+        "type": "object"
+      }, 
+      "SubscriberList": {
+        "description": "A list of Subscribers.", 
+        "properties": {
+          "page_info": {
+            "$ref": "#/components/schema/PageInfo"
+          }, 
+          "subscribers": {
+            "items": {
+              "$ref": "#/components/schema/SubscriberSerializer"
+            }, 
+            "title": "Subscribers", 
+            "type": "array"
+          }
+        }, 
+        "required": [
+          "subscribers"
+        ], 
+        "title": "SubscriberList", 
+        "type": "object"
+      }, 
+      "SubscriberResponse": {
+        "description": "Generic response for Subscriber or PendingSubscriber creation.", 
+        "properties": {
+          "created_at": {
+            "format": "date-time", 
+            "title": "Created At", 
+            "type": "string"
+          }, 
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              }, 
+              {
+                "type": "string"
+              }
+            ], 
+            "title": "Id"
+          }, 
+          "phone_number": {
+            "title": "Phone Number", 
+            "type": "string"
+          }, 
+          "resource": {
+            "title": "Resource", 
+            "type": "string"
+          }, 
+          "shopify_customer_id": {
+            "title": "Shopify Customer Id", 
+            "type": "integer"
+          }
+        }, 
+        "required": [
+          "id", 
+          "phone_number", 
+          "resource"
+        ], 
+        "title": "SubscriberResponse", 
+        "type": "object"
+      }, 
+      "SubscriberSearch": {
+        "properties": {
+          "created_at__eq": {
+            "format": "date-time", 
+            "required": false, 
+            "title": "Created At is Equal To", 
+            "type": "string"
+          }, 
+          "created_at__gt": {
+            "format": "date-time", 
+            "required": false, 
+            "title": "Created At is Greater Than", 
+            "type": "string"
+          }, 
+          "created_at__gte": {
+            "format": "date-time", 
+            "required": false, 
+            "title": "Created At is Greater Than or Equal To", 
+            "type": "string"
+          }, 
+          "created_at__lt": {
+            "format": "date-time", 
+            "required": false, 
+            "title": "Created At is Less Than", 
+            "type": "string"
+          }, 
+          "created_at__lte": {
+            "format": "date-time", 
+            "required": false, 
+            "title": "Created At is Less Than or Equal To", 
+            "type": "string"
+          }, 
+          "page": {
+            "default": 1, 
+            "title": "Page", 
+            "type": "integer"
+          }, 
+          "phone_number__contains": {
+            "required": false, 
+            "title": "Phone Number Contains", 
+            "type": "string"
+          }, 
+          "phone_number__eq": {
+            "required": false, 
+            "title": "Phone Number is Equal To", 
+            "type": "string"
+          }, 
+          "phone_number__in": {
+            "items": {}, 
+            "required": false, 
+            "title": "Phone Number is In", 
+            "type": "array"
+          }, 
+          "shopify_customer_id__contains": {
+            "required": false, 
+            "title": "Shopify Customer Id Contains", 
+            "type": "string"
+          }, 
+          "shopify_customer_id__eq": {
+            "required": false, 
+            "title": "Shopify Customer Id is Equal To", 
+            "type": "string"
+          }, 
+          "shopify_customer_id__in": {
+            "items": {}, 
+            "required": false, 
+            "title": "Shopify Customer Id is In", 
+            "type": "array"
+          }, 
+          "sort": {
+            "description": "In `{field}__asc` or `{field}__desc` format. Valid fields:\n\n`created_at`, `updated_at`, `phone_number`, `shopify_customer_id`", 
+            "title": "Sorting Order", 
+            "type": "string"
+          }, 
+          "updated_at__eq": {
+            "format": "date-time", 
+            "required": false, 
+            "title": "Updated At is Equal To", 
+            "type": "string"
+          }, 
+          "updated_at__gt": {
+            "format": "date-time", 
+            "required": false, 
+            "title": "Updated At is Greater Than", 
+            "type": "string"
+          }, 
+          "updated_at__gte": {
+            "format": "date-time", 
+            "required": false, 
+            "title": "Updated At is Greater Than or Equal To", 
+            "type": "string"
+          }, 
+          "updated_at__lt": {
+            "format": "date-time", 
+            "required": false, 
+            "title": "Updated At is Less Than", 
+            "type": "string"
+          }, 
+          "updated_at__lte": {
+            "format": "date-time", 
+            "required": false, 
+            "title": "Updated At is Less Than or Equal To", 
+            "type": "string"
+          }
+        }, 
+        "title": "SubscriberSearch", 
+        "type": "object"
+      }, 
+      "SubscriberSerializer": {
+        "description": "A Postscript Subscriber.", 
+        "properties": {
+          "created_at": {
+            "format": "date-time", 
+            "title": "Created At", 
+            "type": "string"
+          }, 
+          "data": {
+            "default": {}, 
+            "title": "Data", 
+            "type": "object"
+          }, 
+          "email": {
+            "title": "Email", 
+            "type": "string"
+          }, 
+          "id": {
+            "title": "Id", 
+            "type": "string"
+          }, 
+          "phone_number": {
+            "title": "Phone Number", 
+            "type": "string"
+          }, 
+          "properties": {
+            "format": "json-string", 
+            "title": "Properties", 
+            "type": "string"
+          }, 
+          "shopify_customer_id": {
+            "title": "Shopify Customer Id", 
+            "type": "integer"
+          }, 
+          "tags": {
+            "default": [], 
+            "items": {
+              "type": "string"
+            }, 
+            "title": "Tags", 
+            "type": "array"
+          }, 
+          "updated_at": {
+            "format": "date-time", 
+            "title": "Updated At", 
+            "type": "string"
+          }
+        }, 
+        "required": [
+          "id", 
+          "phone_number"
+        ], 
+        "title": "SubscriberSerializer", 
+        "type": "object"
+      }, 
+      "TestShopWebhookPayload": {
+        "description": "Incoming payload for a test Shop webhook.", 
+        "properties": {
+          "event": {
+            "allOf": [
+              {
+                "$ref": "#/components/schema/EventType"
+              }
+            ], 
+            "description": "Webhook subscription `event` type.", 
+            "title": "example: \"shop.incoming_message\""
+          }
+        }, 
+        "required": [
+          "event"
+        ], 
+        "title": "TestShopWebhookPayload", 
+        "type": "object"
+      }, 
+      "UpdateSingleSubscriber": {
+        "description": "Updates a single Subscriber (PATCH).", 
+        "properties": {
+          "properties": {
+            "format": "json-string", 
+            "title": "Properties", 
+            "type": "string"
+          }, 
+          "tags": {
+            "items": {
+              "type": "string"
+            }, 
+            "title": "Tags", 
+            "type": "array"
+          }
+        }, 
+        "title": "UpdateSingleSubscriber", 
+        "type": "object"
+      }, 
+      "UpdateWebhookSubscriptionPayload": {
+        "description": "PUT/PATCH payload.", 
+        "properties": {
+          "callback_url": {
+            "description": "Destination URL for webhook deliveries (HTTPS only).", 
+            "format": "uri", 
+            "maxLength": 65536, 
+            "minLength": 1, 
+            "title": "example: \"https://www.example.com/webhook\"", 
+            "type": "string"
+          }, 
+          "headers": {
+            "additionalProperties": {
+              "type": "string"
+            }, 
+            "default": {}, 
+            "description": "Custom key:value pairs to be sent as headers in every callback.", 
+            "title": "example: {\"custom\": \"abc123\"}", 
+            "type": "object"
+          }
+        }, 
+        "title": "UpdateWebhookSubscriptionPayload", 
+        "type": "object"
+      }, 
+      "ValidationError": {
+        "description": "Validation error model.\n\nThis captures the errors pydantic generates.", 
+        "properties": {
+          "ctx": {
+            "title": "Ctx", 
+            "type": "object"
+          }, 
+          "log": {
+            "items": {
+              "type": "string"
+            }, 
+            "title": "Log", 
+            "type": "array"
+          }, 
+          "msg": {
+            "title": "Msg", 
+            "type": "string"
+          }, 
+          "type": {
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "required": [
+          "log", 
+          "msg", 
+          "type", 
+          "ctx"
+        ], 
+        "title": "ValidationError", 
+        "type": "object"
+      }, 
+      "ValidationErrors": {
+        "description": "List of validation errors.", 
+        "properties": {
+          "errors": {
+            "items": {
+              "$ref": "#/components/schema/ValidationError"
+            }, 
+            "title": "Errors", 
+            "type": "array"
+          }
+        }, 
+        "required": [
+          "errors"
+        ], 
+        "title": "ValidationErrors", 
+        "type": "object"
+      }, 
+      "WebhookSigningTokenResponse": {
+        "description": "Webhook Signing Token response.", 
+        "properties": {
+          "token": {
+            "description": "Webhook validation token.", 
+            "title": "Token", 
+            "type": "string"
+          }
+        }, 
+        "required": [
+          "token"
+        ], 
+        "title": "WebhookSigningTokenResponse", 
+        "type": "object"
+      }, 
+      "WebhookSubscriptionListResponse": {
+        "description": "List response.", 
+        "properties": {
+          "webhook_subscriptions": {
+            "items": {
+              "$ref": "#/components/schema/WebhookSubscriptionResponse"
+            }, 
+            "title": "Webhook Subscriptions", 
+            "type": "array"
+          }
+        }, 
+        "required": [
+          "webhook_subscriptions"
+        ], 
+        "title": "WebhookSubscriptionListResponse", 
+        "type": "object"
+      }, 
+      "WebhookSubscriptionResponse": {
+        "description": "Fetch response.", 
+        "properties": {
+          "callback_url": {
+            "description": "Destination URL for webhook deliveries (HTTPS only).", 
+            "format": "uri", 
+            "maxLength": 65536, 
+            "minLength": 1, 
+            "title": "example: \"https://www.example.com/webhook\"", 
+            "type": "string"
+          }, 
+          "created_at": {
+            "description": "ISO 8601 datetime (UTC) at which the Webhook Subscription was created.", 
+            "format": "date-time", 
+            "title": "example: \"2023-01-01T09:30:00-0800\"", 
+            "type": "string"
+          }, 
+          "event": {
+            "allOf": [
+              {
+                "$ref": "#/components/schema/EventType"
+              }
+            ], 
+            "description": "Webhook subscription `event` type.", 
+            "title": "example: \"shop.incoming_message\""
+          }, 
+          "headers": {
+            "additionalProperties": {
+              "type": "string"
+            }, 
+            "default": {}, 
+            "description": "Custom key:value pairs to be sent as headers in every callback.", 
+            "title": "example: {\"custom\": \"abc123\"}", 
+            "type": "object"
+          }, 
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              }, 
+              {
+                "format": "uuid", 
+                "type": "string"
+              }
+            ], 
+            "description": "ID of the Webhook Subscription.", 
+            "title": "UUID"
+          }, 
+          "updated_at": {
+            "description": "ISO 8601 datetime (UTC) at which the Webhook Subscription was last updated.", 
+            "format": "date-time", 
+            "title": "example: \"2023-01-01T09:30:00-0800\"", 
+            "type": "string"
+          }, 
+          "webhook_id": {
+            "description": "Hidden.", 
+            "format": "uuid", 
+            "title": "excluded", 
+            "type": "string"
+          }
+        }, 
+        "required": [
+          "webhook_id"
+        ], 
+        "title": "WebhookSubscriptionResponse", 
+        "type": "object"
+      }
+    }
+  }, 
+  "info": {
+    "description": "**IMPORTANT: The v2 Partner API is currently in beta. API routes,\nsignatures, and behavior may change in the future.**\n\n**Integration Partners:** Request Partner API Credentials\nfrom Postscript's [Partners Page](https://postscript.io/partners)\n\n**Postscript Shops:** Generate API Keys from the app's\n[API Settings Page](https://app.postscript.io/account/api)", 
+    "title": "PartnerAPIv2", 
+    "version": "3.0.0"
+  }, 
+  "openapi": "3.0.0", 
+  "paths": {
+    "/api/v2/events": {
+      "post": {
+        "description": "Creates a Custom Subscriber Event.\n\nRequired fields:\n* `subscriber` -  The subscribers external id.\n* `type` -  case-sensitive field which creates a distinct \u201cnamespace\u201d of this Event.\nOptional fields:\n* `properties` - dictionary of custom subscriber events\n* `occurred_at` - when this event occurred.", 
+        "parameters": [], 
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/CustomSubscriberEventsRequestSerializer"
+              }
+            }
+          }, 
+          "description": "CustomSubscriberEventsRequestSerializer", 
+          "required": true
+        }, 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/CustomSubscriberEventsResponse"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "Create Custom Subscriber Event", 
+        "tags": [
+          "Custom Subscriber Events"
+        ]
+      }
+    }, 
+    "/api/v2/events/{event_id}": {
+      "get": {
+        "description": "Returns a Custom Subscriber Event based on an event_id.", 
+        "parameters": [], 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/GetCustomSubscriberEventResponse"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "Get Custom Subscriber Event", 
+        "tags": [
+          "Custom Subscriber Events"
+        ]
+      }
+    }, 
+    "/api/v2/healthz": {
+      "get": {
+        "description": "Health check for the V2 Partner API.", 
+        "parameters": [], 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/HealthCheckResponse"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "Health Check", 
+        "tags": [
+          "Authentication"
+        ]
+      }
+    }, 
+    "/api/v2/keywords": {
+      "get": {
+        "description": "Get a list of all active keywords for a shop.", 
+        "parameters": [], 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/KeywordsList"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "Fetch Keywords List", 
+        "tags": [
+          "Keywords"
+        ]
+      }
+    }, 
+    "/api/v2/keywords/{keyword_id}": {
+      "get": {
+        "description": "Get a single Keyword by its encrypted ID.", 
+        "parameters": [
+          {
+            "in": "path", 
+            "name": "keyword_id", 
+            "schema": {
+              "type": "string"
+            }
+          }
+        ], 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/KeywordSerializer"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "Fetch Single Keyword", 
+        "tags": [
+          "Keywords"
+        ]
+      }
+    }, 
+    "/api/v2/me": {
+      "get": {
+        "description": "Retrieve information about your current authorization.\n\n### Shops\n\nAs a shop, you 'll use your **Private API Key** for authenticating\nAPI calls. Keys can be generated in the app, from your shop's\n[API Settings Page](https://app.postscript.io/account/api).\n```\nAuthorization: Bearer sk_XXXXX\n```\n\n### Partners\n\nAs a partner, you must always use your **Private API Key** to\nauthenticate API calls. Partner API keys can be requested from\nPostscript's [Partners Page](https://postscript.io/partners).\n\nCertain actions, like creating API Triggers, must be performed\nwith only Partner authorization, and must exclude Shop credentials.\n```\nAuthorization: Bearer sk_partner_XXXXX\n```\n\nIf you're making requests *on behalf of* a Shop (such as fetching\nor messaging Subscribers for a shop), you'll need to provide\nyour **Private API Key** as well as an `X-Postscript-Shop-Token`\nheader with a shop's Private API Key (obtained from the shop).\n\nShops can generate Private API keys to share from their\n[API Settings Page](https://app.postscript.io/account/api).\n```\nAuthorization: Bearer sk_partner_XXXXX\nX-Postscript-Shop-Token: sk_XXXXX\n```", 
+        "parameters": [], 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/MeResponse"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "Verify Identity", 
+        "tags": [
+          "Authentication"
+        ]
+      }
+    }, 
+    "/api/v2/message_requests": {
+      "post": {
+        "description": "Send a message to a Subscriber.\n\nRequest payloads **must** include:\n* `subscriber_id` _OR_ `phone_number` - ID _OR_ phone number of a recipient (Subscriber).\n* `body` - Message text. Before delivery, the shop name will be prepended, and links will be shortened.\n\nRequest payloads can _optionally_ include:\n* `country` - ISO Alpha-2 country code, used to parse `phone` more accurately.\n* `category` - Intended subscription category of the message (\"conversational\", \"transactional\", or \"promotional\"). **Default:** \"conversational\"\n* `scheduled_at` - ISO 8601 datetime to schedule delivery in the future. **Default:** `null` (deliver ASAP)\n\n**NOTE:** excluding \"transactional\" messages, `scheduled_at` may be modified automatically, to account for waking hours.\n\nMessage Requests are processed asynchronously and will return a `202 Accepted` with a Message Request response if accepted.\nTo check the status of a Message Request, it is possible to poll \"Fetch Message Request\" for updates.", 
+        "parameters": [], 
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/CreateMessageRequestSerializer"
+              }
+            }
+          }, 
+          "description": "CreateMessageRequestSerializer", 
+          "required": true
+        }, 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/MessageRequestSerializer"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "Create Message Request", 
+        "tags": [
+          "Message Requests"
+        ]
+      }
+    }, 
+    "/api/v2/message_requests/{external_id}": {
+      "get": {
+        "description": "Get a single Message Request by its ID.", 
+        "parameters": [
+          {
+            "in": "path", 
+            "name": "external_id", 
+            "schema": {
+              "type": "string"
+            }
+          }
+        ], 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/MessageRequestSerializer"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "Fetch Message Request", 
+        "tags": [
+          "Message Requests"
+        ]
+      }
+    }, 
+    "/api/v2/sent_messages/{external_id}": {
+      "get": {
+        "description": "Get a single Sent Message by its ID.", 
+        "parameters": [
+          {
+            "in": "path", 
+            "name": "external_id", 
+            "schema": {
+              "type": "string"
+            }
+          }
+        ], 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/SentMessageSerializer"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "Fetch Sent Message", 
+        "tags": [
+          "Sent Messages"
+        ]
+      }
+    }, 
+    "/api/v2/subscribers": {
+      "get": {
+        "description": "Get a list of all Subscribers for a shop.", 
+        "parameters": [
+          {
+            "in": "query", 
+            "name": "SubscriberSearch", 
+            "schema": {
+              "$ref": "#/components/schema/SubscriberSearch"
+            }
+          }
+        ], 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/SubscriberList"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "Fetch Subscribers List", 
+        "tags": [
+          "Subscribers"
+        ]
+      }, 
+      "post": {
+        "description": "Create a single subscriber.\nRequired fields:\n* `phone_number` - a phone number for a subscriber.\n* `origin` - indicates how subscriber collection occurred (`\"website\"`, `\"social\"`, or `\"other\"`).\nOptional fields:\n* `shopify_customer_id` - a reference to the Shopify Customer record for the subscriber\n* `email` - an email address, used to look up a Shopify Customer record if `shopify_customer_id` isn't provided.\n* `tags` - an Array of string tag values that can be used in User segmentation or filtering.\n* `keyword` - a string keyword, matching an active keyword for the Shop. Exclude if `keyword_id` is provided.\n* `keyword_id` - the encrypted ID of a keyword, matching an active keyword for the Shop. Exclude if `keyword` is provided.\n* `single_opt_in` - a boolean indicating if subscribers should be opted-in without confirmation. Must be enabled by the Postscript team.", 
+        "parameters": [], 
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/CreateSingleSubscriber"
+              }
+            }
+          }, 
+          "description": "CreateSingleSubscriber", 
+          "required": true
+        }, 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/SubscriberResponse"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "Create Subscriber", 
+        "tags": [
+          "Subscribers"
+        ]
+      }
+    }, 
+    "/api/v2/subscribers/pending": {
+      "get": {
+        "description": "Get a list of all Subscribers for a shop.", 
+        "parameters": [
+          {
+            "in": "query", 
+            "name": "PendingSubscriberSearch", 
+            "schema": {
+              "$ref": "#/components/schema/PendingSubscriberSearch"
+            }
+          }
+        ], 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/PendingSubscriberList"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "Fetch Pending Subscribers List", 
+        "tags": [
+          "Subscribers"
+        ]
+      }
+    }, 
+    "/api/v2/subscribers/pending/{external_id}": {
+      "get": {
+        "description": "Get a single Pending Subscriber by its ID.", 
+        "parameters": [
+          {
+            "in": "path", 
+            "name": "external_id", 
+            "schema": {
+              "type": "string"
+            }
+          }
+        ], 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/PendingSubscriberSerializer"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "Fetch Pending Subscriber", 
+        "tags": [
+          "Subscribers"
+        ]
+      }
+    }, 
+    "/api/v2/subscribers/{external_id}": {
+      "get": {
+        "description": "Get a single Subscriber by its ID.", 
+        "parameters": [
+          {
+            "in": "path", 
+            "name": "external_id", 
+            "schema": {
+              "type": "string"
+            }
+          }
+        ], 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/SubscriberSerializer"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "Fetch Subscriber", 
+        "tags": [
+          "Subscribers"
+        ]
+      }, 
+      "patch": {
+        "description": "Updates a subscriber.\nRequired fields:\n* `tags` - the tags in the body as an array containing the keys you would like to add to the subscriber e.g.\n```\n    {\n        \"tags\": [\"tag1\", \"tag2\"]\n    }\n```\nOptional fields:\n* `properties` - a key:value mapping of custom properties.\n\nCustom properties values can be: strings, integers, string arrays, or ISO 8601 date(time):\n```\n    \"properties\": {\n        \"has_purchased\": True,\n        \"days_since_purchase\": 5,\n        \"categories\": [\"Beauty\", \"Home Goods\"],\n        \"birthday\": \"1991-01-01\"\n    }\n```\nSubscribers can have up to 20 custom properties. If `properties` is unset or null, it will be ignored.", 
+        "parameters": [
+          {
+            "in": "path", 
+            "name": "external_id", 
+            "schema": {
+              "type": "string"
+            }
+          }
+        ], 
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/UpdateSingleSubscriber"
+              }
+            }
+          }, 
+          "description": "UpdateSingleSubscriber", 
+          "required": true
+        }, 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/SubscriberSerializer"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "Patch Subscriber", 
+        "tags": [
+          "Subscribers"
+        ]
+      }, 
+      "put": {
+        "description": "Updates a single subscriber. This replaces values or creates the resource if not present.\n\nRequired fields:\n* `phone_number` - a phone number for a subscriber.\n* `origin` - indicates how subscriber collection occurred (`\"website\"`, `\"social\"`, or `\"other\"`).\nOptional fields:\n* `shopify_customer_id` - a reference to the Shopify Customer record for the subscriber\n* `email` - an email address, used to look up a Shopify Customer record if `shopify_customer_id` isn't provided.\n* `tags` - an Array of string tag values that can be used in User segmentation or filtering.\n* `keyword` - a string keyword, matching an active keyword for the Shop. Exclude if `keyword_id` is provided.\n* `keyword_id` - the encrypted ID of a keyword, matching an active keyword for the Shop. Exclude if `keyword` is provided.\n* `single_opt_in` - a boolean indicating if subscribers should be opted-in without confirmation. Must be enabled by the Postscript team.\n* `properties` - dictionary of custom subscriber metadata", 
+        "parameters": [
+          {
+            "in": "path", 
+            "name": "external_id", 
+            "schema": {
+              "type": "string"
+            }
+          }
+        ], 
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/CreateSingleSubscriber"
+              }
+            }
+          }, 
+          "description": "CreateSingleSubscriber", 
+          "required": true
+        }, 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/SubscriberResponse"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "Put Subscriber", 
+        "tags": [
+          "Subscribers"
+        ]
+      }
+    }, 
+    "/api/v2/webhooks": {
+      "get": {
+        "description": "List all Webhook Subscriptions.", 
+        "parameters": [], 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/WebhookSubscriptionListResponse"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "List Webhook Subscriptions", 
+        "tags": [
+          "Webhooks"
+        ]
+      }, 
+      "post": {
+        "description": "Create a new Webhook Subscription.\n\nRequest payloads **must** include:\n* `event` - Webhook subscription `event` type.\n* `callback_url` - Destination URL for webhook deliveries (HTTPS only).\n\nRequest payloads can _optionally_ include:\n* `headers` - Custom key:value pairs to be sent as headers in every callback.", 
+        "parameters": [], 
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/CreateWebhookSubscriptionPayload"
+              }
+            }
+          }, 
+          "description": "CreateWebhookSubscriptionPayload", 
+          "required": true
+        }, 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/WebhookSubscriptionResponse"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "Create Webhook Subscription", 
+        "tags": [
+          "Webhooks"
+        ]
+      }
+    }, 
+    "/api/v2/webhooks/test": {
+      "post": {
+        "description": "Send a mock `\"shop\"` event webhook to test the configured `callback_url` of\na Webhook Subscription.\n\nRequests are processed asynchronously and will return a `202 Accepted` response.\nPayloads sent to the configured callback URL will include mocked data.", 
+        "parameters": [], 
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/TestShopWebhookPayload"
+              }
+            }
+          }, 
+          "description": "TestShopWebhookPayload", 
+          "required": true
+        }, 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/OkResponse"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "Test Shop Webhook", 
+        "tags": [
+          "Webhooks"
+        ]
+      }
+    }, 
+    "/api/v2/webhooks/token": {
+      "get": {
+        "description": "Fetch your webhook signing token.\n\nTokens fixed MD5 hashes and can be compared to the `Postscript-Signature`\nrequest header of a webhook to validate its authenticity.", 
+        "parameters": [], 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/WebhookSigningTokenResponse"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "Webhook Signing Token", 
+        "tags": [
+          "Webhooks"
+        ]
+      }
+    }, 
+    "/api/v2/webhooks/{webhook_id}": {
+      "delete": {
+        "description": "Delete an existing Webhook Subscription.", 
+        "parameters": [
+          {
+            "in": "path", 
+            "name": "webhook_id", 
+            "schema": {
+              "type": "string"
+            }
+          }
+        ], 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/EmptyResponse"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "Delete Webhook Subscription", 
+        "tags": [
+          "Webhooks"
+        ]
+      }, 
+      "get": {
+        "description": "Fetch an existing Webhook Subscription by its `id`.", 
+        "parameters": [
+          {
+            "in": "path", 
+            "name": "webhook_id", 
+            "schema": {
+              "type": "string"
+            }
+          }
+        ], 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/WebhookSubscriptionResponse"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "Fetch Webhook Subscription", 
+        "tags": [
+          "Webhooks"
+        ]
+      }, 
+      "patch": {
+        "description": "Update an existing Webhook Subscription.\n\nRequest payloads can include:\n* `callback_url` - HTTPS Destination URL for webhook deliveries.\n* `headers` - Custom key:value pairs to be sent as headers in every callback.", 
+        "parameters": [
+          {
+            "in": "path", 
+            "name": "webhook_id", 
+            "schema": {
+              "type": "string"
+            }
+          }
+        ], 
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/UpdateWebhookSubscriptionPayload"
+              }
+            }
+          }, 
+          "description": "UpdateWebhookSubscriptionPayload", 
+          "required": true
+        }, 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/WebhookSubscriptionResponse"
+                }
+              }
+            }
+          }, 
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ValidationErrors"
+                }
+              }
+            }
+          }
+        }, 
+        "summary": "Update Webhook Subscription", 
+        "tags": [
+          "Webhooks"
+        ]
+      }
+    }
+  }
+}

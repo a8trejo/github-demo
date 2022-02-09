@@ -14,16 +14,15 @@ jobs:
       - name: Repo Checkout
         uses: actions/checkout@v2
       
-      - name: Fetching OpenAPI spec
-        run: |
-          curl -o .github/openapi.json --location --request GET ${{ secrets.PARTNER_API_V2 }}
-          cat .github/openapi.json
+      #- name: Fetching OpenAPI spec
+      #  run: |
+      #    curl -o .github/openapi.json --location --request GET ${{ secrets.PARTNER_API_V2 }}
 
       - name: Update readme API Reference
         uses: readmeio/github-readme-sync@v2
         with:
           readme-oas-key: '${{ secrets.README_API_KEY }}:${{ secrets.README_API_SPEC_ID }}'
-          oas-file-path: '.github/openapi.json' 
+          oas-file-path: '.github/openapi.json'
           api-version: 'v3.0.0'
 
       # - name: Setup Python

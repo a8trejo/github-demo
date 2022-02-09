@@ -1,6 +1,6 @@
 {
   "components": {
-    "schema": {
+    "schemas": {
       "ApiSubscriberOrigin": {
         "description": "Allowed values for api-provided subscriber origin.", 
         "enum": [
@@ -23,7 +23,7 @@
           "category": {
             "allOf": [
               {
-                "$ref": "#/components/schema/MessageCategory"
+                "$ref": "#/components/schemas/MessageCategory"
               }
             ], 
             "default": "conversational", 
@@ -77,7 +77,7 @@
             "type": "string"
           }, 
           "origin": {
-            "$ref": "#/components/schema/ApiSubscriberOrigin"
+            "$ref": "#/components/schemas/ApiSubscriberOrigin"
           }, 
           "phone_number": {
             "title": "Phone Number", 
@@ -126,7 +126,7 @@
           "event": {
             "allOf": [
               {
-                "$ref": "#/components/schema/EventType"
+                "$ref": "#/components/schemas/EventType"
               }
             ], 
             "description": "Webhook subscription `event` type.", 
@@ -155,36 +155,30 @@
         "properties": {
           "occurred_at": {
             "description": "The time when the event occurredAt defaults to the time it was received if not provided.", 
-            "examples": [
-              "2021-03-30 14:38:29.0000"
-            ], 
+            "example": "2021-03-30 14:38:29.0000", 
             "format": "date-time", 
             "title": "occurred_at", 
             "type": "string"
           }, 
           "properties": {
             "description": "The set of custom subscriber event attributes and values.", 
-            "examples": [
+            "example": 
               {
                 "test_event": true
               }
-            ], 
+            , 
             "title": "properties", 
             "type": "object"
           }, 
           "subscriber_id": {
             "description": "Deserialized ID of the recipient (Subscriber).", 
-            "examples": [
-              123
-            ], 
+            "example": 123, 
             "title": "subscriber_id", 
             "type": "integer"
           }, 
           "type": {
             "description": "A case-sensitive field which creates a distinct \u201cnamespace\u201d of this Event. This can be a combination of alphanumeric characters, _ underscores, and : colons.", 
-            "examples": [
-              "Product Ordered"
-            ], 
+            "example": "Product Ordered", 
             "maxLength": 255, 
             "minLength": 1, 
             "pattern": "[a-zA-Z0-9_:]*$", 
@@ -206,11 +200,7 @@
           "event_ids": {
             "default": [], 
             "description": "The Event Id which contains the UUID V1 of the event that is processing.", 
-            "examples": [
-              [
-                "ecdc2d4e-9c5b-4d10-9b7a-e2fbb04422e4"
-              ]
-            ], 
+            "example": "ecdc2d4e-9c5b-4d10-9b7a-e2fbb04422e4", 
             "items": {
               "type": "string"
             }, 
@@ -241,36 +231,30 @@
         "properties": {
           "occurred_at": {
             "description": "The time when the event occurredAt defaults to the time it was received if not provided.", 
-            "examples": [
-              "2021-03-30 14:38:29.0000"
-            ], 
+            "example": "2021-03-30 14:38:29.0000", 
             "format": "date-time", 
             "title": "occurred_at", 
             "type": "string"
           }, 
           "properties": {
             "description": "The set of custom subscriber event attributes and values.", 
-            "examples": [
+            "example": 
               {
                 "test_event": true
               }
-            ], 
+            , 
             "title": "properties", 
             "type": "object"
           }, 
           "subscriber_id": {
             "description": "External ID of the Subscriber.", 
-            "examples": [
-              "s_abc123xyz0q95"
-            ], 
+            "example": "s_abc123xyz0q95", 
             "title": "Subscriber Id", 
             "type": "string"
           }, 
           "type": {
             "description": "A case-sensitive field which creates a distinct \u201cnamespace\u201d of this Event. This can be a combination of alphanumeric characters, _ underscores, and : colons.", 
-            "examples": [
-              "Product Ordered"
-            ], 
+            "example": "Product Ordered", 
             "maxLength": 255, 
             "minLength": 1, 
             "pattern": "[a-zA-Z0-9_:]*$", 
@@ -353,7 +337,7 @@
         "properties": {
           "keywords": {
             "items": {
-              "$ref": "#/components/schema/KeywordSerializer"
+              "$ref": "#/components/schemas/KeywordSerializer"
             }, 
             "title": "Keywords", 
             "type": "array"
@@ -384,7 +368,7 @@
             "type": "string"
           }, 
           "resource_type": {
-            "$ref": "#/components/schema/ResourceType"
+            "$ref": "#/components/schemas/ResourceType"
           }
         }, 
         "required": [
@@ -416,7 +400,7 @@
           "category": {
             "allOf": [
               {
-                "$ref": "#/components/schema/MessageCategory"
+                "$ref": "#/components/schemas/MessageCategory"
               }
             ], 
             "description": "Intended subscription category of the Message Request.", 
@@ -447,7 +431,7 @@
           "sent_message": {
             "allOf": [
               {
-                "$ref": "#/components/schema/SentMessageSerializer"
+                "$ref": "#/components/schemas/SentMessageSerializer"
               }
             ], 
             "description": "nested Sent Message object. `null` until delivery is attempted.", 
@@ -456,7 +440,7 @@
           "status": {
             "allOf": [
               {
-                "$ref": "#/components/schema/MessageStatus"
+                "$ref": "#/components/schemas/MessageStatus"
               }
             ], 
             "default": "processing", 
@@ -466,7 +450,7 @@
           "status_code": {
             "allOf": [
               {
-                "$ref": "#/components/schema/MessageStatusCodes"
+                "$ref": "#/components/schemas/MessageStatusCodes"
               }
             ], 
             "default": 1001, 
@@ -562,11 +546,11 @@
         "description": "A list of Pending Subscribers.", 
         "properties": {
           "page_info": {
-            "$ref": "#/components/schema/PageInfo"
+            "$ref": "#/components/schemas/PageInfo"
           }, 
           "pending_subscribers": {
             "items": {
-              "$ref": "#/components/schema/PendingSubscriberSerializer"
+              "$ref": "#/components/schemas/PendingSubscriberSerializer"
             }, 
             "title": "Pending Subscribers", 
             "type": "array"
@@ -581,32 +565,27 @@
       "PendingSubscriberSearch": {
         "properties": {
           "created_at__eq": {
-            "format": "date-time", 
-            "required": false, 
+            "format": "date-time",
             "title": "Created At is Equal To", 
             "type": "string"
           }, 
           "created_at__gt": {
             "format": "date-time", 
-            "required": false, 
             "title": "Created At is Greater Than", 
             "type": "string"
           }, 
           "created_at__gte": {
             "format": "date-time", 
-            "required": false, 
             "title": "Created At is Greater Than or Equal To", 
             "type": "string"
           }, 
           "created_at__lt": {
             "format": "date-time", 
-            "required": false, 
             "title": "Created At is Less Than", 
             "type": "string"
           }, 
           "created_at__lte": {
             "format": "date-time", 
-            "required": false, 
             "title": "Created At is Less Than or Equal To", 
             "type": "string"
           }, 
@@ -616,49 +595,40 @@
             "type": "integer"
           }, 
           "phone_number__eq": {
-            "required": false, 
             "title": "Phone Number is Equal To", 
             "type": "integer"
           }, 
           "phone_number__gt": {
-            "required": false, 
             "title": "Phone Number is Greater Than", 
             "type": "integer"
           }, 
           "phone_number__gte": {
-            "required": false, 
             "title": "Phone Number is Greater Than or Equal To", 
             "type": "integer"
           }, 
           "phone_number__in": {
             "items": {}, 
-            "required": false, 
             "title": "Phone Number is In", 
             "type": "array"
           }, 
           "phone_number__lt": {
-            "required": false, 
             "title": "Phone Number is Less Than", 
             "type": "integer"
           }, 
-          "phone_number__lte": {
-            "required": false, 
+          "phone_number__lte": { 
             "title": "Phone Number is Less Than or Equal To", 
             "type": "integer"
           }, 
           "shopify_customer_id__contains": {
-            "required": false, 
             "title": "Shopify Customer Id Contains", 
             "type": "string"
           }, 
           "shopify_customer_id__eq": {
-            "required": false, 
             "title": "Shopify Customer Id is Equal To", 
             "type": "string"
           }, 
           "shopify_customer_id__in": {
             "items": {}, 
-            "required": false, 
             "title": "Shopify Customer Id is In", 
             "type": "array"
           }, 
@@ -669,31 +639,26 @@
           }, 
           "updated_at__eq": {
             "format": "date-time", 
-            "required": false, 
             "title": "Updated At is Equal To", 
             "type": "string"
           }, 
           "updated_at__gt": {
             "format": "date-time", 
-            "required": false, 
             "title": "Updated At is Greater Than", 
             "type": "string"
           }, 
           "updated_at__gte": {
             "format": "date-time", 
-            "required": false, 
             "title": "Updated At is Greater Than or Equal To", 
             "type": "string"
           }, 
           "updated_at__lt": {
             "format": "date-time", 
-            "required": false, 
             "title": "Updated At is Less Than", 
             "type": "string"
           }, 
           "updated_at__lte": {
             "format": "date-time", 
-            "required": false, 
             "title": "Updated At is Less Than or Equal To", 
             "type": "string"
           }
@@ -746,11 +711,6 @@
             "title": "example: \"Postscript: Hello, World!\"", 
             "type": "string"
           }, 
-          "cost": {
-            "description": "Message cost - null if credits-based billing is used.", 
-            "title": "example: '0.00134'", 
-            "type": "string"
-          }, 
           "created_at": {
             "description": "ISO 8601 datetime (UTC) at which delivery was attempted.", 
             "format": "date-time", 
@@ -758,7 +718,7 @@
             "type": "string"
           }, 
           "credits_used": {
-            "description": "Credits used - null if usage-based billing is used.", 
+            "description": "Credits used.", 
             "title": "example: 1", 
             "type": "integer"
           }, 
@@ -790,11 +750,11 @@
         "description": "A list of Subscribers.", 
         "properties": {
           "page_info": {
-            "$ref": "#/components/schema/PageInfo"
+            "$ref": "#/components/schemas/PageInfo"
           }, 
           "subscribers": {
             "items": {
-              "$ref": "#/components/schema/SubscriberSerializer"
+              "$ref": "#/components/schemas/SubscriberSerializer"
             }, 
             "title": "Subscribers", 
             "type": "array"
@@ -850,31 +810,26 @@
         "properties": {
           "created_at__eq": {
             "format": "date-time", 
-            "required": false, 
             "title": "Created At is Equal To", 
             "type": "string"
           }, 
           "created_at__gt": {
             "format": "date-time", 
-            "required": false, 
             "title": "Created At is Greater Than", 
             "type": "string"
           }, 
           "created_at__gte": {
             "format": "date-time", 
-            "required": false, 
             "title": "Created At is Greater Than or Equal To", 
             "type": "string"
           }, 
           "created_at__lt": {
             "format": "date-time", 
-            "required": false, 
             "title": "Created At is Less Than", 
             "type": "string"
           }, 
           "created_at__lte": {
             "format": "date-time", 
-            "required": false, 
             "title": "Created At is Less Than or Equal To", 
             "type": "string"
           }, 
@@ -884,34 +839,28 @@
             "type": "integer"
           }, 
           "phone_number__contains": {
-            "required": false, 
             "title": "Phone Number Contains", 
             "type": "string"
           }, 
           "phone_number__eq": {
-            "required": false, 
             "title": "Phone Number is Equal To", 
             "type": "string"
           }, 
           "phone_number__in": {
             "items": {}, 
-            "required": false, 
             "title": "Phone Number is In", 
             "type": "array"
           }, 
           "shopify_customer_id__contains": {
-            "required": false, 
             "title": "Shopify Customer Id Contains", 
             "type": "string"
           }, 
           "shopify_customer_id__eq": {
-            "required": false, 
             "title": "Shopify Customer Id is Equal To", 
             "type": "string"
           }, 
           "shopify_customer_id__in": {
             "items": {}, 
-            "required": false, 
             "title": "Shopify Customer Id is In", 
             "type": "array"
           }, 
@@ -922,31 +871,26 @@
           }, 
           "updated_at__eq": {
             "format": "date-time", 
-            "required": false, 
             "title": "Updated At is Equal To", 
             "type": "string"
           }, 
           "updated_at__gt": {
             "format": "date-time", 
-            "required": false, 
             "title": "Updated At is Greater Than", 
             "type": "string"
           }, 
           "updated_at__gte": {
             "format": "date-time", 
-            "required": false, 
             "title": "Updated At is Greater Than or Equal To", 
             "type": "string"
           }, 
           "updated_at__lt": {
             "format": "date-time", 
-            "required": false, 
             "title": "Updated At is Less Than", 
             "type": "string"
           }, 
           "updated_at__lte": {
             "format": "date-time", 
-            "required": false, 
             "title": "Updated At is Less Than or Equal To", 
             "type": "string"
           }
@@ -1015,7 +959,7 @@
           "event": {
             "allOf": [
               {
-                "$ref": "#/components/schema/EventType"
+                "$ref": "#/components/schemas/EventType"
               }
             ], 
             "description": "Webhook subscription `event` type.", 
@@ -1108,7 +1052,7 @@
         "properties": {
           "errors": {
             "items": {
-              "$ref": "#/components/schema/ValidationError"
+              "$ref": "#/components/schemas/ValidationError"
             }, 
             "title": "Errors", 
             "type": "array"
@@ -1140,7 +1084,7 @@
         "properties": {
           "webhook_subscriptions": {
             "items": {
-              "$ref": "#/components/schema/WebhookSubscriptionResponse"
+              "$ref": "#/components/schemas/WebhookSubscriptionResponse"
             }, 
             "title": "Webhook Subscriptions", 
             "type": "array"
@@ -1172,7 +1116,7 @@
           "event": {
             "allOf": [
               {
-                "$ref": "#/components/schema/EventType"
+                "$ref": "#/components/schemas/EventType"
               }
             ], 
             "description": "Webhook subscription `event` type.", 
@@ -1223,7 +1167,7 @@
   }, 
   "info": {
     "description": "**IMPORTANT: The v2 Partner API is currently in beta. API routes,\nsignatures, and behavior may change in the future.**\n\n**Integration Partners:** Request Partner API Credentials\nfrom Postscript's [Partners Page](https://postscript.io/partners)\n\n**Postscript Shops:** Generate API Keys from the app's\n[API Settings Page](https://app.postscript.io/account/api)", 
-    "title": "PartnerAPIv2", 
+    "title": "POSTSCRIPT API Reference", 
     "version": "3.0.0"
   }, 
   "openapi": "3.0.0", 
@@ -1236,7 +1180,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schema/CustomSubscriberEventsRequestSerializer"
+                "$ref": "#/components/schemas/CustomSubscriberEventsRequestSerializer"
               }
             }
           }, 
@@ -1245,19 +1189,21 @@
         }, 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/CustomSubscriberEventsResponse"
+                  "$ref": "#/components/schemas/CustomSubscriberEventsResponse"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }
@@ -1272,22 +1218,33 @@
     "/api/v2/events/{event_id}": {
       "get": {
         "description": "Returns a Custom Subscriber Event based on an event_id.", 
-        "parameters": [], 
+        "parameters": [
+          {
+            "required": true,
+            "in": "path", 
+            "name": "event_id", 
+            "schema": {
+              "type": "string"
+            }
+          }
+        ], 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/GetCustomSubscriberEventResponse"
+                  "$ref": "#/components/schemas/GetCustomSubscriberEventResponse"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }
@@ -1305,19 +1262,21 @@
         "parameters": [], 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/HealthCheckResponse"
+                  "$ref": "#/components/schemas/HealthCheckResponse"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }
@@ -1335,19 +1294,21 @@
         "parameters": [], 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/KeywordsList"
+                  "$ref": "#/components/schemas/KeywordsList"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }
@@ -1364,6 +1325,7 @@
         "description": "Get a single Keyword by its encrypted ID.", 
         "parameters": [
           {
+            "required": true,
             "in": "path", 
             "name": "keyword_id", 
             "schema": {
@@ -1373,19 +1335,21 @@
         ], 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/KeywordSerializer"
+                  "$ref": "#/components/schemas/KeywordSerializer"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }
@@ -1403,19 +1367,21 @@
         "parameters": [], 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/MeResponse"
+                  "$ref": "#/components/schemas/MeResponse"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }
@@ -1435,7 +1401,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schema/CreateMessageRequestSerializer"
+                "$ref": "#/components/schemas/CreateMessageRequestSerializer"
               }
             }
           }, 
@@ -1444,19 +1410,21 @@
         }, 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/MessageRequestSerializer"
+                  "$ref": "#/components/schemas/MessageRequestSerializer"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }
@@ -1473,6 +1441,7 @@
         "description": "Get a single Message Request by its ID.", 
         "parameters": [
           {
+            "required": true,
             "in": "path", 
             "name": "external_id", 
             "schema": {
@@ -1482,19 +1451,21 @@
         ], 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/MessageRequestSerializer"
+                  "$ref": "#/components/schemas/MessageRequestSerializer"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }
@@ -1511,6 +1482,7 @@
         "description": "Get a single Sent Message by its ID.", 
         "parameters": [
           {
+            "required": true,
             "in": "path", 
             "name": "external_id", 
             "schema": {
@@ -1520,19 +1492,21 @@
         ], 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/SentMessageSerializer"
+                  "$ref": "#/components/schemas/SentMessageSerializer"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }
@@ -1552,25 +1526,27 @@
             "in": "query", 
             "name": "SubscriberSearch", 
             "schema": {
-              "$ref": "#/components/schema/SubscriberSearch"
+              "$ref": "#/components/schemas/SubscriberSearch"
             }
           }
         ], 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/SubscriberList"
+                  "$ref": "#/components/schemas/SubscriberList"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }
@@ -1588,7 +1564,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schema/CreateSingleSubscriber"
+                "$ref": "#/components/schemas/CreateSingleSubscriber"
               }
             }
           }, 
@@ -1597,19 +1573,21 @@
         }, 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/SubscriberResponse"
+                  "$ref": "#/components/schemas/SubscriberResponse"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }
@@ -1629,25 +1607,27 @@
             "in": "query", 
             "name": "PendingSubscriberSearch", 
             "schema": {
-              "$ref": "#/components/schema/PendingSubscriberSearch"
+              "$ref": "#/components/schemas/PendingSubscriberSearch"
             }
           }
         ], 
         "responses": {
           "200": {
+            "description": "A list of subscribers for a shop",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/PendingSubscriberList"
+                  "$ref": "#/components/schemas/PendingSubscriberList"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }
@@ -1664,6 +1644,7 @@
         "description": "Get a single Pending Subscriber by its ID.", 
         "parameters": [
           {
+            "required": true,
             "in": "path", 
             "name": "external_id", 
             "schema": {
@@ -1673,19 +1654,21 @@
         ], 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/PendingSubscriberSerializer"
+                  "$ref": "#/components/schemas/PendingSubscriberSerializer"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }
@@ -1702,6 +1685,7 @@
         "description": "Get a single Subscriber by its ID.", 
         "parameters": [
           {
+            "required": true,
             "in": "path", 
             "name": "external_id", 
             "schema": {
@@ -1711,19 +1695,21 @@
         ], 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/SubscriberSerializer"
+                  "$ref": "#/components/schemas/SubscriberSerializer"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }
@@ -1738,6 +1724,7 @@
         "description": "Updates a subscriber.\nRequired fields:\n* `tags` - the tags in the body as an array containing the keys you would like to add to the subscriber e.g.\n```\n    {\n        \"tags\": [\"tag1\", \"tag2\"]\n    }\n```\nOptional fields:\n* `properties` - a key:value mapping of custom properties.\n\nCustom properties values can be: strings, integers, string arrays, or ISO 8601 date(time):\n```\n    \"properties\": {\n        \"has_purchased\": True,\n        \"days_since_purchase\": 5,\n        \"categories\": [\"Beauty\", \"Home Goods\"],\n        \"birthday\": \"1991-01-01\"\n    }\n```\nSubscribers can have up to 20 custom properties. If `properties` is unset or null, it will be ignored.", 
         "parameters": [
           {
+            "required": true,
             "in": "path", 
             "name": "external_id", 
             "schema": {
@@ -1749,7 +1736,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schema/UpdateSingleSubscriber"
+                "$ref": "#/components/schemas/UpdateSingleSubscriber"
               }
             }
           }, 
@@ -1758,19 +1745,21 @@
         }, 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/SubscriberSerializer"
+                  "$ref": "#/components/schemas/SubscriberSerializer"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }
@@ -1785,6 +1774,7 @@
         "description": "Updates a single subscriber. This replaces values or creates the resource if not present.\n\nRequired fields:\n* `phone_number` - a phone number for a subscriber.\n* `origin` - indicates how subscriber collection occurred (`\"website\"`, `\"social\"`, or `\"other\"`).\nOptional fields:\n* `shopify_customer_id` - a reference to the Shopify Customer record for the subscriber\n* `email` - an email address, used to look up a Shopify Customer record if `shopify_customer_id` isn't provided.\n* `tags` - an Array of string tag values that can be used in User segmentation or filtering.\n* `keyword` - a string keyword, matching an active keyword for the Shop. Exclude if `keyword_id` is provided.\n* `keyword_id` - the encrypted ID of a keyword, matching an active keyword for the Shop. Exclude if `keyword` is provided.\n* `single_opt_in` - a boolean indicating if subscribers should be opted-in without confirmation. Must be enabled by the Postscript team.\n* `properties` - dictionary of custom subscriber metadata", 
         "parameters": [
           {
+            "required": true,
             "in": "path", 
             "name": "external_id", 
             "schema": {
@@ -1796,7 +1786,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schema/CreateSingleSubscriber"
+                "$ref": "#/components/schemas/CreateSingleSubscriber"
               }
             }
           }, 
@@ -1805,19 +1795,21 @@
         }, 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/SubscriberResponse"
+                  "$ref": "#/components/schemas/SubscriberResponse"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }
@@ -1835,19 +1827,21 @@
         "parameters": [], 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/WebhookSubscriptionListResponse"
+                  "$ref": "#/components/schemas/WebhookSubscriptionListResponse"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }
@@ -1865,7 +1859,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schema/CreateWebhookSubscriptionPayload"
+                "$ref": "#/components/schemas/CreateWebhookSubscriptionPayload"
               }
             }
           }, 
@@ -1874,19 +1868,21 @@
         }, 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/WebhookSubscriptionResponse"
+                  "$ref": "#/components/schemas/WebhookSubscriptionResponse"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }
@@ -1906,7 +1902,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schema/TestShopWebhookPayload"
+                "$ref": "#/components/schemas/TestShopWebhookPayload"
               }
             }
           }, 
@@ -1915,19 +1911,21 @@
         }, 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/OkResponse"
+                  "$ref": "#/components/schemas/OkResponse"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }
@@ -1945,19 +1943,21 @@
         "parameters": [], 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/WebhookSigningTokenResponse"
+                  "$ref": "#/components/schemas/WebhookSigningTokenResponse"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }
@@ -1974,6 +1974,7 @@
         "description": "Delete an existing Webhook Subscription.", 
         "parameters": [
           {
+            "required": true,
             "in": "path", 
             "name": "webhook_id", 
             "schema": {
@@ -1983,19 +1984,21 @@
         ], 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/EmptyResponse"
+                  "$ref": "#/components/schemas/EmptyResponse"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }
@@ -2010,6 +2013,7 @@
         "description": "Fetch an existing Webhook Subscription by its `id`.", 
         "parameters": [
           {
+            "required": true,
             "in": "path", 
             "name": "webhook_id", 
             "schema": {
@@ -2019,19 +2023,21 @@
         ], 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/WebhookSubscriptionResponse"
+                  "$ref": "#/components/schemas/WebhookSubscriptionResponse"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }
@@ -2046,6 +2052,7 @@
         "description": "Update an existing Webhook Subscription.\n\nRequest payloads can include:\n* `callback_url` - HTTPS Destination URL for webhook deliveries.\n* `headers` - Custom key:value pairs to be sent as headers in every callback.", 
         "parameters": [
           {
+            "required": true,
             "in": "path", 
             "name": "webhook_id", 
             "schema": {
@@ -2057,7 +2064,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schema/UpdateWebhookSubscriptionPayload"
+                "$ref": "#/components/schemas/UpdateWebhookSubscriptionPayload"
               }
             }
           }, 
@@ -2066,19 +2073,21 @@
         }, 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/WebhookSubscriptionResponse"
+                  "$ref": "#/components/schemas/WebhookSubscriptionResponse"
                 }
               }
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schema/ValidationErrors"
+                  "$ref": "#/components/schemas/ValidationErrors"
                 }
               }
             }

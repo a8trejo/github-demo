@@ -162,7 +162,7 @@
           }, 
           "properties": {
             "description": "The set of custom subscriber event attributes and values.", 
-            "examples": 
+            "example": 
               {
                 "test_event": true
               }
@@ -238,7 +238,7 @@
           }, 
           "properties": {
             "description": "The set of custom subscriber event attributes and values.", 
-            "examples": 
+            "example": 
               {
                 "test_event": true
               }

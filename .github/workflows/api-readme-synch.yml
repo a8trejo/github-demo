@@ -1,0 +1,45 @@
+# This is a workflow that is manually triggered or starts with each new Github release
+
+name: API Reference Synch
+
+on: 
+  workflow_dispatch:
+  release:
+    types: [released]
+
+jobs:
+  api-readme-synch:
+    runs-on: ubuntu-latest
+    steps:
+    
+    - name: Repo Checkout
+      uses: actions/checkout@v2
+      run: |
+        curl -o .github/swagger.json --location --request GET ${{ secrets.PARTNER_API_V2 }}
+    
+    - name: Update readme API Reference
+      uses: readmeio/github-readme-sync@v2.1.2
+        with:
+          readme-oas-key: '${{ secrets.README_API_KEY }}:${{ secrets.README_API_SPEC_ID }}'
+          oas-file-path: '.github/swagger.json' 
+          api-version: 'v3.0.0'
+
+    # - name: Setup Python
+    #   uses: actions/setup-python@v2
+    #   with:
+    #     python-version: 3.9
+
+    # - name: Install Dependencies
+    #   run: |
+    #     pip install requests
+
+    # - name: Release Notes Content Generation
+    #   run: |
+    #     python .github/api_readme_synch.py
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #     GITHUB_URL: ${{ github.api_url }}
+    #     GITHUB_REPO_PATH: ${{ github.repository }}
+    #     README_API_KEY: ${{ secrets.README_API_KEY }}
+          
+          

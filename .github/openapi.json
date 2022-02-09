@@ -1167,7 +1167,7 @@
   }, 
   "info": {
     "description": "**IMPORTANT: The v2 Partner API is currently in beta. API routes,\nsignatures, and behavior may change in the future.**\n\n**Integration Partners:** Request Partner API Credentials\nfrom Postscript's [Partners Page](https://postscript.io/partners)\n\n**Postscript Shops:** Generate API Keys from the app's\n[API Settings Page](https://app.postscript.io/account/api)", 
-    "title": "PartnerAPIv2", 
+    "title": "POSTSCRIPT API Reference", 
     "version": "3.0.0"
   }, 
   "openapi": "3.0.0", 

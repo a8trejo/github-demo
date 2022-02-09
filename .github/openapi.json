@@ -1614,6 +1614,7 @@
         ], 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -1623,6 +1624,7 @@
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -1652,6 +1654,7 @@
         ], 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -1661,6 +1664,7 @@
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -1690,6 +1694,7 @@
         ], 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -1699,6 +1704,7 @@
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -1814,6 +1820,7 @@
         "parameters": [], 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -1823,6 +1830,7 @@
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -1924,6 +1932,7 @@
         "parameters": [], 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -1933,6 +1942,7 @@
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -1962,6 +1972,7 @@
         ], 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -1971,6 +1982,7 @@
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -1998,6 +2010,7 @@
         ], 
         "responses": {
           "200": {
+            "description": "Succesfull Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -2007,6 +2020,7 @@
             }
           }, 
           "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {

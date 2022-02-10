@@ -25,22 +25,24 @@ jobs:
           oas-file-path: '.github/openapi.json'
           api-version: 'v3.0.0'
 
-      # - name: Setup Python
-      #   uses: actions/setup-python@v2
-      #   with:
-      #     python-version: 3.9
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
 
-      # - name: Install Dependencies
-      #   run: |
-      #     pip install requests
+      - name: Install Dependencies
+        run: |
+          pip install requests
 
-      # - name: Release Notes Content Generation
-      #   run: |
-      #     python .github/api_readme_synch.py
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     GITHUB_URL: ${{ github.api_url }}
-      #     GITHUB_REPO_PATH: ${{ github.repository }}
-      #     README_API_KEY: ${{ secrets.README_API_KEY }}
+      - name: Release Notes Content Generation
+        run: |
+          python .github/api_readme_synch.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_URL: ${{ github.api_url }}
+          GITHUB_REPO_PATH: ${{ github.repository }}
+          README_API_KEY: ${{ secrets.README_API_KEY }}
+          README_URL: ${{ secrets.README_URL }}
+          API_DREAM_TEAM: ${{ secrets.API_DREAM_TEAM }}
           
           

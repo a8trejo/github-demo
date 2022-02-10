@@ -1,7 +1,7 @@
 {
     "branch_prefixes": {
         "features": ["feature", "feat", "features"],
-        "fixes": ["fix", "bug", "hot", "bugfix", "hotfix"]
+        "fixes": ["fix", "bug", "hot", "hotfix", "bugfix", "bugfixes", "hotfixes"]
     },
     "file_title": "## Changelog - {RELEASE_DATE}",
     "sections": [
@@ -17,12 +17,12 @@
         },
         {
             "header": "#### Improved 💜",
-            "type": "other",
+            "type": "improved",
             "default": "* N/A"
         },
         {
             "header": "#### Breaking Changes 🛠",
-            "type": "other",
+            "type": "breaking",
             "default": "* N/A"
         },
         {
@@ -32,7 +32,7 @@
         },
         {
             "header": "#### Dependencies 📎",
-            "type": "other",
+            "type": "depend",
             "default": "* N/A"
         }
     ],

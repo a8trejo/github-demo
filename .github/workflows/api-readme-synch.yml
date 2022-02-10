@@ -2,8 +2,8 @@ name: API Reference Synch
 
 on: 
   workflow_dispatch:
-  release:
-    types: [released]
+  #release:
+  #  types: [released]
 
 jobs:
   api-readme-synch:
@@ -23,7 +23,7 @@ jobs:
         with:
           readme-oas-key: '${{ secrets.README_API_KEY }}:${{ secrets.README_API_SPEC_ID }}'
           oas-file-path: '.github/openapi.json'
-          api-version: 'v3.0.0'
+          api-version: ${{ secrets.README_API_VERSION }}
 
       - name: Setup Python
         uses: actions/setup-python@v2

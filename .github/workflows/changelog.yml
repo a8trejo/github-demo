@@ -1,8 +1,5 @@
 name: Generate Changelog MD file
 on:
-  release:
-    types: [created, edited]
-  
   workflow_dispatch:
 
 jobs:

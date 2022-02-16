@@ -2,6 +2,12 @@ name: API Reference Synch
 
 on: 
   workflow_dispatch:
+    inputs:
+      readme-visibility:
+        description: "Enter 'draft' to update the API Reference docs hidden for review OR 'public' to update the PUBLIC API Reference official docs"
+        required: true
+        default: "draft"
+
   #release:
   #  types: [released]
 
@@ -9,6 +15,9 @@ jobs:
   api-readme-synch:
     name: "API Readme Synch"
     runs-on: ubuntu-latest
+    env:
+      README_API_SPEC_ID: ${{ github.event.inputs.readme-visibility == 'draft' && secrets.README_API_DRAFT_ID || secrets.README_API_PUBLIC_ID }}
+      README_API_VERSION: ${{ github.event.inputs.readme-visibility == 'draft' && secrets.README_API_DRAFT_VERSION || secrets.README_API_PUBLIC_VERSION }}
 
     steps:   
       - name: Repo Checkout
@@ -21,9 +30,9 @@ jobs:
       - name: Update readme API Reference
         uses: readmeio/github-readme-sync@v2
         with:
-          readme-oas-key: '${{ secrets.README_API_KEY }}:${{ secrets.README_API_SPEC_ID }}'
+          readme-oas-key: '${{ secrets.README_API_KEY }}:${{ env.README_API_SPEC_ID }}'
           oas-file-path: '.github/openapi.json'
-          api-version: ${{ secrets.README_API_VERSION }}
+          api-version: ${{ env.README_API_VERSION }}
 
       - name: Setup Python
         uses: actions/setup-python@v2

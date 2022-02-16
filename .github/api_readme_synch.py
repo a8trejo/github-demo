@@ -127,5 +127,3 @@ if readme_synch == True:
         print("Release Content does not have any header matching the sections in .github/prerelease_config.json file")
 else:
     print("No commit was performed by the API & Integrations team")
-    
-    

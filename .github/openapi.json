@@ -2,7 +2,7 @@
   "components": {
     "parameters": {
       "Authorization": {
-        "description": "As a shop, use your Private API Key as the **Bearer token** header, such as `Authorization: Bearer sk_1234567890abc` (Partners must use their own specific API Key instead ex: `Authorization: Bearer sk_partner_1234567890abc`)", 
+        "description": "As a shop, use your Private API Key as the **Bearer token**, such as `Authorization: Bearer sk_1234567890abc` (Partners must use their own specific API Key instead ex: `Authorization: Bearer sk_partner_1234567890abc`)", 
         "example": "Bearer sk_1234567890abcdefg", 
         "in": "header", 
         "name": "Authorization", 
@@ -38,7 +38,7 @@
         "properties": {
           "body": {
             "description": "Message text. Before delivery, the shop name will be prepended, and links will be shortened.", 
-            "example": "Hello, World!", 
+            "example": "Hello World!", 
             "minLength": 1, 
             "title": "example: \"Hello, World!\"", 
             "type": "string"
@@ -51,11 +51,13 @@
             ], 
             "default": "conversational", 
             "description": "Intended subscription category of the Message Request.", 
+            "example": "promotional", 
             "title": "example: \"promotional\""
           }, 
           "country": {
             "default": "US", 
             "description": "ISO Alpha-2 country code, used to parse `phone` more accurately.", 
+            "example": "US", 
             "maxLength": 2, 
             "minLength": 2, 
             "title": "example: \"NZ\" for New Zealand", 
@@ -63,7 +65,7 @@
           }, 
           "phone": {
             "description": "Phone number of the recipient (Subscriber).", 
-            "example": "+15552223333", 
+            "example": "15552223333", 
             "title": "example: \"+15552223333\"", 
             "type": "string"
           }, 
@@ -87,34 +89,136 @@
         "title": "CreateMessageRequestSerializer", 
         "type": "object"
       }, 
+      "CreateMessageRequest_EntityConflict": {
+        "properties": {
+          "http_status": {
+            "default": 409, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "Subscriber is opted out", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.subscriber_opted_out", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "CreateMessageRequest_EntityConflict", 
+        "type": "object"
+      }, 
+      "CreateMessageRequest_EntityNotFound": {
+        "properties": {
+          "http_status": {
+            "default": 404, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "Invalid `phone` provided: ", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.entity_not_found", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "CreateMessageRequest_EntityNotFound", 
+        "type": "object"
+      }, 
+      "CreateMessageRequest_InternalServerError": {
+        "properties": {
+          "http_status": {
+            "default": 500, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "Encountered an unknown issue when attempting to create message", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.internal_server_error", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "CreateMessageRequest_InternalServerError", 
+        "type": "object"
+      }, 
+      "CreateMessageRequest_RequestError": {
+        "properties": {
+          "http_status": {
+            "default": 400, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "Unable to send message: not enough credits.", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.request_error", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "CreateMessageRequest_RequestError", 
+        "type": "object"
+      }, 
       "CreateSingleSubscriber": {
-        "description": "Create a single Subscriber.", 
+        "description": "Create a single Subscriber", 
         "properties": {
           "email": {
+            "description": "An email address, only used to look up a Shopify Customer record if `shopify_customer_id` isn't provided. This is not stored on the subscriber", 
+            "example": "email@email.com", 
             "title": "Email", 
             "type": "string"
           }, 
           "keyword": {
+            "description": "The Keyword to which the subscriber should be subscribed to. This field or *keyword_id* is required.", 
+            "example": "YOUROCK", 
             "title": "Keyword", 
             "type": "string"
           }, 
           "keyword_id": {
+            "description": "The Keyword to which the subscriber should be subscribed to. This field or *keyword* is required.", 
+            "example": "kw_31afjew824892ks", 
             "title": "Keyword Id", 
             "type": "string"
           }, 
           "origin": {
-            "$ref": "#/components/schemas/ApiSubscriberOrigin"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiSubscriberOrigin"
+              }
+            ], 
+            "description": "Subscriber Origin allowed values", 
+            "example": "other"
           }, 
           "phone_number": {
+            "description": "Phone number of the subscriber", 
+            "example": "15552223333", 
             "title": "Phone Number", 
             "type": "string"
           }, 
           "properties": {
+            "description": "Subscriber Custom Properties JSON Object", 
+            "example": "{'has_purchased': True, 'days_since_purchase': 5, 'categories': ['Beauty', 'Home Goods'], 'birthday': '1991-01-01'}", 
             "format": "json-string", 
             "title": "Properties", 
             "type": "string"
           }, 
           "shopify_customer_id": {
+            "description": "A reference to the Shopify Customer record for the subscriber", 
+            "example": "8888777333111", 
             "title": "Shopify Customer Id", 
             "type": "integer"
           }, 
@@ -124,6 +228,10 @@
             "type": "boolean"
           }, 
           "tags": {
+            "description": "Subscriber Tags", 
+            "example": [
+              "VIP"
+            ], 
             "items": {
               "type": "string"
             }, 
@@ -138,11 +246,33 @@
         "title": "CreateSingleSubscriber", 
         "type": "object"
       }, 
+      "CreateSubscriber_EntityConflict": {
+        "properties": {
+          "http_status": {
+            "default": 409, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "Pending subscriber already exists with phone_number: 15552223333", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.entity_conflict", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "CreateSubscriber_EntityConflict", 
+        "type": "object"
+      }, 
       "CreateWebhookSubscriptionPayload": {
         "description": "POST payload.", 
         "properties": {
           "callback_url": {
             "description": "Destination URL for webhook deliveries (HTTPS only).", 
+            "example": "https://www.example.com/webhook", 
             "format": "uri", 
             "maxLength": 65536, 
             "minLength": 1, 
@@ -156,6 +286,7 @@
               }
             ], 
             "description": "Webhook subscription `event` type.", 
+            "example": "shop.incoming_message", 
             "title": "example: \"shop.incoming_message\""
           }, 
           "headers": {
@@ -164,6 +295,9 @@
             }, 
             "default": {}, 
             "description": "Custom key:value pairs to be sent as headers in every callback.", 
+            "example": {
+              "custom": "abc123"
+            }, 
             "title": "example: {\"custom\": \"abc123\"}", 
             "type": "object"
           }
@@ -173,6 +307,27 @@
           "event"
         ], 
         "title": "CreateWebhookSubscriptionPayload", 
+        "type": "object"
+      }, 
+      "CreateWebhookSubscription_EntityConflict": {
+        "properties": {
+          "http_status": {
+            "default": 409, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "Conflicting Webhook Subscription found (id: a47606a1-5b39-4a81-9480-c2cb738ff675)", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.entity_conflict", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "CreateWebhookSubscription_EntityConflict", 
         "type": "object"
       }, 
       "CustomSubscriberEventsRequestSerializer": {
@@ -235,6 +390,27 @@
         "title": "CustomSubscriberEventsResponse", 
         "type": "object"
       }, 
+      "DeleteWebhookSubscription_EntityNotFound": {
+        "properties": {
+          "http_status": {
+            "default": 404, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "Invalid webhook id provided: a47606a1-5b39-4a81-9480-c2cb738ff675", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.entity_not_found", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "DeleteWebhookSubscription_EntityNotFound", 
+        "type": "object"
+      }, 
       "EmptyResponse": {
         "properties": {}, 
         "title": "EmptyResponse", 
@@ -248,6 +424,174 @@
         ], 
         "title": "EventType", 
         "type": "string"
+      }, 
+      "FetchMessageRequest_EntityNotFound": {
+        "properties": {
+          "http_status": {
+            "default": 404, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "Unable to find Message Request matching ID: amr_abc123xyz0q95", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.entity_not_found", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "FetchMessageRequest_EntityNotFound", 
+        "type": "object"
+      }, 
+      "FetchMessageRequest_RequestError": {
+        "properties": {
+          "http_status": {
+            "default": 400, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "Invalid format for Message Request ID provided: amr_abc123xyz0q95", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.request_error", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "FetchMessageRequest_RequestError", 
+        "type": "object"
+      }, 
+      "FetchPendingSubscriber_EntityNotFound": {
+        "properties": {
+          "http_status": {
+            "default": 404, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "Invalid subscriber id provided: 0000000000011111", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.entity_not_found", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "FetchPendingSubscriber_EntityNotFound", 
+        "type": "object"
+      }, 
+      "FetchSentMessage_EntityNotFound": {
+        "properties": {
+          "http_status": {
+            "default": 404, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "Unable to find Sent Message matching ID: sm_8a88bc776688555d", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.entity_not_found", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "FetchSentMessage_EntityNotFound", 
+        "type": "object"
+      }, 
+      "FetchSentMessage_RequestError": {
+        "properties": {
+          "http_status": {
+            "default": 400, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "Invalid format for Sent Message ID provided: sm_8a88bc776688555d", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.request_error", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "FetchSentMessage_RequestError", 
+        "type": "object"
+      }, 
+      "FetchSingleKeyword_EntityNotFound": {
+        "properties": {
+          "http_status": {
+            "default": 404, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "Invalid keyword id provided: UNREAL", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.entity_not_found", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "FetchSingleKeyword_EntityNotFound", 
+        "type": "object"
+      }, 
+      "FetchSubscriber_EntityNotFound": {
+        "properties": {
+          "http_status": {
+            "default": 404, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "Invalid subscriber id provided: 0000000000011111", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.entity_not_found", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "FetchSubscriber_EntityNotFound", 
+        "type": "object"
+      }, 
+      "FetchWebhookSubscription_EntityNotFound": {
+        "properties": {
+          "http_status": {
+            "default": 404, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "Invalid webhook id provided: a47606a1-5b39-4a81-9480-c2cb738ff675", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.entity_not_found", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "FetchWebhookSubscription_EntityNotFound", 
+        "type": "object"
       }, 
       "GetCustomSubscriberEventResponse": {
         "additionalProperties": false, 
@@ -291,6 +635,48 @@
         "title": "GetCustomSubscriberEventResponse", 
         "type": "object"
       }, 
+      "GetCustomSubscriberEvent_EntityNotFound": {
+        "properties": {
+          "http_status": {
+            "default": 404, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "Entity not found.", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.entity_not_found", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "GetCustomSubscriberEvent_EntityNotFound", 
+        "type": "object"
+      }, 
+      "GetCustomSubscriberEvent_UnauthorizedAccessError": {
+        "properties": {
+          "http_status": {
+            "default": 403, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "Access denied. You do not have permissions to access the requested resource.", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.access_denied", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "GetCustomSubscriberEvent_UnauthorizedAccessError", 
+        "type": "object"
+      }, 
       "HealthCheckResponse": {
         "description": "Health check response.", 
         "properties": {
@@ -324,25 +710,35 @@
         "description": "A Postscript Keyword.", 
         "properties": {
           "created_at": {
+            "description": "ISO 8601 datetime (UTC) at which the Keyword was created", 
+            "example": "2023-01-01T09:30:00-0800", 
             "format": "date-time", 
-            "title": "Created At", 
+            "title": "example: \"2023-01-01T09:30:00-0800\"", 
             "type": "string"
           }, 
           "id": {
-            "title": "Id", 
+            "description": "ID of the Keyword", 
+            "example": "kw_31afjew824892ks", 
+            "title": "example: \"kw_31afjew824892ks\"", 
             "type": "string"
           }, 
           "keyword": {
+            "description": "Keyword Text", 
+            "example": "YOUROCK", 
             "title": "Keyword", 
             "type": "string"
           }, 
           "triggered_count": {
+            "description": "Number of times the Keyword has been triggered by subscribers", 
+            "example": 10, 
             "title": "Triggered Count", 
             "type": "integer"
           }, 
           "updated_at": {
+            "description": "ISO 8601 datetime (UTC) at which the Keyword was last updated", 
+            "example": "2023-01-01T09:30:00-0800", 
             "format": "date-time", 
-            "title": "Updated At", 
+            "title": "example: \"2023-01-01T09:30:00-0800\"", 
             "type": "string"
           }
         }, 
@@ -358,6 +754,16 @@
         "description": "A list of Keywords.", 
         "properties": {
           "keywords": {
+            "description": "nested Keywords list array", 
+            "example": [
+              {
+                "created_at": "2023-01-01T09:30:00-0800", 
+                "id": "kw_31afjew824892ks", 
+                "keyword": "YOUROCK", 
+                "triggered_count": 10, 
+                "updated_at": "2023-01-01T09:30:00-0800"
+              }
+            ], 
             "items": {
               "$ref": "#/components/schemas/KeywordSerializer"
             }, 
@@ -416,6 +822,7 @@
         "properties": {
           "body": {
             "description": "Message text. Before delivery, the shop name will be prepended, and links will be shortened.", 
+            "example": "Hello World!", 
             "title": "example: \"Hello, World!\"", 
             "type": "string"
           }, 
@@ -426,26 +833,31 @@
               }
             ], 
             "description": "Intended subscription category of the Message Request.", 
+            "example": "promotional", 
             "title": "example: \"promotional\""
           }, 
           "created_at": {
             "description": "ISO 8601 datetime (UTC) at which the Message Request was created.", 
+            "example": "2023-01-01T09:30:00-0800", 
             "format": "date-time", 
             "title": "example: \"2023-01-01T09:30:00-0800\"", 
             "type": "string"
           }, 
           "id": {
             "description": "ID of the Message Request.", 
+            "example": "amr_abc123xyz0q95", 
             "title": "example: \"amr_abc123xyz0q95\"", 
             "type": "string"
           }, 
           "phone": {
             "description": "phone number of the recipient (Subscriber).", 
+            "example": "+1 (555) 222-333315552223333", 
             "title": "example: \"+1 (555) 222-3333\"", 
             "type": "string"
           }, 
           "scheduled_at": {
             "description": "ISO 8601 datetime (UTC) at which Message Request is scheduled to deliver. `null` if ASAP.", 
+            "example": "2023-01-01T09:30:00-0800", 
             "format": "date-time", 
             "title": "example: \"2023-01-01T09:30:00-0800\"", 
             "type": "string"
@@ -457,6 +869,16 @@
               }
             ], 
             "description": "nested Sent Message object. `null` until delivery is attempted.", 
+            "example": {
+              "body": "Hello World!", 
+              "cost": "null", 
+              "created_at": "2023-01-01T09:30:00-0800", 
+              "credits_used": 1, 
+              "id": "amr_abc123xyz0q95", 
+              "phone": "15552223333", 
+              "shop_id": "shop_88aaa899999b88c8", 
+              "subscriber_id": "s_abc123xyz0q95"
+            }, 
             "title": "Sent Message"
           }, 
           "status": {
@@ -467,6 +889,7 @@
             ], 
             "default": "processing", 
             "description": "Human-readable status summary for the Message Request.", 
+            "example": "delivered", 
             "title": "example: \"delivered\""
           }, 
           "status_code": {
@@ -477,15 +900,18 @@
             ], 
             "default": 1001, 
             "description": "Postscript status code for the Message Request.", 
+            "example": "3001", 
             "title": "example: 3001"
           }, 
           "subscriber_id": {
             "description": "ID of the recipient (Subscriber).", 
+            "example": "s_abc123xyz0q95", 
             "title": "example: \"s_abc123xyz0q95\"", 
             "type": "string"
           }, 
           "updated_at": {
             "description": "ISO 8601 datetime (UTC) at which the Message Request was last updated.", 
+            "example": "2023-01-01T09:30:00-0800", 
             "format": "date-time", 
             "title": "example: \"2023-01-01T09:30:00-0800\"", 
             "type": "string"
@@ -564,13 +990,50 @@
         "title": "PageInfo", 
         "type": "object"
       }, 
+      "PatchSubscriber_EntityNotFound": {
+        "properties": {
+          "http_status": {
+            "default": 404, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "Invalid subscriber id provided: 0000000000011111", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.entity_not_found", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "PatchSubscriber_EntityNotFound", 
+        "type": "object"
+      }, 
       "PendingSubscriberList": {
         "description": "A list of Pending Subscribers.", 
         "properties": {
           "page_info": {
-            "$ref": "#/components/schemas/PageInfo"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PageInfo"
+              }
+            ], 
+            "description": "Page number of results found", 
+            "example": "{'page': 1, 'total_pages': 1}", 
+            "title": "Page Info"
           }, 
           "pending_subscribers": {
+            "description": "JSON Array of Pending Subscriber objects", 
+            "example": [
+              {
+                "created_at": "2023-01-01T09:30:00-0800", 
+                "id": "ps_abc123xyz0q95", 
+                "phone_number": "15552223333", 
+                "shopify_customer_id": "8888777333111"
+              }
+            ], 
             "items": {
               "$ref": "#/components/schemas/PendingSubscriberSerializer"
             }, 
@@ -692,19 +1155,32 @@
         "description": "A Postscript Subscriber.", 
         "properties": {
           "created_at": {
+            "description": "ISO 8601 datetime (UTC) at which Pending Subscriber was registered", 
+            "example": "2023-01-01T09:30:00-0800", 
             "format": "date-time", 
             "title": "Created At", 
             "type": "string"
           }, 
           "id": {
+            "description": "ID of the Subscriber", 
+            "example": "ps_abc123xyz0q95", 
             "title": "Id", 
             "type": "string"
           }, 
           "phone_number": {
-            "title": "Phone Number", 
+            "description": "Phone number of the pending subscriber", 
+            "example": "15552223333", 
+            "title": "example: \"+15552223333\"", 
+            "type": "string"
+          }, 
+          "resource": {
+            "default": "pending_subscriber", 
+            "title": "Resource", 
             "type": "string"
           }, 
           "shopify_customer_id": {
+            "description": "Shopify Customer ID", 
+            "example": 8888777333111, 
             "title": "Shopify Customer Id", 
             "type": "integer"
           }
@@ -714,6 +1190,27 @@
           "phone_number"
         ], 
         "title": "PendingSubscriberSerializer", 
+        "type": "object"
+      }, 
+      "PutSubscriber_EntityConflict": {
+        "properties": {
+          "http_status": {
+            "default": 409, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "Pending subscriber already exists with phone_number: 15552223333", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.entity_conflict", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "PutSubscriber_EntityConflict", 
         "type": "object"
       }, 
       "ResourceType": {
@@ -730,42 +1227,50 @@
         "properties": {
           "body": {
             "description": "Sent Message text as delivered.", 
+            "example": "Postscript: Hello World!", 
             "title": "example: \"Postscript: Hello, World!\"", 
             "type": "string"
           }, 
           "cost": {
             "description": "Message cost - null if credits-based billing is used.", 
+            "example": "0.00134", 
             "title": "example: '0.00134'", 
             "type": "string"
           }, 
           "created_at": {
             "description": "ISO 8601 datetime (UTC) at which delivery was attempted.", 
+            "example": "2023-01-01T09:30:00-0800", 
             "format": "date-time", 
             "title": "example: \"2023-01-01T09:30:00-0800\"", 
             "type": "string"
           }, 
           "credits_used": {
             "description": "Credits used - null if usage-based billing is used.", 
+            "example": 1, 
             "title": "example: 1", 
             "type": "integer"
           }, 
           "id": {
             "description": "ID of the Sent Message.", 
+            "example": "sm_abc123xyz0q95", 
             "title": "example: \"sm_abc123xyz0q95\"", 
             "type": "string"
           }, 
           "phone": {
             "description": "Phone number of the recipient (Subscriber).", 
+            "example": "15552223333", 
             "title": "example: \"+15552223333\"", 
             "type": "string"
           }, 
           "shop_id": {
             "description": "ID of the Shop.", 
+            "example": "shop_abc123xyz0q95", 
             "title": "example: \"shop_abc123xyz0q95\"", 
             "type": "string"
           }, 
           "subscriber_id": {
             "description": "ID of the recipient (Subscriber).", 
+            "example": "s_abc123xyz0q95", 
             "title": "example: \"s_abc123xyz0q95\"", 
             "type": "string"
           }
@@ -777,9 +1282,32 @@
         "description": "A list of Subscribers.", 
         "properties": {
           "page_info": {
-            "$ref": "#/components/schemas/PageInfo"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PageInfo"
+              }
+            ], 
+            "description": "Page number of results found", 
+            "example": "{'page': 1, 'total_pages': 1}", 
+            "title": "Page Info"
           }, 
           "subscribers": {
+            "description": "JSON Array of Subscriber objects", 
+            "example": [
+              {
+                "created_at": "2023-01-01T09:30:00-0800", 
+                "data": {}, 
+                "email": "email@email.com", 
+                "id": "s_abc123xyz0q95", 
+                "phone_number": "15552223333", 
+                "properties": "{'has_purchased': True, 'days_since_purchase': 5, 'categories': ['Beauty', 'Home Goods'], 'birthday': '1991-01-01'}", 
+                "shopify_customer_id": 8888777333111, 
+                "tags": [
+                  "VIP"
+                ], 
+                "updated_at": "2023-01-01T09:30:00-0800"
+              }
+            ], 
             "items": {
               "$ref": "#/components/schemas/SubscriberSerializer"
             }, 
@@ -791,46 +1319,6 @@
           "subscribers"
         ], 
         "title": "SubscriberList", 
-        "type": "object"
-      }, 
-      "SubscriberResponse": {
-        "description": "Generic response for Subscriber or PendingSubscriber creation.", 
-        "properties": {
-          "created_at": {
-            "format": "date-time", 
-            "title": "Created At", 
-            "type": "string"
-          }, 
-          "id": {
-            "anyOf": [
-              {
-                "type": "string"
-              }, 
-              {
-                "type": "string"
-              }
-            ], 
-            "title": "Id"
-          }, 
-          "phone_number": {
-            "title": "Phone Number", 
-            "type": "string"
-          }, 
-          "resource": {
-            "title": "Resource", 
-            "type": "string"
-          }, 
-          "shopify_customer_id": {
-            "title": "Shopify Customer Id", 
-            "type": "integer"
-          }
-        }, 
-        "required": [
-          "id", 
-          "phone_number", 
-          "resource"
-        ], 
-        "title": "SubscriberResponse", 
         "type": "object"
       }, 
       "SubscriberSearch": {
@@ -929,6 +1417,8 @@
         "description": "A Postscript Subscriber.", 
         "properties": {
           "created_at": {
+            "description": "ISO 8601 datetime (UTC) at which Subscriber was registered", 
+            "example": "2023-01-01T09:30:00-0800", 
             "format": "date-time", 
             "title": "Created At", 
             "type": "string"
@@ -939,28 +1429,53 @@
             "type": "object"
           }, 
           "email": {
+            "description": "Subscriber Email", 
+            "example": "email@email.com", 
             "title": "Email", 
             "type": "string"
           }, 
           "id": {
-            "title": "Id", 
+            "description": "ID of the Subscriber", 
+            "example": "s_abc123xyz0q95", 
+            "title": "example: \"s_abc123xyz0q95\"", 
             "type": "string"
           }, 
           "phone_number": {
-            "title": "Phone Number", 
+            "description": "Phone number of the subscriber", 
+            "example": "15552223333", 
+            "title": "example: \"+15552223333\"", 
             "type": "string"
           }, 
           "properties": {
+            "description": "Subscriber Custom Properties JSON Object", 
+            "example": "{'has_purchased': True, 'days_since_purchase': 5, 'categories': ['Beauty', 'Home Goods'], 'birthday': '1991-01-01'}", 
             "format": "json-string", 
             "title": "Properties", 
             "type": "string"
           }, 
+          "resource": {
+            "default": "subscriber", 
+            "title": "Resource", 
+            "type": "string"
+          }, 
           "shopify_customer_id": {
+            "description": "Shopify Customer ID", 
+            "example": "8888777333111", 
             "title": "Shopify Customer Id", 
             "type": "integer"
           }, 
+          "subscriptions": {
+            "additionalProperties": {
+              "type": "object"
+            }, 
+            "description": "Confirmed subscriptions (transactional and/or promotional)", 
+            "example": "{'promotional': {'can_send': True}, 'transactional': {'can_send': True}}", 
+            "title": "Subscriptions", 
+            "type": "object"
+          }, 
           "tags": {
-            "default": [], 
+            "description": "Subscriber Tags", 
+            "example": "['VIP']", 
             "items": {
               "type": "string"
             }, 
@@ -968,6 +1483,8 @@
             "type": "array"
           }, 
           "updated_at": {
+            "description": "ISO 8601 datetime (UTC) at which Subscriber was last updated", 
+            "example": "2023-01-01T09:30:00-0800", 
             "format": "date-time", 
             "title": "Updated At", 
             "type": "string"
@@ -975,7 +1492,8 @@
         }, 
         "required": [
           "id", 
-          "phone_number"
+          "phone_number", 
+          "subscriptions"
         ], 
         "title": "SubscriberSerializer", 
         "type": "object"
@@ -990,6 +1508,7 @@
               }
             ], 
             "description": "Webhook subscription `event` type.", 
+            "example": "shop.incoming_message", 
             "title": "example: \"shop.incoming_message\""
           }
         }, 
@@ -999,15 +1518,63 @@
         "title": "TestShopWebhookPayload", 
         "type": "object"
       }, 
+      "TestShopWebhook_EntityNotFound": {
+        "properties": {
+          "http_status": {
+            "default": 404, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "No active event subscription for id", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.entity_not_found", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "TestShopWebhook_EntityNotFound", 
+        "type": "object"
+      }, 
+      "TestShopWebhook_RequestError": {
+        "properties": {
+          "http_status": {
+            "default": 400, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "shop:event` events are not supported for this auth", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.request_error", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "TestShopWebhook_RequestError", 
+        "type": "object"
+      }, 
       "UpdateSingleSubscriber": {
-        "description": "Updates a single Subscriber (PATCH).", 
+        "description": "Updates a single Subscriber (PATCH)", 
         "properties": {
           "properties": {
+            "description": "Subscriber Custom Properties JSON Object", 
+            "example": "{'has_purchased': True, 'days_since_purchase': 5, 'categories': ['Beauty', 'Home Goods'], 'birthday': '1991-01-01'}", 
             "format": "json-string", 
             "title": "Properties", 
             "type": "string"
           }, 
           "tags": {
+            "description": "Subscriber Tags", 
+            "example": [
+              "VIP"
+            ], 
             "items": {
               "type": "string"
             }, 
@@ -1023,6 +1590,7 @@
         "properties": {
           "callback_url": {
             "description": "Destination URL for webhook deliveries (HTTPS only).", 
+            "example": "https://www.example.com/webhook", 
             "format": "uri", 
             "maxLength": 65536, 
             "minLength": 1, 
@@ -1035,11 +1603,35 @@
             }, 
             "default": {}, 
             "description": "Custom key:value pairs to be sent as headers in every callback.", 
+            "example": {
+              "custom": "abc123"
+            }, 
             "title": "example: {\"custom\": \"abc123\"}", 
             "type": "object"
           }
         }, 
         "title": "UpdateWebhookSubscriptionPayload", 
+        "type": "object"
+      }, 
+      "UpdateWebhookSubscription_EntityNotFound": {
+        "properties": {
+          "http_status": {
+            "default": 404, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "Invalid webhook id provided: a47606a1-5b39-4a81-9480-c2cb738ff675", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.entity_not_found", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "UpdateWebhookSubscription_EntityNotFound", 
         "type": "object"
       }, 
       "ValidationError": {
@@ -1106,10 +1698,44 @@
         "title": "WebhookSigningTokenResponse", 
         "type": "object"
       }, 
+      "WebhookSigningToken_EntityConflict": {
+        "properties": {
+          "http_status": {
+            "default": 409, 
+            "title": "Http Status", 
+            "type": "integer"
+          }, 
+          "message": {
+            "default": "Conflicting entity exists.", 
+            "title": "Message", 
+            "type": "string"
+          }, 
+          "type": {
+            "default": "v2.entity_conflict", 
+            "title": "Type", 
+            "type": "string"
+          }
+        }, 
+        "title": "WebhookSigningToken_EntityConflict", 
+        "type": "object"
+      }, 
       "WebhookSubscriptionListResponse": {
         "description": "List response.", 
         "properties": {
           "webhook_subscriptions": {
+            "description": "Webhook Subscriptions List", 
+            "example": [
+              {
+                "callback_url": "https://example.com", 
+                "created_at": "2023-01-01T09:30:00-0800", 
+                "event": "shop.test", 
+                "headers": {
+                  "custom": "abc123"
+                }, 
+                "id": "a47606a1-5b39-4a81-9480-c2cb738ff675", 
+                "updated_at": "2023-01-01T09:30:00-0800"
+              }
+            ], 
             "items": {
               "$ref": "#/components/schemas/WebhookSubscriptionResponse"
             }, 
@@ -1128,6 +1754,7 @@
         "properties": {
           "callback_url": {
             "description": "Destination URL for webhook deliveries (HTTPS only).", 
+            "example": "https://www.example.com/webhook", 
             "format": "uri", 
             "maxLength": 65536, 
             "minLength": 1, 
@@ -1136,6 +1763,7 @@
           }, 
           "created_at": {
             "description": "ISO 8601 datetime (UTC) at which the Webhook Subscription was created.", 
+            "example": "2023-01-01T09:30:00-0800", 
             "format": "date-time", 
             "title": "example: \"2023-01-01T09:30:00-0800\"", 
             "type": "string"
@@ -1147,6 +1775,7 @@
               }
             ], 
             "description": "Webhook subscription `event` type.", 
+            "example": "shop.incoming_message", 
             "title": "example: \"shop.incoming_message\""
           }, 
           "headers": {
@@ -1155,6 +1784,9 @@
             }, 
             "default": {}, 
             "description": "Custom key:value pairs to be sent as headers in every callback.", 
+            "example": {
+              "custom": "abc123"
+            }, 
             "title": "example: {\"custom\": \"abc123\"}", 
             "type": "object"
           }, 
@@ -1169,10 +1801,12 @@
               }
             ], 
             "description": "ID of the Webhook Subscription.", 
+            "example": "a47606a1-5b39-4a81-9480-c2cb738ff675", 
             "title": "UUID"
           }, 
           "updated_at": {
             "description": "ISO 8601 datetime (UTC) at which the Webhook Subscription was last updated.", 
+            "example": "2023-01-01T09:30:00-0800", 
             "format": "date-time", 
             "title": "example: \"2023-01-01T09:30:00-0800\"", 
             "type": "string"
@@ -1231,7 +1865,7 @@
           "required": true
         }, 
         "responses": {
-          "200": {
+          "202": {
             "content": {
               "application/json": {
                 "schema": {
@@ -1239,7 +1873,7 @@
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
           "400": {
             "content": {
@@ -1272,7 +1906,7 @@
           }
         ], 
         "responses": {
-          "200": {
+          "201": {
             "content": {
               "application/json": {
                 "schema": {
@@ -1280,17 +1914,27 @@
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
-          "400": {
+          "403": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrors"
+                  "$ref": "#/components/schemas/GetCustomSubscriberEvent_UnauthorizedAccessError"
                 }
               }
             }, 
-            "description": "Bad Request"
+            "description": "GetCustomSubscriberEvent_UnauthorizedAccessError"
+          }, 
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCustomSubscriberEvent_EntityNotFound"
+                }
+              }
+            }, 
+            "description": "GetCustomSubscriberEvent_EntityNotFound"
           }
         }, 
         "summary": "Get Custom Subscriber Event", 
@@ -1320,7 +1964,7 @@
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
           "400": {
             "content": {
@@ -1360,7 +2004,7 @@
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
           "400": {
             "content": {
@@ -1409,17 +2053,17 @@
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
-          "400": {
+          "404": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrors"
+                  "$ref": "#/components/schemas/FetchSingleKeyword_EntityNotFound"
                 }
               }
             }, 
-            "description": "Bad Request"
+            "description": "FetchSingleKeyword_EntityNotFound"
           }
         }, 
         "summary": "Fetch Single Keyword", 
@@ -1438,7 +2082,7 @@
     }, 
     "/api/v2/me": {
       "get": {
-        "description": "Retrieve information about your current authorization.\n\n### Shops\n\nAs a shop, you 'll use your **Private API Key** for authenticating\nAPI calls. Keys can be generated in the app, from your shop's\n[API Settings Page](https://app.postscript.io/account/api).\n```\nAuthorization: Bearer sk_XXXXX\n```\n\n### Partners\n\nAs a partner, you must always use your **Private API Key** to\nauthenticate API calls. Partner API keys can be requested from\nPostscript's [Partners Page](https://postscript.io/partners).\n\nCertain actions, like creating API Triggers, must be performed\nwith only Partner authorization, and must exclude Shop credentials.\n```\nAuthorization: Bearer sk_partner_XXXXX\n```\n\nIf you're making requests *on behalf of* a Shop (such as fetching\nor messaging Subscribers for a shop), you'll need to provide\nyour **Private API Key** as well as an `X-Postscript-Shop-Token`\nheader with a shop's Private API Key (obtained from the shop).\n\nShops can generate Private API keys to share from their\n[API Settings Page](https://app.postscript.io/account/api).\n```\nAuthorization: Bearer sk_partner_XXXXX\nX-Postscript-Shop-Token: sk_XXXXX\n```", 
+        "description": "Get information about the Shop and/or Partner for which you're authorized to make requests for.", 
         "parameters": [], 
         "responses": {
           "200": {
@@ -1449,7 +2093,7 @@
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
           "400": {
             "content": {
@@ -1486,7 +2130,7 @@
         }
       ], 
       "post": {
-        "description": "Send a message to a Subscriber\n---\nMessages that are sent via our API still have to obey text messaging rules and regulations. What this means is that we have a few guardrails in place for all messages sent through the API.\n\n* All messages sent through the API will automatically prefix the shop's name with a colon and a space at the beginning of a message. For example, sending messages on behalf of a shop named **Postscript**, would have `Postscript:` prefixed to the message sent just before the body specified via the API.\n\n* We do require all messages sent through the API to obey waking hours if they are **promotional**. We currently only support sending promotional messages through the API, hence every message will obey the subscriber's local waking hours. If you try to send a message to a subscriber outside their waking hours, we will not deliver that message until that subscriber's waking hours are back. You will receive a status value of **scheduled** in these cases in the response.\n\n* Finally, since the only message type that is currently supported is promotional, we will only send messages to subscribers who have confirmed **opted in** to receive promotional messages from a shop. Any pending subscriber will not be able to receive messages via the API.\n\nKeep these things in mind as you are using the API to send messages and build your applications.\n---\nRequest payloads **must** include:\n* `subscriber_id` _OR_ `phone_number` - Either the encrypted subscriber ID _OR_ the subscriber's phone number.\n* `body` - SMS text message. Before delivery, the shop name will be prepended, and links will be shortened.\n\nRequest payloads can _optionally_ include:\n* `country` - ISO Alpha-2 country code, used to parse `phone` more accurately.\n* `category` - Intended subscription category of the message (\"conversational\", \"transactional\", or \"promotional\"). **Default:** \"conversational\"\n* `scheduled_at` - ISO 8601 datetime to schedule delivery in the future. **Default:** `null` (deliver ASAP)\n\n**NOTE:** `scheduled_at`parameter may be modified automatically, to account for waking hours, excluding \"transactional\" messages.\n\nMessage Requests are processed asynchronously and will return a `202 Accepted` with a Message Request response if accepted.\n\nTo check the status of a Message Request, it is possible to poll \"Fetch Message Request\" for updates.", 
+        "description": "Send a message to a Subscriber", 
         "parameters": [], 
         "requestBody": {
           "content": {
@@ -1500,7 +2144,7 @@
           "required": true
         }, 
         "responses": {
-          "200": {
+          "202": {
             "content": {
               "application/json": {
                 "schema": {
@@ -1508,17 +2152,47 @@
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
           "400": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrors"
+                  "$ref": "#/components/schemas/CreateMessageRequest_RequestError"
                 }
               }
             }, 
-            "description": "Bad Request"
+            "description": "CreateMessageRequest_RequestError"
+          }, 
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateMessageRequest_EntityNotFound"
+                }
+              }
+            }, 
+            "description": "CreateMessageRequest_EntityNotFound"
+          }, 
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateMessageRequest_EntityConflict"
+                }
+              }
+            }, 
+            "description": "CreateMessageRequest_EntityConflict"
+          }, 
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateMessageRequest_InternalServerError"
+                }
+              }
+            }, 
+            "description": "CreateMessageRequest_InternalServerError"
           }
         }, 
         "summary": "Create Message Request", 
@@ -1549,17 +2223,27 @@
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
           "400": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrors"
+                  "$ref": "#/components/schemas/FetchMessageRequest_RequestError"
                 }
               }
             }, 
-            "description": "Bad Request"
+            "description": "FetchMessageRequest_RequestError"
+          }, 
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FetchMessageRequest_EntityNotFound"
+                }
+              }
+            }, 
+            "description": "FetchMessageRequest_EntityNotFound"
           }
         }, 
         "summary": "Fetch Message Request", 
@@ -1598,17 +2282,27 @@
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
           "400": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrors"
+                  "$ref": "#/components/schemas/FetchSentMessage_RequestError"
                 }
               }
             }, 
-            "description": "Bad Request"
+            "description": "FetchSentMessage_RequestError"
+          }, 
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FetchSentMessage_EntityNotFound"
+                }
+              }
+            }, 
+            "description": "FetchSentMessage_EntityNotFound"
           }
         }, 
         "summary": "Fetch Sent Message", 
@@ -1646,7 +2340,7 @@
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
           "400": {
             "content": {
@@ -1691,21 +2385,21 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SubscriberResponse"
+                  "$ref": "#/components/schemas/SubscriberSerializer"
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
-          "400": {
+          "409": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrors"
+                  "$ref": "#/components/schemas/CreateSubscriber_EntityConflict"
                 }
               }
             }, 
-            "description": "Bad Request"
+            "description": "CreateSubscriber_EntityConflict"
           }
         }, 
         "summary": "Create Subscriber", 
@@ -1735,7 +2429,7 @@
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
           "400": {
             "content": {
@@ -1784,17 +2478,17 @@
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
-          "400": {
+          "404": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrors"
+                  "$ref": "#/components/schemas/FetchPendingSubscriber_EntityNotFound"
                 }
               }
             }, 
-            "description": "Bad Request"
+            "description": "FetchPendingSubscriber_EntityNotFound"
           }
         }, 
         "summary": "Fetch Pending Subscriber", 
@@ -1833,17 +2527,17 @@
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
-          "400": {
+          "404": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrors"
+                  "$ref": "#/components/schemas/FetchSubscriber_EntityNotFound"
                 }
               }
             }, 
-            "description": "Bad Request"
+            "description": "FetchSubscriber_EntityNotFound"
           }
         }, 
         "summary": "Fetch Subscriber", 
@@ -1860,7 +2554,7 @@
         }
       ], 
       "patch": {
-        "description": "Updates a subscriber.\nRequired fields:\n* `tags` - the tags in the body as an array containing the keys you would like to add to the subscriber e.g.\n```\n    {\n        \"tags\": [\"tag1\", \"tag2\"]\n    }\n```\nOptional fields:\n* `properties` - a key:value mapping of custom properties.\n\nCustom properties values can be: strings, integers, string arrays, or ISO 8601 date(time):\n```\n    \"properties\": {\n        \"has_purchased\": True,\n        \"days_since_purchase\": 5,\n        \"categories\": [\"Beauty\", \"Home Goods\"],\n        \"birthday\": \"1991-01-01\"\n    }\n```\nSubscribers can have up to 20 custom properties. If `properties` is unset or null, it will be ignored.", 
+        "description": "Updates a subscriber.\n### Required fields:\n* `tags` - the tags in the body as an array containing the keys you would like to add to the subscriber e.g.\n```\n    {\n        \"tags\": [\"tag1\", \"tag2\"]\n    }\n```\n### Optional fields:\n* `properties` - a key:value mapping of custom properties.\n\nCustom properties values can be: strings, integers, string arrays, or ISO 8601 date(time):\n```\n    \"properties\": {\n        \"has_purchased\": True,\n        \"days_since_purchase\": 5,\n        \"categories\": [\"Beauty\", \"Home Goods\"],\n        \"birthday\": \"1991-01-01\"\n    }\n```\nSubscribers can have up to 20 custom properties. If `properties` is unset or null, it will be ignored.", 
         "parameters": [
           {
             "in": "path", 
@@ -1891,17 +2585,17 @@
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
-          "400": {
+          "404": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrors"
+                  "$ref": "#/components/schemas/PatchSubscriber_EntityNotFound"
                 }
               }
             }, 
-            "description": "Bad Request"
+            "description": "PatchSubscriber_EntityNotFound"
           }
         }, 
         "summary": "Patch Subscriber", 
@@ -1910,7 +2604,7 @@
         ]
       }, 
       "put": {
-        "description": "Updates a single subscriber. This replaces values or creates the resource if not present.\n\nRequired fields:\n* `phone_number` - a phone number for a subscriber.\n* `origin` - indicates how subscriber collection occurred (`\"website\"`, `\"social\"`, or `\"other\"`).\nOptional fields:\n* `shopify_customer_id` - a reference to the Shopify Customer record for the subscriber\n* `email` - an email address, used to look up a Shopify Customer record if `shopify_customer_id` isn't provided.\n* `tags` - an Array of string tag values that can be used in User segmentation or filtering.\n* `keyword` - a string keyword, matching an active keyword for the Shop. Exclude if `keyword_id` is provided.\n* `keyword_id` - the encrypted ID of a keyword, matching an active keyword for the Shop. Exclude if `keyword` is provided.\n* `single_opt_in` - a boolean indicating if subscribers should be opted-in without confirmation. Must be enabled by the Postscript team.\n* `properties` - dictionary of custom subscriber metadata", 
+        "description": "Updates a single subscriber. This replaces values or creates the resource if not present.\n\n### Required fields:\n* `phone_number` - a phone number for a subscriber.\n* `origin` - indicates how subscriber collection occurred (`\"website\"`, `\"social\"`, or `\"other\"`).\n\n### Optional fields:\n* `shopify_customer_id` - a reference to the Shopify Customer record for the subscriber\n* `email` - an email address, used to look up a Shopify Customer record if `shopify_customer_id` isn't provided.\n* `tags` - an Array of string tag values that can be used in User segmentation or filtering.\n* `keyword` - a string keyword, matching an active keyword for the Shop. Exclude if `keyword_id` is provided.\n* `keyword_id` - the encrypted ID of a keyword, matching an active keyword for the Shop. Exclude if `keyword` is provided.\n* `single_opt_in` - a boolean indicating if subscribers should be opted-in without confirmation. Must be enabled by the Postscript team.\n* `properties` - dictionary of custom subscriber metadata", 
         "parameters": [
           {
             "in": "path", 
@@ -1933,25 +2627,25 @@
           "required": true
         }, 
         "responses": {
-          "200": {
+          "201": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SubscriberResponse"
+                  "$ref": "#/components/schemas/SubscriberSerializer"
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
-          "400": {
+          "409": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrors"
+                  "$ref": "#/components/schemas/PutSubscriber_EntityConflict"
                 }
               }
             }, 
-            "description": "Bad Request"
+            "description": "PutSubscriber_EntityConflict"
           }
         }, 
         "summary": "Put Subscriber", 
@@ -1973,7 +2667,7 @@
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
           "400": {
             "content": {
@@ -2022,17 +2716,17 @@
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
-          "400": {
+          "409": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrors"
+                  "$ref": "#/components/schemas/CreateWebhookSubscription_EntityConflict"
                 }
               }
             }, 
-            "description": "Bad Request"
+            "description": "CreateWebhookSubscription_EntityConflict"
           }
         }, 
         "summary": "Create Webhook Subscription", 
@@ -2065,7 +2759,7 @@
           "required": true
         }, 
         "responses": {
-          "200": {
+          "202": {
             "content": {
               "application/json": {
                 "schema": {
@@ -2073,17 +2767,27 @@
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
           "400": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrors"
+                  "$ref": "#/components/schemas/TestShopWebhook_RequestError"
                 }
               }
             }, 
-            "description": "Bad Request"
+            "description": "TestShopWebhook_RequestError"
+          }, 
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestShopWebhook_EntityNotFound"
+                }
+              }
+            }, 
+            "description": "TestShopWebhook_EntityNotFound"
           }
         }, 
         "summary": "Test Shop Webhook", 
@@ -2105,17 +2809,17 @@
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
-          "400": {
+          "409": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrors"
+                  "$ref": "#/components/schemas/WebhookSigningToken_EntityConflict"
                 }
               }
             }, 
-            "description": "Bad Request"
+            "description": "WebhookSigningToken_EntityConflict"
           }
         }, 
         "summary": "Webhook Signing Token", 
@@ -2154,17 +2858,17 @@
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
-          "400": {
+          "404": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrors"
+                  "$ref": "#/components/schemas/DeleteWebhookSubscription_EntityNotFound"
                 }
               }
             }, 
-            "description": "Bad Request"
+            "description": "DeleteWebhookSubscription_EntityNotFound"
           }
         }, 
         "summary": "Delete Webhook Subscription", 
@@ -2193,17 +2897,17 @@
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
-          "400": {
+          "404": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrors"
+                  "$ref": "#/components/schemas/FetchWebhookSubscription_EntityNotFound"
                 }
               }
             }, 
-            "description": "Bad Request"
+            "description": "FetchWebhookSubscription_EntityNotFound"
           }
         }, 
         "summary": "Fetch Webhook Subscription", 
@@ -2251,17 +2955,17 @@
                 }
               }
             }, 
-            "description": "Succesfull Request"
+            "description": "Successful Request"
           }, 
-          "400": {
+          "404": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrors"
+                  "$ref": "#/components/schemas/UpdateWebhookSubscription_EntityNotFound"
                 }
               }
             }, 
-            "description": "Bad Request"
+            "description": "UpdateWebhookSubscription_EntityNotFound"
           }
         }, 
         "summary": "Update Webhook Subscription", 

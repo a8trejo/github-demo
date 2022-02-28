@@ -1463,9 +1463,8 @@
               "days_since_purchase": 5, 
               "has_purchased": true
             }, 
-            "format": "json-string", 
             "title": "Properties", 
-            "type": "string"
+            "type": "object"
           }, 
           "resource": {
             "default": "subscriber", 
@@ -1483,7 +1482,14 @@
               "type": "object"
             }, 
             "description": "Confirmed subscriptions (transactional and/or promotional)", 
-            "example": "{'promotional': {'can_send': True}, 'transactional': {'can_send': True}}", 
+            "example": {
+              "promotional": {
+                "can_send": true
+              }, 
+              "transactional": {
+                "can_send": true
+              }
+            }, 
             "title": "Subscriptions", 
             "type": "object"
           }, 

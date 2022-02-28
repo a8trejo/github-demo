@@ -27,13 +27,6 @@ jobs:
       #  run: |
       #    curl -o .github/openapi.json --location --request GET ${{ secrets.PARTNER_API_V2 }}
 
-      - name: Update readme API Reference
-        uses: readmeio/github-readme-sync@v2
-        with:
-          readme-oas-key: '${{ secrets.README_API_KEY }}:${{ env.README_API_SPEC_ID }}'
-          oas-file-path: '.github/openapi.json'
-          api-version: ${{ env.README_API_VERSION }}
-
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
@@ -43,7 +36,18 @@ jobs:
         run: |
           pip install requests
 
-      - name: Release Notes Content Generation
+      - name: OpenAPI Schema custom modifications
+        run: |
+          python .github/open_api_customs.py
+
+      - name: Update readme API Reference
+        uses: readmeio/github-readme-sync@v2
+        with:
+          readme-oas-key: '${{ secrets.README_API_KEY }}:${{ env.README_API_SPEC_ID }}'
+          oas-file-path: '.github/openapi.json'
+          api-version: ${{ env.README_API_VERSION }}
+      
+      - name: Changelog Entry Generation
         run: |
           python .github/api_readme_synch.py
         env:
@@ -53,5 +57,5 @@ jobs:
           README_API_KEY: ${{ secrets.README_API_KEY }}
           README_URL: ${{ secrets.README_URL }}
           API_DREAM_TEAM: ${{ secrets.API_DREAM_TEAM }}
-          
+    
           

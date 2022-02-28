@@ -1453,6 +1453,7 @@
             "type": "string"
           }, 
           "properties": {
+            "default": {}, 
             "description": "Subscriber Custom Properties JSON Object", 
             "example": {
               "birthday": "1991-01-01", 

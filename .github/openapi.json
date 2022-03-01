@@ -200,7 +200,7 @@
             "type": "string"
           }, 
           "properties": {
-            "description": "Subscriber Custom Properties JSON Object", 
+            "description": "Custom properties as key/value pairs. Values can be: strings, integers, string arrays, or ISO 8601 date(time). Subscribers can have up to 20 custom properties. If properties is unset or null, it will be ignored.", 
             "example": {
               "birthday": "1991-01-01", 
               "categories": [
@@ -1453,7 +1453,8 @@
             "type": "string"
           }, 
           "properties": {
-            "description": "Subscriber Custom Properties JSON Object", 
+            "default": {}, 
+            "description": "Custom properties as key/value pairs. Values can be: strings, integers, string arrays, or ISO 8601 date(time). Subscribers can have up to 20 custom properties. If properties is unset or null, it will be ignored.", 
             "example": {
               "birthday": "1991-01-01", 
               "categories": [
@@ -1463,8 +1464,9 @@
               "days_since_purchase": 5, 
               "has_purchased": true
             }, 
+            "format": "json-string", 
             "title": "Properties", 
-            "type": "object"
+            "type": "string"
           }, 
           "resource": {
             "default": "subscriber", 
@@ -1584,7 +1586,7 @@
         "description": "Updates a single Subscriber (PATCH)", 
         "properties": {
           "properties": {
-            "description": "Subscriber Custom Properties JSON Object", 
+            "description": "Custom properties as key/value pairs. Values can be: strings, integers, string arrays, or ISO 8601 date(time). Subscribers can have up to 20 custom properties. If properties is unset or null, it will be ignored.", 
             "example": {
               "birthday": "1991-01-01", 
               "categories": [

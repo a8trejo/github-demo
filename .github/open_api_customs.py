@@ -24,7 +24,7 @@ PATHS_ORDER = [
     "/api/v2/webhooks",
     "/api/v2/webhooks/{webhook_id}",
     "/api/v2/webhooks/token",
-    "/api/v2/webhooks/test"
+    "/api/v2/webhooks/test",
 ]
 OPEN_API_ENDPOINTS_NAMES = {
     "Fetch Keywords List": "Get Keywords",
@@ -48,12 +48,8 @@ OPEN_API_SECTION_NAMES = {
 }
 PATH_PARAMS_NAMES = {"keyword_id": "id", "external_id": "id", "webhook_id": "id"}
 COMPONENT_SCHEMAS_CHANGES = {
-    "CreateSingleSubscriber" : {
-        "properties": {"properties": {"type" : "object"}}
-    },  
-    "UpdateSingleSubscriber": {
-        "properties": {"properties": {"type" : "object"}}
-    }
+    "CreateSingleSubscriber": {"properties": {"properties": {"type": "object"}}},
+    "UpdateSingleSubscriber": {"properties": {"properties": {"type": "object"}}},
 }
 
 print(
@@ -126,11 +122,17 @@ for path in open_api_paths:
     adjusted_path = path.replace(f"{{{path_param_name}}}", f"{{{adjusted_path_param}}}")
     OPEN_API_SCHEMA["paths"][adjusted_path] = OPEN_API_SCHEMA["paths"].pop(path)
 
-#Component Schema Changes
+# Component Schema Changes
 for schema in COMPONENT_SCHEMAS_CHANGES:
-    OPEN_API_SCHEMA["components"]["schemas"][schema]["properties"]["properties"]["type"] = COMPONENT_SCHEMAS_CHANGES[schema]["properties"]["properties"]["type"]
-    OPEN_API_SCHEMA["components"]["schemas"][schema]["properties"]["properties"].pop("format")
-    OPEN_API_SCHEMA["components"]["schemas"][schema]["properties"]["properties"]["maxProperties"] = 20
+    OPEN_API_SCHEMA["components"]["schemas"][schema]["properties"]["properties"][
+        "type"
+    ] = COMPONENT_SCHEMAS_CHANGES[schema]["properties"]["properties"]["type"]
+    OPEN_API_SCHEMA["components"]["schemas"][schema]["properties"]["properties"].pop(
+        "format"
+    )
+    OPEN_API_SCHEMA["components"]["schemas"][schema]["properties"]["properties"][
+        "maxProperties"
+    ] = 20
 
 with open(".github/openapi.json", "w") as updated_open_api:
     json.dump(OPEN_API_SCHEMA, updated_open_api)

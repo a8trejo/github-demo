@@ -1453,7 +1453,6 @@
             "type": "string"
           }, 
           "properties": {
-            "default": {}, 
             "description": "Custom properties as key/value pairs. Values can be: strings, integers, string arrays, or ISO 8601 date(time). Subscribers can have up to 20 custom properties. If properties is unset or null, it will be ignored.", 
             "example": {
               "birthday": "1991-01-01", 
@@ -1923,6 +1922,7 @@
         "description": "", 
         "parameters": [
           {
+            "description": " The id of the event you'd like to receive", 
             "in": "path", 
             "name": "event_id", 
             "required": true, 
@@ -2053,7 +2053,7 @@
         "description": "", 
         "parameters": [
           {
-            "description": "ID of the Keyword to fetch", 
+            "description": " The id of the keyword you'd like to receive", 
             "in": "path", 
             "name": "keyword_id", 
             "required": true, 
@@ -2215,7 +2215,7 @@
         "description": "", 
         "parameters": [
           {
-            "description": "ID of the Message Request to fetch", 
+            "description": " The id of the message request you'd like to receive", 
             "in": "path", 
             "name": "external_id", 
             "required": true, 
@@ -2272,7 +2272,7 @@
         "description": "", 
         "parameters": [
           {
-            "description": "ID of the Sent Message.", 
+            "description": " The id of the sent message you'd like to receive", 
             "in": "path", 
             "name": "external_id", 
             "required": true, 
@@ -2460,7 +2460,7 @@
         "description": "", 
         "parameters": [
           {
-            "description": "ID of the pending subscriber", 
+            "description": " The id of the pending subscriber you'd like to receive", 
             "in": "path", 
             "name": "external_id", 
             "required": true, 
@@ -2507,7 +2507,7 @@
         "description": "", 
         "parameters": [
           {
-            "description": "ID of the subscriber", 
+            "description": " The id of the subscriber you'd like to receive", 
             "in": "path", 
             "name": "external_id", 
             "required": true, 
@@ -2552,7 +2552,7 @@
         "description": "", 
         "parameters": [
           {
-            "description": "ID of the subscriber", 
+            "description": " The id of the subscriber you'd like to update", 
             "in": "path", 
             "name": "external_id", 
             "required": true, 
@@ -2603,7 +2603,7 @@
         "description": "", 
         "parameters": [
           {
-            "description": "ID of the subscriber", 
+            "description": " The id of the subscriber you'd like to update", 
             "in": "path", 
             "name": "external_id", 
             "required": true, 
@@ -2829,7 +2829,7 @@
         "description": "", 
         "parameters": [
           {
-            "description": "ID of the Webhook subscription to delete", 
+            "description": " The id of the webhook subscription you'd like to **delete**", 
             "in": "path", 
             "name": "webhook_id", 
             "required": true, 
@@ -2869,7 +2869,7 @@
         "description": "", 
         "parameters": [
           {
-            "description": "ID of the Webhook subscription", 
+            "description": " The id of the webhook subscription you'd like to receive", 
             "in": "path", 
             "name": "webhook_id", 
             "required": true, 
@@ -2914,7 +2914,7 @@
         "description": "", 
         "parameters": [
           {
-            "description": "ID of the Webhook subscription to patch", 
+            "description": " The id of the webhook subscription you'd like to update", 
             "in": "path", 
             "name": "webhook_id", 
             "required": true, 

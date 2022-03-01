@@ -7,5 +7,5 @@
 .github/release_notes.md
 .github/backUp.py
 .github/workflows/prerelease_branch_names.yml
-
+.github/debug.py
 .DS_Store

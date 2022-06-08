@@ -1,0 +1,61 @@
+name: Auto Release Notes
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: "Release"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: Repo Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      
+      - name: Set Env Variables
+        run: |
+          echo "RELEASE_VERSION=$(echo v`date +%Y.%m.%d`.`git rev-parse --short HEAD`.rc)" >> $GITHUB_ENV
+          echo "RELEASE_DATE=$(echo `date +%Y\.%m\.%d`)" >> $GITHUB_ENV
+          curl --location --request GET '${{ github.api_url }}/repos/${{ github.repository }}/releases/latest' \
+          --header 'Accept: application/vnd.github.v3+json' \
+          --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+          -o old_latest.json
+          cat old_latest.json
+      
+      - name: Get Previous "Latest"
+        id: old-latest
+        uses: notiz-dev/github-action-json-property@release
+        with: 
+            path: 'old_latest.json'
+            prop_path: 'tag_name'
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: ${{ env.RELEASE_VERSION }}
+          draft: false
+          prerelease: false
+          title: ${{ env.RELEASE_VERSION }}
+      
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install Dependencies
+        run: |
+          git fetch --all --tags
+          pip install requests
+
+      - name: Changelog Generation
+        run: |
+          python .github/workflows/scripts/release.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_BRANCH: ${{ github.ref_name }}
+          GITHUB_URL: ${{ github.api_url }}
+          GITHUB_REPO_PATH: ${{ github.repository }}
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
+          RELEASE_DATE: ${{ env.RELEASE_DATE }}

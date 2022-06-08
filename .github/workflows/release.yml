@@ -59,3 +59,4 @@ jobs:
           GITHUB_REPO_PATH: ${{ github.repository }}
           RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
           RELEASE_DATE: ${{ env.RELEASE_DATE }}
+          OLD_LATEST: ${{steps.old-latest.outputs.prop}} 

@@ -1,4 +1,4 @@
-name: Auto Release Notes
+name: Release Latest with Notes
 
 on:
   workflow_dispatch:

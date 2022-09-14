@@ -19,6 +19,8 @@ GITHUB_PAYLOAD_HEADER = {
     **GITHUB_GET_HEADER,
     "Content-Type": "application/json",
 }
+
+#Debug read file in upper path
 CONFIG_FILE = open('.github/changelog_config.json')
 CONFIG_JSON = json.load(CONFIG_FILE)
 CONFIG_FILE.close()

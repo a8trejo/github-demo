@@ -25,6 +25,8 @@ README_PAYLOAD_HEADER = {
     **README_AUTH_HEADER,
     "Content-Type": "application/json"
 }
+
+# Debug moving UP on the current directory
 CONFIG_FILE = open(".github/changelog_config.json")
 CONFIG_JSON = json.load(CONFIG_FILE)
 CONFIG_FILE.close()
@@ -113,7 +115,7 @@ if readme_synch == True:
             entry["text"] = [row + "\n" for row in entry["text"]]
             payload_text = "".join(entry["text"])
             readme_payload = json.dumps({
-                "title": "Postscript API - " + changelog_date,
+                "title": "API - " + changelog_date,
                 "type": entry["type"],
                 "body": payload_text,
                 "hidden": True
@@ -126,4 +128,4 @@ if readme_synch == True:
     else:
         print("Release Content does not have any header matching the sections in .github/prerelease_config.json file")
 else:
-    print("No commit was performed by the API & Integrations team")
+    print("No commit was performed by the team")

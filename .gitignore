@@ -9,3 +9,5 @@
 .github/workflows/prerelease_branch_names.yml
 .github/debug.py
 .DS_Store
+.github/openapi.json
+.github/workflows/scripts/open_api_customs.py

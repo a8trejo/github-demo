@@ -1,3 +1,5 @@
+#Disable worflow
+
 name: API Reference Synch
 
 on: 
@@ -36,9 +38,10 @@ jobs:
         run: |
           pip install requests
 
-      - name: OpenAPI Schema custom modifications
-        run: |
-          python .github/open_api_customs.py
+      # Deprecated
+      #- name: OpenAPI Schema custom modifications
+      #  run: |
+      #    python .github/workflows/scripts/open_api_customs.py
 
       - name: Update readme API Reference
         uses: readmeio/github-readme-sync@v2
@@ -49,7 +52,7 @@ jobs:
       
       - name: Changelog Entry Generation
         run: |
-          python .github/api_readme_synch.py
+          python .github/workflows/scripts/api_readme_synch.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_URL: ${{ github.api_url }}

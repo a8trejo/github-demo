@@ -15,9 +15,11 @@ jobs:
           REPO_NAME=`echo ${{ github.repository }} | sed 's/.*\///'`
           echo "CLOUD_MSG=`echo $GIT_LOG $REPO_NAME`" >> $GITHUB_ENV
       
+      - run: echo "${{ env.CLOUD_MSG }}"
+      
       - name: "Checks"
         run: |
-          WORKAROUND=${{ env.CLOUD_MSG }}
+          WORKAROUND="${{ env.CLOUD_MSG }}"
           echo $WORKAROUND
           
-      - run: echo "${{ env.CLOUD_MSG }}"
+      

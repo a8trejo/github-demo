@@ -1,0 +1,21 @@
+name: Actions Debugging Scripts
+on:
+  workflow_dispatch:
+
+jobs:
+  hello-world:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # GIT_LOG=$(git log --pretty=oneline --format='%s %h' | head -n 1)
+      - name: "Fast echo"
+        run: |
+          GIT_LOG="Commit Msg with () parenthesis inside"    
+          REPO_NAME=`echo ${{ github.repository }} | sed 's/.*\///'`
+          COMMIT_REF=`echo $GIT_LOG $REPO_NAME`
+          echo "CLOUD_MSG=`echo $COMMIT_REF`" >> $GITHUB_ENV
+      
+      - name: "Checks"
+        run: |
+          echo ${{ env.CLOUD_MSG}}

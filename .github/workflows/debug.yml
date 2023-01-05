@@ -17,4 +17,5 @@ jobs:
       
       - name: "Checks"
         run: |
-          echo ${{ env.CLOUD_MSG}}
+          WORKAROUND=`echo ${{ env.CLOUD_MSG}}`
+          echo $WORKAROUND

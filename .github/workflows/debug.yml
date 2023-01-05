@@ -13,8 +13,7 @@ jobs:
         run: |
           GIT_LOG="Commit Msg with () parenthesis inside"    
           REPO_NAME=`echo ${{ github.repository }} | sed 's/.*\///'`
-          COMMIT_REF=`echo $GIT_LOG $REPO_NAME`
-          echo "CLOUD_MSG=`echo $COMMIT_REF`" >> $GITHUB_ENV
+          echo "CLOUD_MSG=`echo $GIT_LOG $REPO_NAME`" >> $GITHUB_ENV
       
       - name: "Checks"
         run: |

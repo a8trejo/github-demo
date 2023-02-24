@@ -5,21 +5,27 @@ on:
 jobs:
   hello-world:
     runs-on: ubuntu-latest
+    outputs:
+      parsed-msg: ${{ steps.py-script.outputs.parsed-msg }}
+
     steps:
       - uses: actions/checkout@v3
 
-      # GIT_LOG=$(git log --pretty=oneline --format='%s %h' | head -n 1)
-      - name: "Fast echo"
+      - name: Python Script
+        id: py-script
         run: |
-          GIT_LOG="Commit Msg with () parenthesis inside"    
+          python .github/workflows/scripts/debug.py
+        env: 
+          GITHUB_REPO_PATH: ${{ github.repository }}
+  
+  marco-polo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Script Output in another Job
+        run: |
           REPO_NAME=`echo ${{ github.repository }} | sed 's/.*\///'`
-          echo "CLOUD_MSG=`echo $GIT_LOG $REPO_NAME`" >> $GITHUB_ENV
-      
-      - run: echo "${{ env.CLOUD_MSG }}"
-      
-      - name: "Checks"
-        run: |
-          WORKAROUND="${{ env.CLOUD_MSG }}"
-          echo $WORKAROUND
+          COMMIT_REF=`echo "${{needs.prepare-deployment-matrix.outputs.parsed-msg}} $REPO_NAME"`
+          echo "${{needs.hello-world.outputs.py-script}}"
+
           
       

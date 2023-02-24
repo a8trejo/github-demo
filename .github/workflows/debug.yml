@@ -23,10 +23,7 @@ jobs:
     needs: [hello-world]
     steps:
       - name: Script Output in another Job
-        run: |
-          REPO_NAME=`echo ${{ github.repository }} | sed 's/.*\///'`
-          COMMIT_REF=`echo "${{needs.prepare-deployment-matrix.outputs.parsed-msg}} $REPO_NAME"`
-          echo "${{needs.hello-world.outputs.py-script}}"
+        run: echo "${{needs.hello-world.outputs.parsed-msg}}"
 
           
       

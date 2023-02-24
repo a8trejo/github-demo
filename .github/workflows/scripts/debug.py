@@ -8,7 +8,6 @@ GITHUB_OUTPUT = os.getenv('GITHUB_OUTPUT')
 print("--------------------Fetching Commit Msg-------------------------------------")
 commitMsg = 'Revert "- ATH-8 BB Haqwert Pabcde (as sd asads)" \'ab1gbh0\' Git-Demo"'
 print(commitMsg)
-commitMsg = commitMsg.replace("'", '"', '(', ')')
 
 # Removing special characters from the commit msg
 specialChars = [',', "'", '"', '(', ')']

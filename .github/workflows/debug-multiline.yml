@@ -1,0 +1,19 @@
+name: Actions Debugging Multiline Scripts
+on:
+  workflow_dispatch:
+
+jobs:
+  hello-world:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # Creates env var VAR_NAME
+      - name: Python Script
+        id: py-script
+        run: |
+          python .github/scripts/debug-multiline.py
+
+      - name: Reuse env var
+        run: echo ${{ env.VAR_NAME}}

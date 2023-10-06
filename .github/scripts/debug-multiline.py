@@ -5,4 +5,4 @@ MULTILINE_STRING = ":loud_sound: Woo-Hoo :loud_sound: ANALYSIS SUCCESSFUL, 1 mor
 
 print(MULTILINE_STRING)
 with open(GITHUB_ENV, "a") as env_file:
-    env_file.write(f"VAR_NAME<<EOF{MULTILINE_STRING}EOF")
+    env_file.write(f"VAR_NAME<<EOF\n{MULTILINE_STRING}EOF")

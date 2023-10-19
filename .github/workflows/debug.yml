@@ -4,6 +4,7 @@ on:
 
 jobs:
   hello-world:
+    if: false
     runs-on: ubuntu-latest
     outputs:
       parsed-msg: ${{ steps.py-script.outputs.parsed-msg }}
@@ -19,11 +20,23 @@ jobs:
           GITHUB_REPO_PATH: ${{ github.repository }}
   
   marco-polo:
+    if: false
     runs-on: ubuntu-latest
     needs: [hello-world]
     steps:
       - name: Script Output in another Job
         run: echo "${{needs.hello-world.outputs.parsed-msg}}"
+  
+  # ${GITHUB_REPOSITORY#*/}
+  string-substitution:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "${{ github.repository }}"
+          echo "$REPO_NAME"
+        env:
+          REPO_NAME: ${${{ github.repository }}#*/}
+
 
           
       

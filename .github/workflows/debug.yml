@@ -2,6 +2,8 @@ name: Actions Debugging Scripts
 on:
   workflow_dispatch:
 
+env:
+  REPO_NAME: 
 jobs:
   hello-world:
     if: false

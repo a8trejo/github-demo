@@ -1,0 +1,35 @@
+name: Push Event Files
+on:
+  push:
+
+jobs:
+  files-pushed:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pushed Files
+        id: pushed-files
+        env: 
+            ADDED_FILES: ${{ github.event.head_commit.added }}
+            MODIFIED_FILES: ${{ github.event.head_commit.modified }}
+            REMOVED_FILES: ${{ github.event.head_commit.removed }}
+        shell: python
+        run: |
+            import os
+            import subprocess
+            import json
+            
+            NEW_FILES = os.environ['ADDED_FILES']
+            MODIFIED_FILES = os.environ['MODIFIED_FILES']
+            REMOVED_FILES = os.environ['REMOVED_FILES']
+            GITHUB_ENV = os.getenv('GITHUB_ENV')
+            COMMIT_FILES = NEW_FILES + MODIFIED_FILES + REMOVED_FILES
+
+            print(f"NEW_FILES: {NEW_FILES}")
+            
+        
+  
+          
+      
